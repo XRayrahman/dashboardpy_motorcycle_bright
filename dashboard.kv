@@ -13,8 +13,8 @@
     user_font_size: "40sp"
     pos_hint:{"center_y": .5}
     theme_text_color: "Custom"
-    # text_color: 180/255,180/255,180/255,1 # light color
-    text_color: 23/255,28/255,35/255,1 # dark color
+    text_color: 180/255,180/255,180/255,1 # light color
+    # text_color: 23/255,28/255,35/255,1 # dark color
     # text_color: 14/255,78/255,107/255,1 # blue-accent color
 
 <PilLayout@BoxLayout>
@@ -22,7 +22,9 @@
     padding:"7dp"
     canvas:
         Color:
-            rgba:(6/255,17/255,21/255,1)
+            # rgba:(6/255,17/255,21/255,1) # dark color
+            rgba:(217/255,217/255,217/255,1) # bright theme
+            # rgba:(6/255,17/255,21/255,1) # dark theme
         RoundedRectangle:
             size: self.size
             pos: self.pos
@@ -59,7 +61,7 @@
         Color:
             # rgba:(0/255,10/255,14/255,1) # dark version
             # rgba:(23/255,33/255,36/255,1) 
-            rgba:(217/255,217/255,217/255,1) # bright version
+            rgba:(217/255,217/255,217/255,1) # bright theme
             # rgba:(26/255,91/255,120/255,1) # blue-dark version
             # rgba:(6/255,17/255,21/255,1)
         RoundedRectangle:
@@ -72,7 +74,7 @@
         Color:
             # rgba:(0/255,10/255,14/255,1) # dark version
             # rgba:(23/255,33/255,36/255,1) 
-            rgba:(217/255,217/255,217/255,1) # bright version
+            rgba:(217/255,217/255,217/255,1) # bright theme
             # rgba:(26/255,91/255,120/255,1) # blue-dark version
             # rgba:(6/255,17/255,21/255,1)
         RoundedRectangle:
@@ -84,7 +86,8 @@
     canvas:
         Color:
             # rgba:(23/255,28/255,35/255,1) # grey version
-            rgba:(26/255,91/255,120/255,1)
+            # rgba:(26/255,91/255,120/255,1)
+            rgba:(6/255,17/255,21/255,1) # bright theme
             # rgba:(23/255,33/255,36/255,1) 
             # rgba:(217/255,217/255,217/255,1) # bright version
             # rgba:(26/255,91/255,120/255,1) # blue-dark version
@@ -99,7 +102,7 @@
             # rgba:(23/255,28/255,35/255,1) # grey version
             # rgba:(6/255,17/255,21/255,1)
             # rgba:(23/255,33/255,36/255,1) 
-            rgba:(217/255,217/255,217/255,1) # bright version
+            rgba:(217/255,217/255,217/255,1) # bright theme
             # rgba:(26/255,91/255,120/255,1) # blue-dark version
         RoundedRectangle:
             size: self.size
@@ -112,15 +115,15 @@
     # color: 15/255,18/255,23/255,1
     # color: 146/255,218/255,241/255,1 # cyan color
     # color: 217/255,217/255,217/255,1 # off-white color
-    color:6/255,17/255,21/255,1 # bright version
+    color:6/255,17/255,21/255,1 # bright theme
     markup: True
 
 <LabelRajdhaniLight@Label>
     font_name:"fonts/Rajdhani-SemiBold.ttf"
     markup: True
     # color: 23/255,28/255,35/255,1
-    # color: 217/255,217/255,217/255,1 # off-white color
-    color:6/255,17/255,21/255,1 # bright version
+    color: 217/255,217/255,217/255,1 # off-white color
+    # color:6/255,17/255,21/255,1 # dark version
     # color: 146/255,218/255,241/255,1
 
 
@@ -129,7 +132,7 @@
     font_size:"36sp"
     # color: 15/255,18/255,23/255,1 # dark color
     # color: 217/255,217/255,217/255,1 # off-white color
-    color:6/255,17/255,21/255,1 # bright version
+    color:6/255,17/255,21/255,1 # bright theme
     markup: True
 
 
@@ -142,7 +145,7 @@
 <LabelRajdhaniOnPill@Label>
     font_name:"fonts/Rajdhani-SemiBold.ttf"
     markup: True
-    color: (1,1,1,1)
+    color: 6/255,17/255,21/255,1 # bright theme
 
 <MDBoxLayoutBG@MDBoxLayout>
     md_bg_color: 217/255,217/255,217/255,1
@@ -173,7 +176,7 @@
                     BoxLayout:
                         padding:"100dp"
                         Image:
-                            source: 'assets/evolion-logo-white.png'
+                            source: 'assets/evolion-logo-bright.png'
                             size: self.texture_size
             
             FloatLayout:
@@ -188,7 +191,7 @@
                     size: dp(30), dp(30)
                     pos_hint: {'center_x': .5, 'center_y': .25}
                     active: True
-                    color: 217/255,217/255,217/255,1
+                    color: 6/255,17/255,21/255,1
                 # AKSpinnerThreeDots:
                 #     id: foldingcube
                 #     spinner_size: dp(35)
@@ -294,7 +297,7 @@
                                                     # bg_color: rgba(120/255,184/255,146/255,1)
                                                     canvas:
                                                         Color:
-                                                            rgb: 120/255,184/255,146/255,1
+                                                            rgb: 118/255,209/255,155/255,1
                                                         Rectangle:
                                                             size: sp(41.5), sp(20)
                                                             pos: self.center_x - sp(40.0), self.center_y - sp(10)
@@ -365,7 +368,7 @@
                                             size_hint_y:0.66
                                             padding:"15dp"
                                             orientation:"vertical"
-                                            LabelRajdhani:
+                                            LabelRajdhaniLight:
                                                 # id: label_bottom_ori
                                                 text:"Install aplikasi\nuntuk estimasi"
                                                 size_hint:1,1
@@ -391,7 +394,7 @@
                                                 #    on_release: qr.data = "Kivy Rocks!"
 
                                             Image:
-                                                source: 'assets/evolion-logo-white-mini.png'
+                                                source: 'assets/evolion-logo-bright-mini.png'
                                                 size: self.texture_size
 
                                 Screen:
@@ -507,7 +510,7 @@
                                                             id: SOC_bar
                                                             # circle_color: 101/255,199/255,255/255,1
                                                             circle_color: 166/255,217/255,245/255,1
-                                                            percent_color: 217/255,217/255,217/255,1
+                                                            percent_color: 15/255,18/255,23/255,1
                                                             background_circle_color: 23/255,28/255,35/255,1
                                                             line_width: dp(8)
                                                             background_line_width: dp(8)
@@ -531,7 +534,7 @@
                                                             id:SOC_bar_value
                                                             bold: True
                                                             text:"SOC"
-                                                            color: 217/255,217/255,217/255,1
+                                                            # color: 217/255,217/255,217/255,1
                                                             # font_name:"Roboto"
                                                             font_size:"32sp"
                                                             halign:"center"
@@ -571,11 +574,14 @@
                                                     end_angle: 180
                                                     subtick: 5
                                                     # value: 4
-                                                    cadran_color: '#061115'
-                                                    shadow_color: '#a1d4f0'
+                                                    cadran_color: '#171c23'
+                                                    # cadran_color: "#d9d9d9"
+                                                    # shadow_color: '#061115'
+                                                    shadow_color:'#a1d4f0'
                                                     # shadow_width: 100
                                                     # needle_color: '#a1d4f0'
                                                     sectors: [0, '#171c23']
+                                                    # sectors: [0,'#b4b4b4']
                                                     sector_width: 22
                                         
                                         FloatLayout:
@@ -590,7 +596,7 @@
                                                     id: time
                                                     font_size:"24sp"
                                                     text: '[b]00[/b]:00'
-                                                    color: 217/255,217/255,217/255,1
+                                                    # color: 217/255,217/255,217/255,1
                                                     
                                         FloatLayout:
                                             size_hint:1,1
@@ -607,7 +613,7 @@
                                                     RoundedRectangle:
                                                         size: self.size
                                                         pos: self.pos
-                                                LabelRajdhani:
+                                                LabelRajdhaniLight:
                                                     id:odometer
                                                     # bold: True
                                                     text:"00000"
@@ -668,11 +674,11 @@
                                                 # center_on:(lat,lon)
                                                 
                                                 #map_source: 'osm-hot'
-                                                #map_source: MapSource.MapSource(url='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=f872d70d2fa74f1c96049845e81a8a99', attribution='')
+                                                map_source: MapSource.MapSource(url='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=f872d70d2fa74f1c96049845e81a8a99', attribution='')
 
-                                                map_source: MapSource.MapSource(cache_key='cartodb-darkmatter', url='https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png?apikey=f872d70d2fa74f1c96049845e81a8a99', attribution="@OpenStreet Map - DarkMatter")
+                                                # map_source: MapSource.MapSource(cache_key='cartodb-darkmatter', url='https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png?apikey=f872d70d2fa74f1c96049845e81a8a99', attribution="@OpenStreet Map - DarkMatter")
                                                 
-                                                #https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png
+                                                # https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png
                                                 #cache_key='cartodb-darkmatter'
                                                 marker:
                                         FloatLayout:
@@ -686,7 +692,7 @@
                                                 padding:"7dp"
                                                 BoxLayout:
                                                     orientation:"vertical"
-                                                    LabelRajdhaniLight:
+                                                    LabelRajdhani:
                                                         id: time_onmap
                                                         text:"time"
                                                         # size_hint:.5,1
@@ -713,19 +719,20 @@
                                                         padding:"3dp"
                                                         spacing:8
 
-                                                        BoxLayout:
+                                                        CardLayout:
                                                             orientation: "vertical"
+                                                            padding:"0dp"
                                                             # pos_hint:{"top":.93,"left":.93}
                                                             # pos_hint:{"top":.15,"x":.47}
                                                             # size_hint: .3, .45
-                                                            canvas:
-                                                                Color:
-                                                                    rgba:(15/255,18/255,23/255,1)
-                                                                RoundedRectangle:
-                                                                    size: self.size
-                                                                    pos: self.pos
+                                                            # canvas:
+                                                            #     Color:
+                                                            #         rgba:(15/255,18/255,23/255,1)
+                                                            #     RoundedRectangle:
+                                                            #         size: self.size
+                                                            #         pos: self.pos
 
-                                                            LabelRajdhaniLight:
+                                                            LabelRajdhani:
                                                                 id: DistanceEst 
                                                                 text:"-- distance --"
                                                                 # size_hint:.7,.45
@@ -734,19 +741,20 @@
                                                                 halign:"left"
                                                                 # pos_hint: {"top":0.77}
 
-                                                        BoxLayout:
+                                                        CardLayout:
                                                             orientation: "vertical"
+                                                            padding:"0dp"
                                                             # pos_hint:{"top":.93,"left":.93}
                                                             # pos_hint:{"top":.15,"x":.47}
                                                             # size_hint: .3, .45
-                                                            canvas:
-                                                                Color:
-                                                                    rgba:(15/255,18/255,23/255,1)
-                                                                RoundedRectangle:
-                                                                    size: self.size
-                                                                    pos: self.pos
+                                                            # canvas:
+                                                            #     Color:
+                                                            #         rgba:(15/255,18/255,23/255,1)
+                                                            #     RoundedRectangle:
+                                                            #         size: self.size
+                                                            #         pos: self.pos
 
-                                                            LabelRajdhaniLight:
+                                                            LabelRajdhani:
                                                                 id: TimeEst 
                                                                 text:"-- time --"
                                                                 # size_hint:.7,.45

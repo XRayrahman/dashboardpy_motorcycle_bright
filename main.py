@@ -49,6 +49,14 @@ class Dashboard(MDApp):
     #global screen_manager
     screen_manager = ScreenManager()
     jarak_tempuh_total = 0
+
+    # theme-custom
+    red = 223/255,91/255,97/255,1
+    green = 118/255,209/255,155/255,1
+    cyan = 166/255,217/255,245/255,1
+    dark_blue = 6/255,17/255,21/255,1
+    off = 180/255,180/255,180/255,1
+
     def build(self):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "BlueGray"
@@ -135,17 +143,30 @@ class Dashboard(MDApp):
     
     def battery_full(self,status):
         if(status == "no"):
-            color_bar = 223/255,91/255,97/255,1
-            color_low = 223/255,91/255,97/255,1
-            color_full = 23/255,28/255,35/255,1
+            color_bar = self.red
+            color_low = self.red
+            color_full = self.off
         elif(status == "yes"):
-            color_bar = 118/255,209/255,155/255,1
-            color_low = 23/255,28/255,35/255,1
-            color_full = 118/255,209/255,155/255,1
+            color_bar = self.green
+            color_low = self.off
+            color_full = self.green
         else:
-            color_bar = 166/255,217/255,245/255,1
-            color_low = 23/255,28/255,35/255,1
-            color_full = 23/255,28/255,35/255,1
+            color_bar = self.cyan
+            color_low = self.off
+            color_full = self.off
+
+        # if(status == "no"):
+        #     color_bar = 223/255,91/255,97/255,1
+        #     color_low = 223/255,91/255,97/255,1
+        #     color_full = 23/255,28/255,35/255,1
+        # elif(status == "yes"):
+        #     color_bar = 118/255,209/255,155/255,1
+        #     color_low = 23/255,28/255,35/255,1
+        #     color_full = 118/255,209/255,155/255,1
+        # else:
+        #     color_bar = 166/255,217/255,245/255,1
+        #     color_low = 23/255,28/255,35/255,1
+        #     color_full = 23/255,28/255,35/255,1
             
         self.root.ids.battery_full.text_color = color_full
         self.root.ids.battery_low.text_color = color_low
@@ -338,22 +359,23 @@ class Dashboard(MDApp):
         isTurnRight = vehicleStatus["turn_signal"][1]
 
         if isTurnLeft == True:
-            self.root.ids.turn_left.text_color = 217/255,217/255,217/255,1
+            self.root.ids.turn_left.text_color = self.dark_blue
             Clock.schedule_once(self.blink_signal, 1)
         elif isTurnRight == True:
-            self.root.ids.turn_right.text_color = 217/255,217/255,217/255,1
+            self.root.ids.turn_right.text_color = self.dark_blue
             Clock.schedule_once(self.blink_signal, 1)
         else:
             # self.root.ids.turn_left.text_color = 14/255,78/255,107/255,1
             # self.root.ids.turn_right.text_color = 14/255,78/255,107/255,1
-            self.root.ids.turn_left.text_color = 23/255,28/255,35/255,1
-            self.root.ids.turn_right.text_color = 23/255,28/255,35/255,1
-            # self.root.ids.turn_left.text_color = 180/255,180/255,180/255,1
-            # self.root.ids.turn_right.text_color = 180/255,180/255,180/255,1
+            # self.root.ids.turn_left.text_color = 23/255,28/255,35/255,1
+            # self.root.ids.turn_right.text_color = 23/255,28/255,35/255,1
+            self.root.ids.turn_left.text_color = self.off
+            self.root.ids.turn_right.text_color = self.off
 
     def blink_signal(self, *args):
-        self.root.ids.turn_left.text_color = 23/255,28/255,35/255,1
-        self.root.ids.turn_right.text_color = 23/255,28/255,35/255,1
+        self.root.ids.turn_left.text_color = self.off
+        self.root.ids.turn_right.text_color = self.off
+
 
         
 
@@ -481,7 +503,7 @@ class MyLayout(Screen):
             self.marker_destination = MapMarker(lat=self.DestinationLat, lon=self.DestinationLng, source="assets/marker-red.png")
             mapview.add_widget(self.marker_origin)
             mapview.add_widget(self.marker_destination)
-            Clock.schedule_once(self.zoom_maps, 17)
+            Clock.schedule_once(self.zoom_maps, 15)
             #mapview.add_marker(lat=lat, lon=lng)
         except Exception as e:
             print("error marker map:", str(e))
@@ -856,7 +878,8 @@ class LineMapLayer(MapLayer):
             # Draw new
             # Color(31/255,146/255,161/255,1 )
             # Line(points=self.line_points, width=6/2, joint="round")#4/ms)#6., joint="round",joint_precision=100)
-            Color(146/255,218/255,241/255,1)
+            # Color(146/255,218/255,241/255,1)
+            Color(63/255,146/255,172/255,1)
             Line(points=self.line_points, width=4/2, joint="round", joint_precision=100)
             
 
