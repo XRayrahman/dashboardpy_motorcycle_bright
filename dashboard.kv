@@ -220,13 +220,6 @@
             BoxLayout:
                 orientation:'vertical'
                 size:root.height,root.width
-
-                # canvas:
-                #     Rectangle:
-                #         source: 'assets/wallpaper.png'
-                #         size: root.height, root.width
-
-                
                 MDBoxLayoutBG:
                     # md_bg_color: 6/255,17/255,21/255,1
 
@@ -485,7 +478,7 @@
                                 ScreenManager:
                                     id:screendget
                                     Screen:
-                                        id:test1
+                                        id:mainMenu
                                         name: "screen1"
                                         BoxLayout:
                                             size_hint:1,1
@@ -564,7 +557,7 @@
 
                                             BoxLayout:
                                                 size: 0.5,1
-                                                padding: "25dp"
+                                                padding: "30dp"
                                                 NoValueSpeedMeter:
                                                     size_hint:1,1
                                                     id: speed_bar
@@ -672,7 +665,7 @@
 
 
                                     Screen:
-                                        id:test2
+                                        id:mapMenu
                                         name: "screen2"
 
                                         BoxLayout:
@@ -782,6 +775,16 @@
                                                         font_size:"17sp"
                                                         halign:"left"
                                                         pos_hint: {"top":0.77}
+
+                                    Screen:
+                                        id:aboutMenu
+                                        name:"aboutScreen"
+                                        BoxLayout:
+                                            orientation:'vertical'
+                                            size:root.height,root.width
+                                            MDBoxLayoutBG:
+                                                LabelRajdhani:
+                                                    text:"about screen"
 
         #
                             ## STATUS BAR BOTTOM ##

@@ -91,7 +91,7 @@ class Dashboard(MDApp):
         self.sub3 = Clock.schedule_interval(self.odometer,                          1)
         self.sub4 = Clock.schedule_interval(self.odometer_submit,                   3)
         self.sub5 = Clock.schedule_interval(self.turn_signal,                       1)
-        self.sub6 = Clock.schedule_interval(self.change_screen_tomain,              1)
+        self.sub6 = Clock.schedule_interval(self.change_screen_main,                1)
         self.asyncRun = Clock.schedule_once(self.asyncProgram,                      10)
 
 
@@ -103,7 +103,7 @@ class Dashboard(MDApp):
         self.root.ids.screen_manager.transition = RiseInTransition()
         self.root.ids.screen_manager.switch_to(self.root.ids.mainScreen)
 
-    def change_screen_tomain(self, nap):
+    def change_screen_main(self, nap):
         if self.sw_started:
             self.sw_seconds += nap
 
@@ -112,33 +112,41 @@ class Dashboard(MDApp):
             data_change_screen = json.load(dt)
             change_screen = data_change_screen['screen']
         except:
-            change_screen = False
+            change_screen = "Main"
 
             
-        if (change_screen == True):
+        if (change_screen == "Map"):
             self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini2)
-            self.root.ids.screendget.switch_to(self.root.ids.test2)
+            self.root.ids.screendget.switch_to(self.root.ids.mapMenu)
             self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop2)
             self.root.ids.mode_label.text = "SPEED"
             self.root.ids.power_label.text = "SOC"
             self.root.ids.card_label.text = "NORMAL"
             self.screen_tomap = False
             
-        elif (change_screen == False):
+        elif (change_screen == "Main"):
             if (self.screen_tomap == True):
                 self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini2)
-                self.root.ids.screendget.switch_to(self.root.ids.test2)
+                self.root.ids.screendget.switch_to(self.root.ids.mapMenu)
                 self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop2)
                 self.root.ids.mode_label.text = "SPEED"
                 self.root.ids.power_label.text = "SOC"
                 self.root.ids.card_label.text = "NORMAL"
             else:
                 self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini1)
-                self.root.ids.screendget.switch_to(self.root.ids.test1)
+                self.root.ids.screendget.switch_to(self.root.ids.mainMenu)
                 self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop1)
                 self.root.ids.mode_label.text = "MODE"
                 self.root.ids.power_label.text = "POWER"
                 self.root.ids.card_label.text = "APLIKASI"
+        
+        elif (change_screen == "About"):
+            self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini1)
+            self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop2)
+            self.root.ids.mode_label.text = "SPEED"
+            self.root.ids.power_label.text = "SOC"
+            self.root.ids.card_label.text = "APLIKASI"
+            self.root.ids.screendget.switch_to(self.root.ids.aboutMenu)
             # self.screen_tomap = False
     
     def battery_full(self,status):
