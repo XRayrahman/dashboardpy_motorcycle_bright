@@ -7,7 +7,17 @@
     "wifi":{
         "id":"ITS-WIFI",
         "pass":"itssurabaya"
-    },  
+    },
+    "location":{
+        "origin":{
+            "lat":-7.2131242342
+            "lng":12.1241251231
+        },
+        "destination":{
+            "lat":-7.4623413413
+            "lng":12.4124112231
+        }
+    }  
     "restart":false,
     "isRun":false
 }

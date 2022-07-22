@@ -10,7 +10,7 @@ from kivy.clock import Clock
 from kivy.graphics import Color, Line, SmoothLine
 from kivy.graphics.context_instructions import Translate, Scale
 from kivy_garden.speedmeter import SpeedMeter
-from kivy_garden.qrcode import QRCodeWidget
+# from kivy_garden.qrcode import QRCodeWidget
 from kivy_garden.mapview.utils import clamp
 from kivy_garden.mapview import MapView, MapMarker , MapLayer
 from kivy_garden.mapview.constants import (
@@ -90,7 +90,7 @@ class Dashboard(MDApp):
         self.sub2 = Clock.schedule_interval(self.update_data_soc_tegangan,          3)
         self.sub3 = Clock.schedule_interval(self.odometer,                          1)
         self.sub4 = Clock.schedule_interval(self.odometer_submit,                   3)
-        self.sub5 = Clock.schedule_interval(self.turn_signal,                       2)
+        self.sub5 = Clock.schedule_interval(self.turn_signal,                       1)
         self.sub6 = Clock.schedule_interval(self.change_screen_tomain,              1)
         self.asyncRun = Clock.schedule_once(self.asyncProgram,                      10)
 
@@ -146,6 +146,7 @@ class Dashboard(MDApp):
             color_bar = self.red
             color_low = self.red
             color_full = self.off
+            Clock.schedule_once(self.blink_battery, 1.5)
         elif(status == "yes"):
             color_bar = self.green
             color_low = self.off
@@ -154,23 +155,13 @@ class Dashboard(MDApp):
             color_bar = self.cyan
             color_low = self.off
             color_full = self.off
-
-        # if(status == "no"):
-        #     color_bar = 223/255,91/255,97/255,1
-        #     color_low = 223/255,91/255,97/255,1
-        #     color_full = 23/255,28/255,35/255,1
-        # elif(status == "yes"):
-        #     color_bar = 118/255,209/255,155/255,1
-        #     color_low = 23/255,28/255,35/255,1
-        #     color_full = 118/255,209/255,155/255,1
-        # else:
-        #     color_bar = 166/255,217/255,245/255,1
-        #     color_low = 23/255,28/255,35/255,1
-        #     color_full = 23/255,28/255,35/255,1
             
         self.root.ids.battery_full.text_color = color_full
         self.root.ids.battery_low.text_color = color_low
         self.root.ids.SOC_bar.circle_color = color_bar
+
+    def blink_battery(self, *args):
+        self.root.ids.battery_low.text_color = self.off
 
     #update data SOC dan tegangan
     def update_data_soc_tegangan(self,nap):
@@ -360,10 +351,10 @@ class Dashboard(MDApp):
 
         if isTurnLeft == True:
             self.root.ids.turn_left.text_color = self.dark_blue
-            Clock.schedule_once(self.blink_signal, 1)
+            Clock.schedule_once(self.blink_signal, .5)
         elif isTurnRight == True:
             self.root.ids.turn_right.text_color = self.dark_blue
-            Clock.schedule_once(self.blink_signal, 1)
+            Clock.schedule_once(self.blink_signal, .5)
         else:
             # self.root.ids.turn_left.text_color = 14/255,78/255,107/255,1
             # self.root.ids.turn_right.text_color = 14/255,78/255,107/255,1

@@ -171,10 +171,10 @@
                 MDBoxLayoutBG:
                     # md_bg_color: 6/255,17/255,21/255,1
                     pos_hint: {"center_x": 0.5,"center_y": 0.5}
-                    padding:"10dp"
+                    padding:"50dp"
                     orientation: 'vertical'
                     BoxLayout:
-                        padding:"100dp"
+                        padding:"120dp"
                         Image:
                             source: 'assets/evolion-logo-bright.png'
                             size: self.texture_size
@@ -656,6 +656,18 @@
                                                     halign:"right"
                                                     # color: 217/255,217/255,217/255,1
                                                     color: 6/255,17/255,21/255,1
+
+                                        FloatLayout:
+                                            size_hint:1,1
+                                            BoxLayout:
+                                                orientation: "vertical"
+                                                pos_hint:{"top":.97,"x":.855}
+                                                # pos_hint:{"top":.15,"x":.47}
+                                                size_hint: .14, .14
+                                                # bg_color:
+                                                Image:
+                                                    source: 'assets/Lambang-ITS.png'
+                                                    size: self.texture_size
                                                 
 
 
@@ -879,6 +891,7 @@
                                             halign:"right"
                                             valign:"center"
 
+            ## FLOAT LAYOUT SECTION ##
 
             FloatLayout:
                 size_hint:1,1
