@@ -10,7 +10,7 @@ Kivy == 2.1.0
 joblib == 1.1.0
 
 # dashboardpy_motorcycle/main.py: 15
-kivy_garden.qrcode == 2021.314
+# kivy_garden.qrcode == 2021.314
 
 # dashboardpy_motorcycle/main.py: 1,3
 kivymd == 0.104.2
