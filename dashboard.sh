@@ -6,7 +6,7 @@
 # sudo xrandr --addmode $MONITOR "800x480_60.00" # set $MONITOR to default display ex. HDMI-1
 # sudo xrandr --output $MONITOR --mode "800x480_60.00" # set the new created resolution
 # source /home/pi/dashboard/bin/activate # change depends on directory
-cd /home/orangepi/dashboardpy_motorcycle/ # change depends on directory
+cd /home/orangepi/dashboardpy_motorcycle_bright/ # change depends on directory
 # cat /dev/ttyUSB0 &
 # cat /dev/ttyUSB1 &
 # cat /dev/ttyUSB2 &

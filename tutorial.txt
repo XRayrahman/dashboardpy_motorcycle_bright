@@ -6,8 +6,8 @@
 
 - mulai -
 
-1. clone repo terbaru dari dashboardpy_motorcycle ini
-$ git clone --branch master https://github.com/XRayrahman/dashboardpy_motorcycle.git
+1. clone repo terbaru dari dashboardpy_motorcycle versi bright ini
+$ git clone https://github.com/XRayrahman/dashboardpy_motorcycle_bright.git
 
 2. install pip untuk instalasi library python
 $ sudo apt update
@@ -16,7 +16,7 @@ $ sudo apt install python3-pip python3-setuptools git-core python3-dev
 $ sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
 
 3. install segala library yang digunakan, catatan : library kivy dan speedmeter harus diinstall secara manual dengan clone repo
-$ cd path/to/dashboardpy_motorcycle
+$ cd path/to/dashboardpy_motorcycle_bright
 $ pip install -r requirements.txt
 
 4. instalasi library speedmeter
@@ -28,7 +28,7 @@ $ python3 setup.py install
 $ cd ..
 
 5.a. untuk penggunaan *tanpa* program estimasi, buat folder api dan file kosongan api-key.txt
-$ cd path/to/dashboardpy_motorcycle
+$ cd path/to/dashboardpy_motorcycle_bright
 $ mkdir .key
 $ touch .key/api-key.txt
 
@@ -39,7 +39,7 @@ $ nano .key/api-key.txt
 $ python3 main.py
 
 7.a. Agar program dapat berjalan otomatis saat booting, tambahkan ke script auto-start .desktop
-$ cd path/to/dashboardpy_motorcycle
+$ cd path/to/dashboardpy_motorcycle_bright
 $ cp dashboard.sh ~
 $ cd 
 $ chmod +x dasboard.sh
@@ -78,7 +78,7 @@ $ sudo rm orangepi_first_run.txt.template
 GUI : settings -> display
 
 > jangan lupa ganti wallpaper desktop dengan file wallpaper yang telah disediakan
-- dashboardpy_motorcycle/assets/wallpaper.png
+- dashboardpy_motorcycle_bright/assets/wallpaper.png
 
 > ubah settingan panel biar auto-hide
 GUI : settings -> panel
@@ -95,8 +95,8 @@ GUI : settings -> panel
 - selesai -
 
 - update program terbaru -
-$ rm -rf path/to/dashboardpy_motorcycle
-$ git clone --branch master https://github.com/XRayrahman/dashboardpy_motorcycle.git
+$ rm -rf path/to/dashboardpy_motorcycle_bright
+$ git clone --branch master https://github.com/XRayrahman/dashboardpy_motorcycle_bright.git
 --------------------------
 
 a. jika terjadi error path not found, sesuaikan kembali path yang ada pada script dasboard.sh dan dashboard.desktop
