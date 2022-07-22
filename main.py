@@ -85,9 +85,9 @@ class Dashboard(MDApp):
         # SOC_value = round((SOC/3)*100, 0)
         # SOC_value = str(SOC_value)+"%"
 
-        self.sub1 = Clock.schedule_interval(self.update_status,                     5) #(program, interval/waktu dijalankan)
+        self.sub1 = Clock.schedule_interval(self.update_status,                     5) # schedule_interval(program, interval/waktu dijalankan)
         self.sub2 = Clock.schedule_interval(self.update_data_suhu_kecepatan,        1)
-        self.sub2 = Clock.schedule_interval(self.update_data_soc_tegangan,          5)
+        self.sub2 = Clock.schedule_interval(self.update_data_soc_tegangan,          3)
         self.sub3 = Clock.schedule_interval(self.odometer,                          1)
         self.sub4 = Clock.schedule_interval(self.odometer_submit,                   3)
         self.sub5 = Clock.schedule_interval(self.turn_signal,                       2)
@@ -235,7 +235,7 @@ class Dashboard(MDApp):
         elif valtegangan < 72 and self.delay_notification == 5:
             self.popup = MDDialogDef(
                         title='NOTIFICATION ALERT',
-                        text='Baterai hampir habis! \nCharge kendaraan terlebih dahulu',
+                        text='Sisa Kapasitas baterai dibawah 30% \nCharge kendaraan terlebih dahulu',
                         radius=[7, 7, 7, 7],
                         md_bg_color=(215/255,71/255,68/255,1),
                         size_hint=(.4, .1),
