@@ -1,0 +1,8 @@
+{
+    "wifi": {
+        "id": "",
+        "pass": ""
+    },
+    "restart":false,
+    "screen":false
+}

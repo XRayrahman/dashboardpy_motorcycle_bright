@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Digital Dashboard Motorcycle
+Type=Application
+Terminal=false
+Exec=~/dashboard.sh

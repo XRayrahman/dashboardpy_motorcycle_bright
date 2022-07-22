@@ -1,0 +1,13 @@
+
+--- example structure ardujson ---
+
+{
+    "t":"70.00", 
+    "r":"4.50",
+    "wifi":{
+        "id":"ITS-WIFI",
+        "pass":"itssurabaya"
+    },  
+    "restart":false,
+    "isRun":false
+}
