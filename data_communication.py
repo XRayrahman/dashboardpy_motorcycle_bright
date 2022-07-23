@@ -116,7 +116,7 @@ def store_data_arduino(ser):
                         try:
                             screen_change=data['screen']
                         except:
-                            screen_change=False
+                            screen_change="Main"
 
                         ### koneksi
                         try:

@@ -2,13 +2,6 @@
 #:import MapView kivy_garden.mapview
 #:import MapSource kivy_garden.mapview
 
-<On_active_button@Button_Item>
-    icon_color: app.theme_cls.text_color
-    text_color: app.theme_cls.text_color
-    button_bg_color: 23/255,28/255,35/255,1
-    mode: "color_on_active"
-    badge_disabled: True
-
 <MDIconButtonOff@MDIconButton>
     user_font_size: "40sp"
     pos_hint:{"center_y": .5}
@@ -16,6 +9,7 @@
     text_color: 180/255,180/255,180/255,1 # light color
     # text_color: 23/255,28/255,35/255,1 # dark color
     # text_color: 14/255,78/255,107/255,1 # blue-accent color
+
 
 <PilLayout@BoxLayout>
     size_hint: .1, .05
@@ -29,31 +23,19 @@
             size: self.size
             pos: self.pos
 
-<RoundCard@MDCard>
-    md_bg_color:23/255,28/255,35/255,1
-    spacing:"1dp"
-    padding:"5dp"
-    size_hint:1,0.2
-    border_radius:50
-    radius:[5]
 
-<RoundCard_data@MDCard>
-    orientation: "horizontal"
-    spacing:"30dp"
-    padding:"30dp"
-    size_hint:0.7,1
-    size: "300dp", "120dp"
-    md_bg_color: 255/255,255/255,255/255,1
-    border_radius:50
-    radius:[5]
-
-<Progress>
-    MDDialog:
-        title:'Tersambung'
-        radius:[7, 7, 7, 7],
-        md_bg_color:244/255,67/255,54/255,1
-        size_hint:None, None
-        size:400, 400
+<CardLayout@BoxLayout>
+    padding:"25dp"
+    canvas:
+        Color:
+            # rgba:(23/255,28/255,35/255,1) # grey version
+            # rgba:(6/255,17/255,21/255,1)
+            # rgba:(23/255,33/255,36/255,1) 
+            rgba:(217/255,217/255,217/255,1) # bright theme
+            # rgba:(26/255,91/255,120/255,1) # blue-dark version
+        RoundedRectangle:
+            size: self.size
+            pos: self.pos
 
 <CardLayoutSecondary@BoxLayout>
     padding:"25dp"
@@ -95,18 +77,6 @@
             size: self.size
             pos: self.pos
 
-<CardLayout@BoxLayout>
-    padding:"25dp"
-    canvas:
-        Color:
-            # rgba:(23/255,28/255,35/255,1) # grey version
-            # rgba:(6/255,17/255,21/255,1)
-            # rgba:(23/255,33/255,36/255,1) 
-            rgba:(217/255,217/255,217/255,1) # bright theme
-            # rgba:(26/255,91/255,120/255,1) # blue-dark version
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
 
 <LabelRajdhani@Label>
     font_name:"fonts/Rajdhani-SemiBold.ttf"
@@ -116,7 +86,10 @@
     # color: 146/255,218/255,241/255,1 # cyan color
     # color: 217/255,217/255,217/255,1 # off-white color
     color:6/255,17/255,21/255,1 # bright theme
-    markup: True
+
+<LabelRajdhaniAlignLeft@LabelRajdhani>
+    text_size:self.size
+    # size_hint:.6,.6
 
 <LabelRajdhaniLight@Label>
     font_name:"fonts/Rajdhani-SemiBold.ttf"
@@ -126,7 +99,6 @@
     # color:6/255,17/255,21/255,1 # dark version
     # color: 146/255,218/255,241/255,1
 
-
 <LabelRajdhaniBottom@Label>
     font_name:"fonts/Rajdhani-SemiBold.ttf"
     font_size:"36sp"
@@ -135,17 +107,16 @@
     color:6/255,17/255,21/255,1 # bright theme
     markup: True
 
-
 <LabelRajdhaniCenter@Label>
     font_name:"fonts/Rajdhani-SemiBold.ttf"
     font_size:"30sp"
     markup: True
 
-
 <LabelRajdhaniOnPill@Label>
     font_name:"fonts/Rajdhani-SemiBold.ttf"
     markup: True
     color: 6/255,17/255,21/255,1 # bright theme
+
 
 <MDBoxLayoutBG@MDBoxLayout>
     md_bg_color: 217/255,217/255,217/255,1
@@ -654,7 +625,7 @@
                                             size_hint:1,1
                                             BoxLayout:
                                                 orientation: "vertical"
-                                                pos_hint:{"top":.97,"x":.855}
+                                                pos_hint:{"top":.975,"x":.865}
                                                 # pos_hint:{"top":.15,"x":.47}
                                                 size_hint: .14, .14
                                                 # bg_color:
@@ -783,8 +754,65 @@
                                             orientation:'vertical'
                                             size:root.height,root.width
                                             MDBoxLayoutBG:
-                                                LabelRajdhani:
-                                                    text:"about screen"
+                                                GridLayout:
+                                                    cols:2
+                                                    size_hint: 1, 1
+                                                    spacing:"25dp"
+                                                    padding:"20dp"
+                                                    BoxLayout:
+                                                        size_hint_x:.6
+                                                        padding:"20dp"
+                                                        Image:
+                                                            source: 'assets/3d-etrail.png'
+                                                            size: self.texture_size
+
+                                                    GridLayout:
+                                                        rows:3
+                                                        size_hint_x:.4
+
+                                                        BoxLayout:
+                                                            size_hint_y:.1
+
+                                                        GridLayout:
+                                                            size_hint_y:.5
+                                                            rows:2
+                                                            padding:"5dp"
+                                                            spacing:"5dp"
+                                                            BoxLayout:
+                                                                size_hint:self.width,.2
+                                                                LabelRajdhaniAlignLeft:
+                                                                    text:"VEHICLE INFO."
+                                                                    size_hint:1,1
+                                                                    halign:"left"
+                                                                    valign:"center"
+                                                            BoxLayout:
+                                                                size_hint_y:.8
+                                                                LabelRajdhaniAlignLeft:
+                                                                    font_name:"fonts/Rajdhani-Regular.ttf"
+                                                                    font_size: "14sp"
+                                                                    text:"VEHICLE ID      : M01 \nMax. Voltage   : 84 V\nMax. Capacity  : 3 KWH\nMax. Torque     : 25 Nm"
+                                                                    halign:"left"
+                                                                    valign:"top"
+
+                                                        GridLayout:
+                                                            size_hint_y:.4
+                                                            rows:2
+                                                            padding:"5dp"
+                                                            spacing:"5dp"
+                                                            BoxLayout:
+                                                                size_hint:self.width,.2
+                                                                LabelRajdhaniAlignLeft:
+                                                                    text:"SYSTEM INFO."
+                                                                    halign:"left"
+                                                                    valign:"center"
+                                                            BoxLayout:
+                                                                size_hint_y:.8
+                                                                LabelRajdhaniAlignLeft:
+                                                                    font_name:"fonts/Rajdhani-Regular.ttf"
+                                                                    font_size: "14sp"
+                                                                    text:"UI Version   : EVOLION-UI v2.1 \nOS Version  : Linux OS 5.7.1\nCompany    : STP PUI-SKO ITS\nMade By     : Ray Rahman"
+                                                                    halign:"left"
+                                                                    valign:"top"
 
         #
                             ## STATUS BAR BOTTOM ##
