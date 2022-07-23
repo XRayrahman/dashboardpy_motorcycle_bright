@@ -122,7 +122,6 @@
     md_bg_color: 217/255,217/255,217/255,1
 
 <MyLayout>
-    screendget_mini:
     ScreenManager:
         id:screen_manager
         Screen:
@@ -509,7 +508,7 @@
                                                     BoxLayout:
                                                         orientation: "horizontal"
                                                         size_hint_y:.2
-                                                        spacing:"5dp"
+                                                        spacing:"7.5dp"
 
                                                         MDIconButtonOff:
                                                             user_font_size: "40sp"
@@ -574,6 +573,7 @@
                                                 canvas:
                                                     Color:
                                                         rgba:(23/255,28/255,35/255,1)
+                                                        # rgba:(180/255,180/255,180/255,1)
                                                     RoundedRectangle:
                                                         size: self.size
                                                         pos: self.pos
@@ -761,7 +761,7 @@
                                                     padding:"20dp"
                                                     BoxLayout:
                                                         size_hint_x:.6
-                                                        padding:"20dp"
+                                                        padding:"10dp"
                                                         Image:
                                                             source: 'assets/3d-etrail.png'
                                                             size: self.texture_size
@@ -810,14 +810,14 @@
                                                                 LabelRajdhaniAlignLeft:
                                                                     font_name:"fonts/Rajdhani-Regular.ttf"
                                                                     font_size: "14sp"
-                                                                    text:"UI Version   : EVOLION-UI v2.1 \nOS Version  : Linux OS 5.7.1\nCompany    : STP PUI-SKO ITS\nMade By     : Ray Rahman"
+                                                                    text:"UI Version   : EVOLION-UI v2.1 \nOS Version  : Debian OS 5.7.1\nCompany    : STP PUI-SKO ITS\nMade By     : Ray Rahman"
                                                                     halign:"left"
                                                                     valign:"top"
 
         #
                             ## STATUS BAR BOTTOM ##
                             BoxLayout:
-                                size_hint: 1, 0.25
+                                size_hint: 1, 0.2
                                 # padding:"25dp"
                                 spacing: 15
                                 orientation:"horizontal"
@@ -837,7 +837,7 @@
                                     BoxLayout:
                                         size_hint: 1,1
                                         orientation:"horizontal"
-                                        spacing:5
+                                        spacing:"7.5dp"
                                         pos_hint:{'center_x':.5}
                                         # padding:["10dp","0dp"]
                                         
@@ -964,48 +964,6 @@
                         font_size:"12sp"
                         pos_hint: {"center_x":0.27}
                         # color:(0,0,0,1)
-                        
-            # FloatLayout:
-            #     size_hint:1,1
-            #     PilLayout:
-            #         orientation: "horizontal"
-            #         pos_hint:{"top":.268,"x":.49}
-            #         size_hint: 0.2, 0.04
-            #         LabelRajdhani:
-            #             # id: label_bottom_ori
-            #             text:"DASHBOARD"
-            #             size_hint:1,1
-            #             font_size:"12sp"
-            #             pos_hint: {"center_x":0.5}
-            #             color:(0,0,0,1)
-
-            # FloatLayout:
-            #     size_hint:1,1
-            #     PilLayout:
-            #         orientation: "horizontal"
-            #         # pos_hint:{"top":.058,"x":.36}
-            #         pos_hint:{"top":.063,"x":.70}
-            #         Label_roboto_white:
-            #             # id: label_bottom_ori
-            #             text:"BATTERY"
-            #             size_hint:1,1
-            #             font_size:"12sp"
-            #             pos_hint: {"center_x":0.27}
-            #             # color:(0,0,0,1)
-
-
-            # FloatLayout:
-            #     size_hint:1,1
-            #     PilLayout:
-            #         orientation: "horizontal"
-            #         pos_hint:{"top":.058,"x":.74}
-            #         LabelRajdhani:
-            #             # id: label_bottom_ori
-            #             text:"VEHICLE"
-            #             size_hint:1,1
-            #             font_size:"12sp"
-            #             pos_hint: {"center_x":0.27}
-            #             color:(0,0,0,1)
 
             FloatLayout:
                 orientation: "horizontal"
