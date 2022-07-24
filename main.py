@@ -117,7 +117,7 @@ class Dashboard(MDApp):
             
         if (change_screen == "Map"):
             self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini2)
-            self.root.ids.screendget.switch_to(self.root.ids.mapMenu)
+            self.root.ids.channels.switch_to(self.root.ids.mapChannel)
             self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop2)
             self.root.ids.mode_label.text = "SPEED"
             self.root.ids.power_label.text = "SOC"
@@ -127,14 +127,14 @@ class Dashboard(MDApp):
         elif (change_screen == "Main"):
             if (self.screen_tomap == True):
                 self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini2)
-                self.root.ids.screendget.switch_to(self.root.ids.mapMenu)
+                self.root.ids.channels.switch_to(self.root.ids.mapChannel)
                 self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop2)
                 self.root.ids.mode_label.text = "SPEED"
                 self.root.ids.power_label.text = "SOC"
                 self.root.ids.card_label.text = "NORMAL"
             else:
                 self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini1)
-                self.root.ids.screendget.switch_to(self.root.ids.mainMenu)
+                self.root.ids.channels.switch_to(self.root.ids.mainChannel)
                 self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop1)
                 self.root.ids.mode_label.text = "MODE"
                 self.root.ids.power_label.text = "POWER"
@@ -146,27 +146,29 @@ class Dashboard(MDApp):
             self.root.ids.mode_label.text = "SPEED"
             self.root.ids.power_label.text = "SOC"
             self.root.ids.card_label.text = "APLIKASI"
-            self.root.ids.screendget.switch_to(self.root.ids.aboutMenu)
+            self.root.ids.channels.switch_to(self.root.ids.aboutChannel)
             # self.screen_tomap = False
     
     def battery_full(self,status):
-        if(status == "no"):
-            color_bar = self.red
-            color_low = self.red
-            color_full = self.off
-            Clock.schedule_once(self.blink_battery, 1.5)
-        elif(status == "yes"):
-            color_bar = self.green
-            color_low = self.off
-            color_full = self.green
-        else:
-            color_bar = self.cyan
-            color_low = self.off
-            color_full = self.off
-            
-        self.root.ids.battery_full.text_color = color_full
-        self.root.ids.battery_low.text_color = color_low
-        self.root.ids.SOC_bar.circle_color = color_bar
+        currentChannel = self.root.ids.channels.current
+        if currentChannel == "mainChannel":
+            if(status == "no"):
+                color_bar = self.red
+                color_low = self.red
+                color_full = self.off
+                Clock.schedule_once(self.blink_battery, 1.5)
+            elif(status == "yes"):
+                color_bar = self.green
+                color_low = self.off
+                color_full = self.green
+            else:
+                color_bar = self.cyan
+                color_low = self.off
+                color_full = self.off
+                
+            self.root.ids.battery_full.text_color = color_full
+            self.root.ids.battery_low.text_color = color_low
+            self.root.ids.SOC_bar.circle_color = color_bar
 
     def blink_battery(self, *args):
         self.root.ids.battery_low.text_color = self.off
@@ -214,9 +216,13 @@ class Dashboard(MDApp):
             self.battery_full("no")
 
         # SOC_value = round((float(strtegangan)/3)*100, 1)
-        self.root.ids.SOC_bar.current_percent = SOC_value
         self.SOC_value = str(SOC_value)+"%"
-        self.root.ids.SOC_ontop.text = self.SOC_value
+
+        currentChannel = self.root.ids.channels.current
+        if currentChannel == "mainChannel":
+            self.root.ids.SOC_bar.current_percent = SOC_value
+        elif currentChannel == "mapChannel" or "aboutChannel":
+            self.root.ids.SOC_ontop.text = self.SOC_value
 
         if valtegangan >= 84 and self.tegangan_sebelum < 84.00:
             self.popup = MDDialogDef(
@@ -269,16 +275,16 @@ class Dashboard(MDApp):
         #maksimal kecepatan
         if int(kecepatan) >= 121:
             kecepatan = 120
- 
-        # print(kecepatan)
-        self.root.ids.speed_bar.value = kecepatan
-        speeds = str(kecepatan)
-        self.root.ids.speed_bar_value.text = speeds
-        speed_value = "%s" %(speeds)
-        self.root.ids.SPEED_ontop.text = speed_value
-        # self.root.ids.speed_value.text = speed_value
 
-        # self.root.ids.progress_relative.current_percent = 20
+        speeds = str(kecepatan)
+
+        currentChannel = self.root.ids.channels.current
+        if currentChannel == "mainChannel":
+            self.root.ids.speed_bar.value = kecepatan
+            self.root.ids.speed_bar_value.text = speeds
+        if currentChannel == "mapChannel" or "aboutChannel":
+            speed_value = "%s" %(speeds)
+            self.root.ids.SPEED_ontop.text = speed_value
 
         # suhu
         try:
@@ -310,18 +316,26 @@ class Dashboard(MDApp):
         if self.sw_started:
             self.sw_seconds += nap
 
-        try:
-            opdata = open('database/odometer.json')
-            data = json.load(opdata)
-            odo = data['total_km']
-        
+        # try:
+        opdata = open('database/odometer.json')
+        data = json.load(opdata)
+        odo = data['total_km']
+
+        if odo != 0.00: 
             self.jarak_tempuh_total = float(odo)
             #jarak_tempuh = format(float(jarak_tempuh), ".0f")
             self.jarak_tempuh_total = self.jarak_tempuh_total + self.jarak_tempuh_total_lima
             # self.jarak_tempuh_total = self.jarak_tempuh_total + jarak_tempuh
-        
             self.total_odo = format(float(self.jarak_tempuh_total), ".3f")
-            self.root.ids.odometer.text = format(float(self.total_odo), ".3f")
+
+            currentChannel = self.root.ids.channels.current
+            if currentChannel == "mainChannel":
+                self.root.ids.odometer_onMain.text = format(float(self.total_odo), ".3f")
+            elif currentChannel == "mapChannel":
+                self.root.ids.odometer_onMap.text = format(float(self.total_odo), ".3f")
+            elif currentChannel == "aboutChannel":
+                self.root.ids.odometer_onAbout.text = format(float(self.total_odo), ".3f")
+                
             # except:
             odometer = {
                 "total_km": self.total_odo
@@ -329,21 +343,21 @@ class Dashboard(MDApp):
             # except:
                 # pass
                 
-            try:
-                if len(str(data)) != 0:
-                    file = "database/odometer.json"
-                    with open(file, 'w') as file_object: 
-                        json.dump(odometer, file_object, indent=4)
-                    # print(data_json)
-                else:
-                    print("Time out! Exit.\n")
-                    pass
-            except:
+            # try:
+            if len(str(data)) != 0:
+                file = "database/odometer.json"
+                with open(file, 'w') as file_object: 
+                    json.dump(odometer, file_object, indent=4)
+                # print(data_json)
+            else:
+                print("Time out! Exit.\n")
                 pass
+            # except:
+            #     pass
 
-        except Exception as e:
-            print('odo error :',str(e) )
-            # pass
+        # except Exception as e:
+        #     print('odo error :',str(e) )
+        #     pass
         # odo = "0.123"
         
         # try:
@@ -354,8 +368,23 @@ class Dashboard(MDApp):
 
         fv = open("database/vehicle_info.json")
         vehicleStatus = json.load(fv)
+        vehicleMode = vehicleStatus["mode"]
         isTurnLeft = vehicleStatus["turn_signal"][0]
         isTurnRight = vehicleStatus["turn_signal"][1]
+
+        currentChannel = self.root.ids.channels.current
+        if vehicleMode == "e":
+            
+            if currentChannel == "mainChannel":
+                self.root.ids.mode_onMain.text = "ECO"
+        elif vehicleMode == "n":
+            
+            if currentChannel == "mainChannel":
+                self.root.ids.mode_onMain.text = "NORMAL"
+        elif vehicleMode == "s":
+            
+            if currentChannel == "mainChannel":
+                self.root.ids.mode_onMain.text = "SPORT"
 
         if isTurnLeft == True:
             self.root.ids.turn_left.text_color = self.dark_blue
@@ -383,8 +412,9 @@ class Dashboard(MDApp):
             self.sw_seconds += nap
         #tambah detik = :%S
         #self.root.ids.SOC_value.text = "blok"
-        self.root.ids.time.text = strftime('[b]%H:%M  |[/b]')
-        self.root.ids.time_onmap.text = strftime('%H:%M')
+        self.root.ids.time_onMain.text = strftime('[b]%H:%M  |[/b]')
+        self.root.ids.time_onAbout.text = strftime('[b]%H:%M  |[/b]')
+        self.root.ids.time_onMap.text = strftime('%H:%M')
 
         if (self.root.ids.power_switch.active == False):
             os.system("killall python3")
@@ -432,24 +462,24 @@ class Dashboard(MDApp):
             pass
         else:
             if self.tuj != tujuanLat:
+                # try:
+                #fungsi tujuan
                 try:
-                    #fungsi tujuan
-                    try:
-                        self.root.ids.mapview.remove_widget(self.root.marker)
-                    except:
-                        pass
+                    self.root.ids.mapview.remove_widget(self.root.marker)
+                except:
+                    pass
 
-                    try:
-                        self.root.estimasi(asalLat,asalLng,tujuanLat,tujuanLng, self.SOC_value)
-                    except Exception as e:
-                        print('estimation error :',str(e) )
-
-                    self.screen_tomap = True
-                    self.root.center_maps()
-                    self.tuj = tujuanLat
-                    print("selesai")
+                try:
+                    self.root.estimasi(asalLat,asalLng,tujuanLat,tujuanLng, self.SOC_value)
                 except Exception as e:
-                    print('function error :',str(e) )
+                    print('estimation error :',str(e) )
+
+                self.screen_tomap = True
+                self.root.center_maps()
+                self.tuj = tujuanLat
+                print("selesai")
+                # except Exception as e:
+                #     print('function error :',str(e) )
             else:
                 pass
     
@@ -475,27 +505,27 @@ class MyLayout(Screen):
         self.ids.menubar_left.switch_to(self.ids.menubar_leftTop1)
  
     def move_maps(self):
-        #self.ids.screendget.remove_widget(self.ids.test1)
+        #self.ids.channels.remove_widget(self.ids.test1)
         
-        self.ids.screendget.switch_to(self.ids.test2)
+        self.ids.channels.switch_to(self.ids.mapChannel)
     
     def center_maps(self):
-        try:
-            mapview = self.ids.mapview
-            line = LineMapLayer(self.DestinationLat, self.DestinationLng, self.OriginLat, self.OriginLng)
-            mapview.add_layer(line, mode='scatter')
-            print(self.OriginLat)
-            print(self.OriginLng)
+        # try:
+        mapview = self.ids.mapview
+        line = LineMapLayer(self.DestinationLat, self.DestinationLng, self.OriginLat, self.OriginLng)
+        mapview.add_layer(line, mode='scatter')
+        print(self.OriginLat)
+        print(self.OriginLng)
 
-        except Exception as e:
-            print("error load map:", str(e))
+        # except Exception as e:
+        #     print("error load map:", str(e))
             
-        try:
-            mapview.center_on(float(self.OriginLat), float(self.OriginLng))
+        # try:
+        mapview.center_on(float(self.OriginLat), float(self.OriginLng))
             #marker1 = MapMarkerPopup(lat=lat, lon=lng) 
 
-        except Exception as e:
-            print("error center map:", str(e))
+        # except Exception as e:
+        #     print("error center map:", str(e))
 
         try:
             self.marker_origin = MapMarker(lat=self.OriginLat, lon=self.OriginLng, source="assets/marker-3-24.png")
@@ -512,10 +542,10 @@ class MyLayout(Screen):
         mapview.zoom = 14
         
     def move_speed(self):
-        self.ids.screendget.switch_to(self.ids.test1)
+        self.ids.channels.switch_to(self.ids.mainMenu)
 
     # def move_graph(self):
-    #     self.ids.screendget.switch_to(self.ids.test3, direction='left')
+    #     self.ids.channels.switch_to(self.ids.test3, direction='left')
     
     def connect(self, name, password):
         try:
@@ -606,40 +636,40 @@ class MyLayout(Screen):
         get_geocode_origin = requests.get('https://api.openrouteservice.org/geocode/reverse?api_key='+self.API_key+'&point.lon='+str(self.OriginLng)+'&point.lat='+str(self.OriginLat)+'&size=2', headers=headers)
         get_geocode_destination = requests.get('https://api.openrouteservice.org/geocode/reverse?api_key='+self.API_key+'&point.lon='+str(self.DestinationLng)+'&point.lat='+str(self.DestinationLat)+'&size=2', headers=headers)
 
-        try:
-            geocode_origin = json.loads(get_geocode_origin.text)
-            geocode_destination = json.loads(get_geocode_destination.text)
+        # try:
+        geocode_origin = json.loads(get_geocode_origin.text)
+        geocode_destination = json.loads(get_geocode_destination.text)
 
-            place_name_origin = geocode_origin["features"][0]["properties"]["label"]
-            place_name_origin = place_name_origin.split(",")
-            place_name_origin = place_name_origin[0:2]
-            place_name_origin = ','.join(place_name_origin)
+        place_name_origin = geocode_origin["features"][0]["properties"]["label"]
+        place_name_origin = place_name_origin.split(",")
+        place_name_origin = place_name_origin[0:2]
+        place_name_origin = ','.join(place_name_origin)
 
-            place_name_destination = geocode_destination["features"][0]["properties"]["label"]
-            place_name_destination = place_name_destination.split(",")
-            place_name_destination = place_name_destination[0:2]
-            place_name_destination = ','.join(place_name_destination)
+        place_name_destination = geocode_destination["features"][0]["properties"]["label"]
+        place_name_destination = place_name_destination.split(",")
+        place_name_destination = place_name_destination[0:2]
+        place_name_destination = ','.join(place_name_destination)
 
-            self.ids.lokasi_label.text = "ASAL        :  %s\nTUJUAN   :  %s" %(place_name_origin,place_name_destination)
-            # print(call.status_code, call.reason)
-            print(place_name_destination)
-        except Exception as e:
-            print('INVALID REQUEST DISTANCE :',str(e) )
+        self.ids.lokasi_label.text = "ASAL        :  %s\nTUJUAN   :  %s" %(place_name_origin,place_name_destination)
+        # print(call.status_code, call.reason)
+        print(place_name_destination)
+        # except Exception as e:
+        #     print('INVALID REQUEST DISTANCE :',str(e) )
 
-        try:
-            SOC_value = self.ids.SOC_bar.current_percent
-            print("SOC : ",SOC_value)
-            SOC = SOC_value
-            # SOC = SOC_value.replace("%","")
-            print(float(SOC))
-            dm = open('database/speedmode.json')
-            data_speedmode = json.load(dm)
-            eco = data_speedmode['mode']['eco']
-            normal = data_speedmode['mode']['normal']
-            sport = data_speedmode['mode']['sport']
-            speedmode = [eco, normal, sport]
-        except Exception as e:
-            print('INVALID STORING DATA :',str(e) )
+        # try:
+        SOC_value = self.ids.SOC_bar.current_percent
+        print("SOC : ",SOC_value)
+        SOC = SOC_value
+        # SOC = SOC_value.replace("%","")
+        print(float(SOC))
+        dm = open('database/speedmode.json')
+        data_speedmode = json.load(dm)
+        eco = data_speedmode['mode']['eco']
+        normal = data_speedmode['mode']['normal']
+        sport = data_speedmode['mode']['sport']
+        speedmode = [eco, normal, sport]
+        # except Exception as e:
+        #     print('INVALID STORING DATA :',str(e) )
         
 
         try:

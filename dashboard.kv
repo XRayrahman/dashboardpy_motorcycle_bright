@@ -232,7 +232,7 @@
                                             #     text_color: app.theme_cls.primary_color
                                             #     pos_hint:{"center_x": .1, "center_y": .5}
                                             LabelRajdhani:
-                                                id: mode_speed
+                                                id: mode_onMain
                                                 text: "NORMAL"
                                                 font_size: "24sp"
                                                 pos_hint: {"center_x": .5, "center_y": .5}
@@ -446,10 +446,10 @@
                                 spacing:"15dp"
                                 orientation: "vertical"
                                 ScreenManager:
-                                    id:screendget
+                                    id:channels
                                     Screen:
-                                        id:mainMenu
-                                        name: "screen1"
+                                        id:mainChannel
+                                        name: "mainChannel"
                                         BoxLayout:
                                             size_hint:1,1
                                             orientation: "horizontal"
@@ -556,7 +556,7 @@
                                                 size_hint: .18, .12
                                                 padding:"7dp"                            
                                                 LabelRajdhani:
-                                                    id: time
+                                                    id: time_onMain
                                                     font_size:"24sp"
                                                     text: '[b]00[/b]:00'
                                                     # color: 217/255,217/255,217/255,1
@@ -578,9 +578,9 @@
                                                         size: self.size
                                                         pos: self.pos
                                                 LabelRajdhaniLight:
-                                                    id:odometer
+                                                    id:odometer_onMain
                                                     # bold: True
-                                                    text:"00000"
+                                                    text:""
                                                     # font_name:"Roboto"
                                                     font_size:"24sp"
                                                     halign:"center"
@@ -636,8 +636,8 @@
 
 
                                     Screen:
-                                        id:mapMenu
-                                        name: "screen2"
+                                        id:mapChannel
+                                        name: "mapChannel"
 
                                         BoxLayout:
                                             size_hint:1,0.75
@@ -661,7 +661,7 @@
                                             size_hint:1,1
                                             CardLayout:
                                                 orientation: "vertical"
-                                                pos_hint:{"top":.971,"right":.971}
+                                                pos_hint:{"top":.971,"right":.975}
                                                 size_hint_y:.12
                                                 size_hint_x:.15
                                                 # size: lokasi_label.size
@@ -669,12 +669,36 @@
                                                 BoxLayout:
                                                     orientation:"vertical"
                                                     LabelRajdhani:
-                                                        id: time_onmap
+                                                        id: time_onMap
                                                         text:"time"
                                                         # size_hint:.5,1
                                                         size:self.size
                                                         font_size:"24sp"
                                                         halign:"left"
+                                                    
+                                        FloatLayout:
+                                            size_hint:1,1
+                                            CardLayout:
+                                                orientation: "vertical"
+                                                pos_hint:{"top":.971,"right":.804}
+                                                # pos_hint:{"top":.15,"x":.47}
+                                                size_hint: .18, .12
+                                                # bg_color:
+                                                padding:"7dp"
+                                                # canvas:
+                                                #     Color:
+                                                #         rgba:(23/255,28/255,35/255,1)
+                                                #         # rgba:(180/255,180/255,180/255,1)
+                                                #     RoundedRectangle:
+                                                #         size: self.size
+                                                #         pos: self.pos
+                                                LabelRajdhani:
+                                                    id:odometer_onMap
+                                                    # bold: True
+                                                    text:""
+                                                    # font_name:"Roboto"
+                                                    font_size:"24sp"
+                                                    halign:"center"
 
                                         FloatLayout:
                                             size_hint:1,1
@@ -748,8 +772,8 @@
                                                         pos_hint: {"top":0.77}
 
                                     Screen:
-                                        id:aboutMenu
-                                        name:"aboutScreen"
+                                        id:aboutChannel
+                                        name:"aboutChannel"
                                         BoxLayout:
                                             orientation:'vertical'
                                             size:root.height,root.width
@@ -759,25 +783,21 @@
                                                     size_hint: 1, 1
                                                     spacing:"25dp"
                                                     padding:"20dp"
-                                                    BoxLayout:
-                                                        size_hint_x:.6
-                                                        padding:"10dp"
-                                                        Image:
-                                                            source: 'assets/3d-etrail.png'
-                                                            size: self.texture_size
 
                                                     GridLayout:
                                                         rows:3
                                                         size_hint_x:.4
+                                                        padding:"10dp"
+                                                        spacing:"10dp"
 
                                                         BoxLayout:
-                                                            size_hint_y:.1
+                                                            size_hint_y:.2
 
                                                         GridLayout:
-                                                            size_hint_y:.5
+                                                            size_hint_y:.45
                                                             rows:2
-                                                            padding:"5dp"
-                                                            spacing:"5dp"
+                                                            # padding:"5dp"
+                                                            spacing:"10dp"
                                                             BoxLayout:
                                                                 size_hint:self.width,.2
                                                                 LabelRajdhaniAlignLeft:
@@ -790,15 +810,15 @@
                                                                 LabelRajdhaniAlignLeft:
                                                                     font_name:"fonts/Rajdhani-Regular.ttf"
                                                                     font_size: "14sp"
-                                                                    text:"VEHICLE ID      : M01 \nMax. Voltage   : 84 V\nMax. Capacity  : 3 KWH\nMax. Torque     : 25 Nm"
+                                                                    text:"VEHICLE ID      : M-01 \nMax. Voltage   : 84 V\nMax. Capacity  : 3 kWh\nTotal Torque    : 25 Nm\nMotor             : BLDC 5 kW\nWeight           : 105 kg"
                                                                     halign:"left"
                                                                     valign:"top"
 
                                                         GridLayout:
-                                                            size_hint_y:.4
+                                                            size_hint_y:.35
                                                             rows:2
-                                                            padding:"5dp"
-                                                            spacing:"5dp"
+                                                            # padding:"5dp"
+                                                            spacing:"10dp"
                                                             BoxLayout:
                                                                 size_hint:self.width,.2
                                                                 LabelRajdhaniAlignLeft:
@@ -810,9 +830,60 @@
                                                                 LabelRajdhaniAlignLeft:
                                                                     font_name:"fonts/Rajdhani-Regular.ttf"
                                                                     font_size: "14sp"
-                                                                    text:"UI Version   : EVOLION-UI v2.1 \nOS Version  : Debian OS 5.7.1\nCompany    : STP PUI-SKO ITS\nMade By     : Ray Rahman"
+                                                                    text:"UI Version   : EVOLION-UI v2.1 \nOS Version  : Debian OS 5.16.17\nCompany    : STP PUI-SKO ITS\nMade By     : Ray Rahman"
                                                                     halign:"left"
                                                                     valign:"top"
+                                                    GridLayout:
+                                                        rows:2
+                                                        size_hint_x:.6
+                                                        BoxLayout:
+                                                            size_hint_y:.2
+                                                        BoxLayout:
+                                                            size_hint_y:.8
+                                                            padding:"5dp"
+                                                            Image:
+                                                                source: 'assets/3d-etrail.png'
+                                                                size: self.texture_size
+                                        
+                                        FloatLayout:
+                                            size_hint:1,1
+                                            BoxLayout:
+                                                orientation: "vertical"
+                                                # pos_hint:{"top":1,"x":.83}
+                                                pos_hint: {"top": .93,"x": 0.03}
+                                                size_hint: .18, .12
+                                                padding:"7dp"                            
+                                                LabelRajdhani:
+                                                    id: time_onAbout
+                                                    font_size:"24sp"
+                                                    text: '[b]00[/b]:00'
+                                                    # color: 217/255,217/255,217/255,1
+                                                    
+                                        FloatLayout:
+                                            size_hint:1,1
+                                            CardLayout:
+                                                orientation: "vertical"
+                                                pos_hint:{"top":.93,"x":.20}
+                                                # pos_hint:{"top":.15,"x":.47}
+                                                size_hint: .18, .12
+                                                # bg_color:
+                                                padding:"7dp"
+                                                canvas:
+                                                    Color:
+                                                        rgba:(23/255,28/255,35/255,1)
+                                                        # rgba:(180/255,180/255,180/255,1)
+                                                    RoundedRectangle:
+                                                        size: self.size
+                                                        pos: self.pos
+                                                LabelRajdhaniLight:
+                                                    id:odometer_onAbout
+                                                    # bold: True
+                                                    text:""
+                                                    # font_name:"Roboto"
+                                                    font_size:"24sp"
+                                                    halign:"center"
+                                                    # color: 146/255,218/255,241/255,1
+                                                    # color: 1,1,1,1
 
         #
                             ## STATUS BAR BOTTOM ##
