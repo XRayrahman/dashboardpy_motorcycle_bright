@@ -181,9 +181,9 @@ class Dashboard(MDApp):
             self.sw_seconds += nap
 
         try:
-            dt = open('database/tegangan.json')
+            dt = open('database/voltage.json')
             data_tegangan = json.load(dt)
-            strtegangan = data_tegangan['tegangan']
+            strtegangan = data_tegangan['voltage']
         except:
             strtegangan = "0.00"
 
@@ -263,9 +263,9 @@ class Dashboard(MDApp):
 
         #kecepatan
         try:    
-            dk = open('database/kecepatan.json')
+            dk = open('database/speed.json')
             data_kecepatan = json.load(dk)
-            self.kecepatan = data_kecepatan['kecepatan']
+            self.kecepatan = data_kecepatan['speed']
         except:
             self.kecepatan = "0.00"
 
@@ -284,13 +284,13 @@ class Dashboard(MDApp):
             self.root.ids.speed_bar_value.text = speeds
         if currentChannel == "mapChannel" or "aboutChannel":
             speed_value = "%s" %(speeds)
-            self.root.ids.SPEED_ontop.text = speed_value
+            self.root.ids.speed_ontop.text = speed_value
 
         # suhu
         try:
-            ds = open('database/suhu.json')
+            ds = open('database/temperature.json')
             data_suhu = json.load(ds)
-            strsuhu = data_suhu['suhu']
+            strsuhu = data_suhu['temperature']
         except:
             strsuhu = "0"
 
@@ -452,10 +452,10 @@ class Dashboard(MDApp):
         
         fe = open('database/estimation.json')
         estimationFile = json.load(fe)
-        tujuanLat = estimationFile['address']['tujuan']['latitude']
-        tujuanLng = estimationFile['address']['tujuan']['longitude']
-        asalLat = estimationFile['address']['asal']['latitude']
-        asalLng = estimationFile['address']['asal']['longitude']
+        asalLat = estimationFile['address']['origin']['latitude']
+        asalLng = estimationFile['address']['origin']['longitude']
+        tujuanLat = estimationFile['address']['destination']['latitude']
+        tujuanLng = estimationFile['address']['destination']['longitude']
 
 
         if len(tujuanLat) == 0:
@@ -938,8 +938,3 @@ def reset():
 reset()
 Dashboard().run()
 os.system("killall python3")
-
-##ifi = Popen("python3 testing.py", shell=True);
-#stdout = blu.communicate()
-#blu_val = blu.stdout.read()
-#print(blu_val)

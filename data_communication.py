@@ -51,50 +51,50 @@ def store_data_arduino(ser):
             if len(str(data)) != 0:
                 # print(data)
                 try:
-                    tegangan=data['t']
-                    data_json_tegangan = {
-                        "tegangan": tegangan
+                    voltage=data['t']
+                    data_json_voltage = {
+                        "voltage": voltage
                     }
 
-                    path_tegangan = "database/tegangan.json"
-                    store_data_json(path_tegangan, data_json_tegangan)
-                    # tegangan_sebelumnya = tegangan
+                    path_voltage = "database/voltage.json"
+                    store_data_json(path_voltage, data_json_voltage)
+                    # voltage_sebelumnya = voltage
                 except Exception as e:
-                    print('tegangan error :',str(e) )
-                    # tegangan = "0.00"
+                    print('voltage error :',str(e) )
+                    # voltage = "0.00"
 
                 try:
-                    kecepatan=data['r']
+                    speed=data['r']
                 
-                    data_json_kecepatan = {
-                        "kecepatan": kecepatan
+                    data_json_speed = {
+                        "speed": speed
                     }
                         
-                    path_kecepatan = "database/kecepatan.json"
-                    store_data_json(path_kecepatan, data_json_kecepatan)
-                    # kecepatan_sebelumnya = kecepatan
+                    path_speed = "database/speed.json"
+                    store_data_json(path_speed, data_json_speed)
+                    # speed_sebelumnya = speed
                 except Exception as e:
-                    # kecepatan = "0.00"
-                    print("kecepatan error : "+str(e))
+                    # speed = "0.00"
+                    print("speed error : "+str(e))
 
                 try:
-                    suhu=data['s']
-                    data_json_suhu = {
-                        "suhu": suhu
+                    temperature=data['s']
+                    data_json_temperature = {
+                        "temperature": temperature
                     }
 
-                    path_suhu = "database/suhu.json"
-                    store_data_json(path_suhu, data_json_suhu)
-                    # tegangan_sebelumnya = tegangan
+                    path_temperature = "database/temperature.json"
+                    store_data_json(path_temperature, data_json_temperature)
                 except Exception as e:
-                    print('suhu error :',str(e) )
-                    # tegangan = "0.00"
+                    print('temperature error :',str(e) )
 
                 try:
                     turn_left= data['turn'][0]
                     turn_right= data['turn'][1]
+                    mode_speed = data['mode']
 
-                    data_json_turn = {
+                    data_json_vinfo = {
+                        "mode":mode_speed,
                         "turn_signal":{
                             "right":turn_left,
                             "left":turn_right
@@ -102,7 +102,7 @@ def store_data_arduino(ser):
                     }
                         
                     path_turn = "database/vehicle_info.json"
-                    store_data_json(path_turn, data_json_turn)
+                    store_data_json(path_turn, data_json_vinfo)
                 except:
                     turn_left=False
                     turn_right=False
@@ -165,11 +165,11 @@ def store_data_arduino(ser):
 
                         data_json_estimation = {
                             "address":{
-                                "asal":{
+                                "origin":{
                                     "latitude":ori_latitude,
                                     "longitude":ori_longitude
                                 },
-                                "tujuan":{
+                                "destination":{
                                     "latitude":dest_latitude,
                                     "longitude":dest_longitude
                                 }
