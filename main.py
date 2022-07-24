@@ -599,8 +599,8 @@ class MyLayout(Screen):
         #path_to_kv_file = "test.kv"
         #gmaps = googlemaps.Client(key=API_key)
         
-        scaler = joblib.load('std_rev1.bin')
-        model = joblib.load('estimasi_rev1.pkl')
+        scaler = joblib.load('estimation/std_rev1.bin')
+        model = joblib.load('estimation/estimasi_rev1.pkl')
 
         self.DestinationLat = destinationLat
         self.DestinationLng = destinationLng
