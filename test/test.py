@@ -128,12 +128,35 @@ def test_channel(delay):
     path_connection = "database/connection.json"
     store_data_json(path_connection, data_json_connection)
 
+def status_high():
+    opdata = open('database/speed.json')
+    data = json.load(opdata)
+    speed = data['speed']
+
+    if speed == "40.00":
+        print(f"speed component ... {bcolors.OKGREEN}SUCCESS{bcolors.OKGREEN}")
+    else:
+        print(f"speed component ... {bcolors.FAIL}FAILED{bcolors.FAIL}")
+
+
 def main():
     # time.sleep(2)
     test_low(0)
     test_high(2)
+    status_high()
     test_channel(5)
     test_low(3)
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 
 if __name__ == '__main__':
