@@ -608,6 +608,23 @@
                                             size_hint:1,1
                                             BoxLayout:
                                                 orientation: "vertical"
+                                                pos_hint:{"top":.21,"x":.809}
+                                                size_hint: .25, .25
+                                                padding:"7dp"
+                                                LabelRajdhaniCenter:
+                                                    id:vehicle_id
+                                                    # bold: True
+                                                    text:"01"
+                                                    # font_name:"assets/fonts/Orbitron-Bold.ttf"
+                                                    font_size:"44sp"
+                                                    halign:"center"
+                                                    # color:217/255,217/255,217/255,1
+                                                    color: 6/255,17/255,21/255,1
+
+                                        FloatLayout:
+                                            size_hint:1,1
+                                            BoxLayout:
+                                                orientation: "vertical"
                                                 pos_hint:{"top":.26,"x":.47}
                                                 size_hint: .25, .25
                                                 padding:"7dp"
@@ -810,7 +827,7 @@
                                                                 LabelRajdhaniAlignLeft:
                                                                     font_name:"assets/fonts/Rajdhani-Regular.ttf"
                                                                     font_size: "14sp"
-                                                                    text:"VEHICLE ID      : M-01 \nMax. Voltage   : 84 V\nMax. Capacity  : 3 kWh\nTotal Torque    : 25 Nm\nMotor             : BLDC 5 kW\nWeight           : 105 kg"
+                                                                    text:"VEHICLE ID      : M-01 \nEDITION           : 01\nMax. Voltage   : 84 V\nMax. Capacity  : 3 kWh\nTotal Torque    : 25 Nm\nMotor             : BLDC 5 kW\nWeight           : 105 kg"
                                                                     halign:"left"
                                                                     valign:"top"
 
@@ -844,6 +861,30 @@
                                                             Image:
                                                                 source: 'assets/3d-etrail.png'
                                                                 size: self.texture_size
+                                        
+                                        FloatLayout:
+                                            size_hint:1,1
+                                            BoxLayout:
+                                                orientation: "vertical"
+                                                pos_hint:{"top":.965,"x":.83}
+                                                # pos_hint:{"top":.15,"x":.47}
+                                                size_hint: .145, .145
+                                                # bg_color:
+                                                Image:
+                                                    source: 'assets/logo-ITS.png'
+                                                    size: self.texture_size
+                                        
+                                        FloatLayout:
+                                            size_hint:1,1
+                                            BoxLayout:
+                                                orientation: "vertical"
+                                                pos_hint:{"top":.975,"x":.645}
+                                                # pos_hint:{"top":.15,"x":.47}
+                                                size_hint: .2, .2
+                                                # bg_color:
+                                                Image:
+                                                    source: 'assets/logo-corporate.jpg'
+                                                    size: self.texture_size
                                         
                                         FloatLayout:
                                             size_hint:1,1
