@@ -1,4 +1,4 @@
-# gesits-system
+# dashboardpy motorcycle
 Tampilan dashboard digital untuk kendaraan listrik berbasis python dan kivy
 
 ## How to Run
@@ -37,5 +37,5 @@ Tampilan dashboard digital untuk kendaraan listrik berbasis python dan kivy
 RAIZEN - Ray Rahman
 
 ## CORPORATE
-EVOLION Technology
+EVOLION Technology |
 STP - Institut Teknologi Sepuluh Nopember
