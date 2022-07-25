@@ -97,7 +97,7 @@ class Dashboard(MDApp):
 
     def asyncProgram(self,dt):
         # testing script
-        # Popen("python3 test/test.py", shell=True);
+        #Popen("python3 test/test.py", shell=True);
 
         # arduino communication script
         Popen("python3 data_communication.py", shell=True);
