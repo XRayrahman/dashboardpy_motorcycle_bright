@@ -49,6 +49,7 @@ class Dashboard(MDApp):
     #global screen_manager
     screen_manager = ScreenManager()
     jarak_tempuh_total = 0
+    kecepatan_sebelum = 0
 
     # theme-custom
     red = 223/255,91/255,97/255,1
@@ -74,7 +75,6 @@ class Dashboard(MDApp):
         self.root.ids.power_switch.active=True
         self.jarak_sebelumnya = 0
         self.screen_tomap = False
-        signal = False
 
         # SOC = 2
         # self.SOC = SOC
@@ -97,7 +97,7 @@ class Dashboard(MDApp):
 
     def asyncProgram(self,dt):
         # testing script
-        #Popen("python3 test/test.py", shell=True);
+        # Popen("python3 test/test.py", shell=True)
 
         # arduino communication script
         Popen("python3 data_communication.py", shell=True);
@@ -332,6 +332,7 @@ class Dashboard(MDApp):
         #odo = "0.0"
         if self.sw_started:
             self.sw_seconds += nap  
+
         jarak_tempuh = (float(self.kecepatan)/6)*188.4*0.00001 # odometer e-trail
         self.jarak_tempuh_total_lima = jarak_tempuh + self.jarak_sebelumnya
         self.jarak_sebelumnya = jarak_tempuh
@@ -342,49 +343,49 @@ class Dashboard(MDApp):
         if self.sw_started:
             self.sw_seconds += nap
 
-        # try:
-        opdata = open('database/odometer.json')
-        data = json.load(opdata)
-        odo = data['total_km']
+        try:
+            opdata = open('database/odometer.json')
+            data = json.load(opdata)
+            odo = data['total_km']
 
-        if odo != 0.00: 
-            self.jarak_tempuh_total = float(odo)
-            #jarak_tempuh = format(float(jarak_tempuh), ".0f")
-            self.jarak_tempuh_total = self.jarak_tempuh_total + self.jarak_tempuh_total_lima
-            # self.jarak_tempuh_total = self.jarak_tempuh_total + jarak_tempuh
-            self.total_odo = format(float(self.jarak_tempuh_total), ".3f")
+            if odo != 0.00: 
+                self.jarak_tempuh_total = float(odo)
+                #jarak_tempuh = format(float(jarak_tempuh), ".0f")
+                self.jarak_tempuh_total = self.jarak_tempuh_total + self.jarak_tempuh_total_lima
+                # self.jarak_tempuh_total = self.jarak_tempuh_total + jarak_tempuh
+                self.total_odo = format(float(self.jarak_tempuh_total), ".3f")
 
-            currentChannel = self.root.ids.channels.current
-            if currentChannel == "mainChannel":
-                self.root.ids.odometer_onMain.text = format(float(self.total_odo), ".3f")
-            elif currentChannel == "mapChannel":
-                self.root.ids.odometer_onMap.text = format(float(self.total_odo), ".3f")
-            elif currentChannel == "aboutChannel":
-                self.root.ids.odometer_onAbout.text = format(float(self.total_odo), ".3f")
-                
-            # except:
-            odometer = {
-                "total_km": self.total_odo
-            }
-            # except:
-                # pass
-                
-            # try:
-            if len(str(data)) != 0:
-                file = "database/odometer.json"
-                with open(file, 'w') as file_object: 
-                    json.dump(odometer, file_object, indent=4)
-                # print(data_json)
-            else:
-                print("Time out! Exit.\n")
-                pass
-            # except:
-            #     pass
+                odometer = {
+                    "total_km": self.total_odo
+                }
+                delta_speed = float(self.kecepatan) - self.kecepatan_sebelum
 
-        # except Exception as e:
-        #     print('odo error :',str(e) )
-        #     pass
+                currentChannel = self.root.ids.channels.current
+                if currentChannel == "mainChannel":
+                    self.root.ids.odometer_onMain.text = format(float(odo), ".3f")
+                elif currentChannel == "mapChannel":
+                    self.root.ids.odometer_onMap.text = format(float(odo), ".3f")
+                elif currentChannel == "aboutChannel":
+                    self.root.ids.odometer_onAbout.text = format(float(odo), ".3f")
+                    
+                try:
+                    if len(str(data)) != 0 and float(self.kecepatan) > 10.0 and delta_speed < 20:
+                        file = "database/odometer.json"
+                        with open(file, 'w') as file_object: 
+                            json.dump(odometer, file_object, indent=4)
+                    # print(data_json)
+                # else:
+                #     print("Time out! Exit.\n")
+                #     pass
+                except:
+                    pass
+            self.jarak_sebelumnya = 0.0
+
+        except Exception as e:
+            print('odo error :',str(e) )
+            pass
         # odo = "0.123"
+        self.kecepatan_sebelum = float(self.kecepatan)
         
         # try:
         
@@ -949,18 +950,18 @@ _displayed = {
     180: u'\u03a0', 210: u'7\u03a0/6', 240: u'4\u03a0/3'
     }
     
-def reset():
-    import kivy.core.window as window
-    from kivy.base import EventLoop
-    if not EventLoop.event_listeners:
-        from kivy.cache import Cache
-        window.Window = window.core_select_lib('window', window.window_impl, True)
-        Cache.print_usage()
-        for cat in Cache._categories:
-            Cache._objects[cat] = {}   
+# def reset():
+#     import kivy.core.window as window
+#     from kivy.base import EventLoop
+#     if not EventLoop.event_listeners:
+#         from kivy.cache import Cache
+#         window.Window = window.core_select_lib('window', window.window_impl, True)
+#         Cache.print_usage()
+#         for cat in Cache._categories:
+#             Cache._objects[cat] = {}   
 
 #MyLayout.estimasi.has_been_called = False
 # lay = MyLayout()
-reset()
+# reset()
 Dashboard().run()
 os.system("killall python3")
