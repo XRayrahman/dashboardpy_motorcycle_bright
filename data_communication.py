@@ -95,10 +95,9 @@ def store_data_arduino(ser):
 
                     data_json_vinfo = {
                         "mode":mode_speed,
-                        "turn_signal":{
-                            "right":turn_left,
-                            "left":turn_right
-                        }
+                        "turn_signal":[
+                            turn_left,turn_right
+                        ]
                     }
                         
                     path_turn = "database/vehicle_info.json"

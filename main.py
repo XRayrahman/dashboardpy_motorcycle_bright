@@ -86,7 +86,7 @@ class Dashboard(MDApp):
         # SOC_value = str(SOC_value)+"%"
 
         self.sub1 = Clock.schedule_interval(self.update_status,                     5) # schedule_interval(program, interval/waktu dijalankan)
-        self.sub2 = Clock.schedule_interval(self.update_data_suhu_kecepatan,        1)
+        self.sub2 = Clock.schedule_interval(self.update_data_suhu_kecepatan,        0.005)
         self.sub2 = Clock.schedule_interval(self.update_data_soc_tegangan,          3)
         self.sub3 = Clock.schedule_interval(self.odometer,                          1)
         self.sub4 = Clock.schedule_interval(self.odometer_submit,                   3)
@@ -96,8 +96,11 @@ class Dashboard(MDApp):
 
 
     def asyncProgram(self,dt):
+        # testing script
+        Popen("python3 test/test.py", shell=True);
+
+        # arduino communication script
         Popen("python3 data_communication.py", shell=True);
-        # Popen("python rfcomm_server.py", shell=True);
 
     def changeScreen(self,dt):
         self.root.ids.screen_manager.transition = RiseInTransition()
@@ -252,6 +255,22 @@ class Dashboard(MDApp):
         else: 
             self.delay_notification += 1
         self.tegangan_sebelum = floattegangan
+
+    def suhu_animate(self,string_suhu):
+        float_suhu = float(string_suhu)
+        int_suhu = int(format(float_suhu, ".0f"))
+        text = self.root.ids.suhu_value_text.text
+        space = " "
+        value_suhu = text.split(space,1)[0]
+        int_suhu_sebelum = int(value_suhu)
+        if int_suhu > int_suhu_sebelum:
+            int_suhu_sebelum += 1
+            text_suhu = str(int_suhu_sebelum)+" °C"
+            self.root.ids.suhu_value_text.text = text_suhu
+        elif int_suhu < int_suhu_sebelum:
+            int_suhu_sebelum -= 1
+            text_suhu = str(int_suhu_sebelum)+" °C"
+            self.root.ids.suhu_value_text.text = text_suhu
         
 
     #update data suhu dan kecepatan
@@ -280,9 +299,21 @@ class Dashboard(MDApp):
 
         currentChannel = self.root.ids.channels.current
         if currentChannel == "mainChannel":
-            self.root.ids.speed_bar.value = kecepatan
-            self.root.ids.speed_bar_value.text = speeds
-        if currentChannel == "mapChannel" or "aboutChannel":
+            intkec = int(kecepatan)
+            kecepatan_sebelum = self.root.ids.speed_bar.value
+            if intkec > kecepatan_sebelum:
+                kecepatan_sebelum += 1
+                self.root.ids.speed_bar.value = kecepatan_sebelum
+                self.root.ids.speed_bar_value.text = str(kecepatan_sebelum)
+            elif intkec < kecepatan_sebelum:
+                kecepatan_sebelum -= 1
+                self.root.ids.speed_bar.value = kecepatan_sebelum
+                self.root.ids.speed_bar_value.text = str(kecepatan_sebelum)
+                # for i in range (kecepatan_sebelum,intkec):
+                #     self.root.ids.speed_bar.value = i
+                    # time.sleep(0.2)
+            # self.root.ids.speed_bar_value.text = speeds
+        elif currentChannel == "mapChannel" or "aboutChannel":
             speed_value = "%s" %(speeds)
             self.root.ids.speed_ontop.text = speed_value
 
@@ -293,12 +324,7 @@ class Dashboard(MDApp):
             strsuhu = data_suhu['temperature']
         except:
             strsuhu = "0"
-
-        floatsuhu = float(strsuhu)
-        intsuhu = format(floatsuhu, ".0f")
-        suhu_text = str(intsuhu) +" °C"
-        # SOC_text = "TEGANGAN : "+ strtegangan +" V"
-        self.root.ids.suhu_value_text.text = suhu_text
+        self.suhu_animate(strsuhu)
 
 
     def odometer(self,nap):

@@ -1,6 +1,7 @@
 {
     "mode": "n",
-    "turn_signal":[
-        false,false
+    "turn_signal": [
+        false,
+        false
     ]
 }
