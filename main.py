@@ -339,53 +339,105 @@ class Dashboard(MDApp):
 
     def odometer_submit(self,nap):
         # tegangan = 0.00
-        #odo = "0.0"
+        odo = "0.0"
         if self.sw_started:
             self.sw_seconds += nap
 
-        try:
-            opdata = open('database/odometer.json')
-            data = json.load(opdata)
-            odo = data['total_km']
+        # try:
+        opdata = open('database/odometer.json')
+        data = json.load(opdata)
+        odo = data['total_km']
+        # except Exception as e:
+            # print('odo error :',str(e) )
+        
+        if len(str(data)) != 0:
+            self.jarak_tempuh_total = float(odo)
+            #jarak_tempuh = format(float(jarak_tempuh), ".0f")
+            self.jarak_tempuh_total = self.jarak_tempuh_total + self.jarak_tempuh_total_lima
+            # self.jarak_tempuh_total = self.jarak_tempuh_total + jarak_tempuh
+        
+            self.total_odo = format(float(self.jarak_tempuh_total), ".3f")
+            # self.root.ids.odometer.text = format(float(self.total_odo), ".3f")
+            # except:
+            odometer = {
+                "total_km": self.total_odo
+            }
+            # except:
+                # pass
+                
+            # try:
+            if len(str(data)) != 0:
+                file = "database/odometer.json"
+                with open(file, 'w') as file_object: 
+                    json.dump(odometer, file_object, indent=4)
+                # print(data_json)
+            else:
+                print("Time out! Exit.\n")
+                pass
 
-            if odo != 0.00: 
-                self.jarak_tempuh_total = float(odo)
-                #jarak_tempuh = format(float(jarak_tempuh), ".0f")
-                self.jarak_tempuh_total = self.jarak_tempuh_total + self.jarak_tempuh_total_lima
-                # self.jarak_tempuh_total = self.jarak_tempuh_total + jarak_tempuh
-                self.total_odo = format(float(self.jarak_tempuh_total), ".3f")
-
-                odometer = {
-                    "total_km": self.total_odo
-                }
-                delta_speed = float(self.kecepatan) - self.kecepatan_sebelum
-
-                currentChannel = self.root.ids.channels.current
-                if currentChannel == "mainChannel":
-                    self.root.ids.odometer_onMain.text = format(float(odo), ".3f")
-                elif currentChannel == "mapChannel":
-                    self.root.ids.odometer_onMap.text = format(float(odo), ".3f")
-                elif currentChannel == "aboutChannel":
-                    self.root.ids.odometer_onAbout.text = format(float(odo), ".3f")
-                    
-                try:
-                    if len(str(data)) != 0 and float(self.kecepatan) > 10.0 and delta_speed < 20:
-                        file = "database/odometer.json"
-                        with open(file, 'w') as file_object: 
-                            json.dump(odometer, file_object, indent=4)
-                    # print(data_json)
-                # else:
-                #     print("Time out! Exit.\n")
-                #     pass
-                except:
-                    pass
-            self.jarak_sebelumnya = 0.0
-
-        except Exception as e:
-            print('odo error :',str(e) )
-            pass
+            currentChannel = self.root.ids.channels.current
+            if currentChannel == "mainChannel":
+                self.root.ids.odometer_onMain.text = format(float(odo), ".3f")
+            elif currentChannel == "mapChannel":
+                self.root.ids.odometer_onMap.text = format(float(odo), ".3f")
+            elif currentChannel == "aboutChannel":
+                self.root.ids.odometer_onAbout.text = format(float(odo), ".3f")
+            # except:
+            #     pass
+            # pass
         # odo = "0.123"
-        self.kecepatan_sebelum = float(self.kecepatan)
+        
+        # try:
+
+    # def odometer_submit(self,nap):
+    #     # tegangan = 0.00
+    #     #odo = "0.0"
+    #     if self.sw_started:
+    #         self.sw_seconds += nap
+
+    #     try:
+    #         opdata = open('database/odometer.json')
+    #         data = json.load(opdata)
+    #         odo = data['total_km']
+
+    #         if odo != 0.00: 
+    #             self.jarak_tempuh_total = float(odo)
+    #             #jarak_tempuh = format(float(jarak_tempuh), ".0f")
+    #             self.jarak_tempuh_total = self.jarak_tempuh_total + self.jarak_tempuh_total_lima
+    #             # self.jarak_tempuh_total = self.jarak_tempuh_total + jarak_tempuh
+    #             self.total_odo = format(float(self.jarak_tempuh_total), ".3f")
+
+    #             odometer = {
+    #                 "total_km": self.total_odo
+    #             }
+    #             delta_speed = float(self.kecepatan) - self.kecepatan_sebelum
+
+    #             currentChannel = self.root.ids.channels.current
+    #             if currentChannel == "mainChannel":
+    #                 self.root.ids.odometer_onMain.text = format(float(odo), ".3f")
+    #             elif currentChannel == "mapChannel":
+    #                 self.root.ids.odometer_onMap.text = format(float(odo), ".3f")
+    #             elif currentChannel == "aboutChannel":
+    #                 self.root.ids.odometer_onAbout.text = format(float(odo), ".3f")
+                    
+    #             try:
+    #                 if len(str(data)) != 0 and float(self.kecepatan) > 10.0 and delta_speed < 20:
+    #                     file = "database/odometer.json"
+    #                     with open(file, 'w') as file_object: 
+    #                         json.dump(odometer, file_object, indent=4)
+    #                 # print(data_json)
+    #             # else:
+    #             #     print("Time out! Exit.\n")
+    #             #     pass
+    #             except:
+    #                 pass
+    #         self.jarak_sebelumnya = 0.0
+
+    #     except Exception as e:
+    #         print('odo error :',str(e) )
+    #         pass
+    #     # odo = "0.123"
+    #     self.kecepatan_sebelum = float(self.kecepatan)
         
         # try:
         
