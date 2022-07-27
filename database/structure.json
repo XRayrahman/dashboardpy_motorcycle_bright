@@ -1,0 +1,28 @@
+{
+    "t":"70.00", 
+    "r":"4.50",
+    "s":"30.00",
+    "mode":"n",
+    "turn":[
+        false,false
+    ],
+    "total_km":"1.430",
+    "wifi":{
+        "id":"ITS-WIFI",
+        "pass":"itssurabaya"
+    },
+    "location":{
+        "origin":{
+            "lat":"-7.2131242342",
+            "lng":"12.1241251231"
+        },
+        "destination":{
+            "lat":"-7.4623413413",
+            "lng":"12.4124112231"
+        }
+    },  
+    "restart":false,
+    "isRun":false
+}
+
+
