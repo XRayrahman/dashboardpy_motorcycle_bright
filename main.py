@@ -197,7 +197,7 @@ class Dashboard(MDApp):
         #     int_suhu_sebelum -= 1
         #     text_suhu = str(int_suhu_sebelum)+" °C"
         #     self.root.ids.suhu_value_text.text = text_suhu
-        if int_suhu >= 80:
+        if int_suhu >= 60:
             self.root.ids.suhu_value_text.color = self.red
             self.root.ids.temp_high.text_color = self.red
             Clock.schedule_once(self.blink_temp, 1.5)
