@@ -399,15 +399,8 @@ class Dashboard(MDApp):
             elif currentChannel == "aboutChannel":
                 self.root.ids.odometer_onAbout.text = format(float(odo), ".3f")
 
+    # percobaan dengan mendeteksi state dimana delta kecepatan sekarang dan kecepatan sebelumnya sangat besar
     #             delta_speed = float(self.kecepatan) - self.kecepatan_sebelum
-
-    #             currentChannel = self.root.ids.channels.current
-    #             if currentChannel == "mainChannel":
-    #                 self.root.ids.odometer_onMain.text = format(float(odo), ".3f")
-    #             elif currentChannel == "mapChannel":
-    #                 self.root.ids.odometer_onMap.text = format(float(odo), ".3f")
-    #             elif currentChannel == "aboutChannel":
-    #                 self.root.ids.odometer_onAbout.text = format(float(odo), ".3f")
                     
     #             try:
     #                 if len(str(datadb)) != 0 and float(self.kecepatan) > 10.0 and delta_speed < 20:

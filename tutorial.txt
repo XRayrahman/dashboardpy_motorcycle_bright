@@ -40,6 +40,7 @@ $ python3 main.py
 
 7.a. Agar program dapat berjalan otomatis saat booting, tambahkan ke script auto-start .desktop
 $ cd path/to/dashboardpy_motorcycle_bright
+$ cd autostart-files/
 $ cp dashboard.sh ~
 $ cd 
 $ chmod +x dasboard.sh
@@ -75,7 +76,7 @@ $ sudo chattr +i /boot/orangepiEnv.txt
 $ sudo rm orangepi_first_run.txt.template
 
 > invert display dan sesuaikan resolusi layar jika diperlukan 
-GUI : settings -> display
+- hapus comment pada dashboard.sh yang berawalan dengan sudo xrandr
 
 > jangan lupa ganti wallpaper desktop dengan file wallpaper yang telah disediakan
 - dashboardpy_motorcycle_bright/assets/wallpaper.png
