@@ -1,4 +1,4 @@
-from curses import baudrate
+# from curses import baudrate
 # from msilib.schema import Error
 import os, sys
 import serial
@@ -31,82 +31,64 @@ def arduino_ports(preferred_list=['*']):
     return ret
     
 # listen for the input, exit if nothing received in timeout period
-def store_data_json(file, json_structure):
-    with open(file, 'w') as file_object:  
-        json.dump(json_structure, file_object, indent=4)
 
-def store_data_arduino(ser):
-    while True:
+    
+def read_database(id):
+    datadb = open('database/%s.json' %id)
+    datadb.flush()
+    data = json.load(datadb)
+    datadb.close()
+    # data_value = data[address]
+
+    return data
+
+def update_database(id,json_data):
+    dir = ('database/%s.json' %id)
+    with open(dir, 'w') as file_object:
+        json.dump(json_data, file_object, indent=4)
+        file_object.flush()
+        os.fsync(file_object)
+        file_object.close()
+
+def store_data_arduino(id,value):
+    try:
+        data = read_database(id)
+        data[id] = value
+        update_database(id,data)
+    except Exception as e:
+        print('%s error :' %id ,str(e) )
+
+def data_arduino(ser):
+    onWhile = True
+    while onWhile == True:
         try:
+            # try:
             line = ser.readline()
-            # print(line)
             data_dec = line.decode('utf-8')
-            # print(data_dec)
-            # print("----")
-            # if (data[0]=='{' ) :
             data=json.loads(data_dec)
+            # except:
+            #     print("data can't be read, flash the arduino again")
             
-            # print(data)
-            # print(data_dec)
             if len(str(data)) != 0:
-                # print(data)
-                try:
-                    voltage=data['t']
-                    data_json_voltage = {
-                        "voltage": voltage
-                    }
-
-                    path_voltage = "database/voltage.json"
-                    store_data_json(path_voltage, data_json_voltage)
-                    # voltage_sebelumnya = voltage
-                except Exception as e:
-                    print('voltage error :',str(e) )
-                    # voltage = "0.00"
-
-                try:
-                    speed=data['r']
+                voltage = data['t']
+                store_data_arduino("voltage",voltage)
                 
-                    data_json_speed = {
-                        "speed": speed
-                    }
-                        
-                    path_speed = "database/speed.json"
-                    store_data_json(path_speed, data_json_speed)
-                    # speed_sebelumnya = speed
-                except Exception as e:
-                    # speed = "0.00"
-                    print("speed error : "+str(e))
+                speed = data['r']
+                store_data_arduino("speed",speed)
+
+                temperature = data['s']
+                store_data_arduino("temperature",temperature)
 
                 try:
-                    temperature=data['s']
-                    data_json_temperature = {
-                        "temperature": temperature
-                    }
-
-                    path_temperature = "database/temperature.json"
-                    store_data_json(path_temperature, data_json_temperature)
+                    vehicle_info = read_database("vehicle_info")
+                    vehicle_info["mode"] = data['mode']
+                    vehicle_info["turn_signal"][0] = data['turn'][0]
+                    vehicle_info["turn_signal"][1] = data['turn'][1]
+                    update_database("vehicle_info", vehicle_info)
                 except Exception as e:
-                    print('temperature error :',str(e) )
-
-                try:
-                    turn_left= data['turn'][0]
-                    turn_right= data['turn'][1]
-                    mode_speed = data['mode']
-
-                    data_json_vinfo = {
-                        "mode":mode_speed,
-                        "turn_signal":[
-                            turn_left,turn_right
-                        ]
-                    }
-                        
-                    path_turn = "database/vehicle_info.json"
-                    store_data_json(path_turn, data_json_vinfo)
-                except:
-                    turn_left=False
-                    turn_right=False
-
-                
+                    print('vehicle_info error :',str(e) )
+                    ## for now
+                    pass
 
                 try:
                     statusEstimation = data['isRun']
@@ -122,7 +104,6 @@ def store_data_arduino(ser):
                             bluetooth_wifi_id=data['wifi_id']
                             bluetooth_wifi_pass=data['wifi_pass']
                             restart_wifi=data['restart']
-                            # isConnected = True
                         except:
                             print('wifi not valid')
                             bluetooth_wifi_id=""
@@ -130,7 +111,7 @@ def store_data_arduino(ser):
                             restart_wifi=False
 
                             
-                        data_json_connection = {
+                        connection = {
                             "wifi":{
                                 "id":bluetooth_wifi_id,
                                 "pass":bluetooth_wifi_pass
@@ -138,11 +119,8 @@ def store_data_arduino(ser):
                             "restart":restart_wifi,
                             "screen":screen_change
                         }
-                        
-                        path_connection = "database/connection.json"
-                        store_data_json(path_connection, data_json_connection)
 
-                        # print(bluetooth_wifi_id)
+                        update_database("connection", connection)
 
                         ### estimasi   
                         try:
@@ -162,7 +140,7 @@ def store_data_arduino(ser):
                             dest_latitude=""
                             dest_longitude=""
 
-                        data_json_estimation = {
+                        estimation = {
                             "address":{
                                 "origin":{
                                     "latitude":ori_latitude,
@@ -174,38 +152,23 @@ def store_data_arduino(ser):
                                 }
                             }
                         }
-                        
-                        path_estimation = "database/estimation.json"
-                        store_data_json(path_estimation, data_json_estimation)
+
+                        update_database("estimation", estimation)
                 except:
                     statusEstimation = False
-                    
-                # print(statusEstimation)
-
-
-                    # print(data_json)
-                    # file = "database/datastore.json"
-                    # with open(file, 'w') as file_object:  #open the file in write mode
-                    #     json.dump(data_json, file_object, indent=4)
             else:
                 print("Time out! Exit.\n")
                 pass
-
-            # else:
-            #     pass
-
-        # except Exception as e:
-        #     print('data error :',str(e) )
         except:
+            print("Serial port disconnected")
+            onWhile = retry()
             pass
-
-def main():
-    # reset()
-    onLoop = True
+def retry():
     i = 1
+    onLoop = True
     baudrate = 115200
     while onLoop == True:
-        print("try "+str(i))
+        print("retrying "+str(i))
         available_ports = arduino_ports()
         try:
             i += 1
@@ -215,13 +178,37 @@ def main():
             onLoop = True
             pass
         time.sleep(1)
-        # if len(str(available_ports)) != 0:
-        #     onLoop = False
-        
+            
     if onLoop == False:    
         print("port(s) detected :")
         print(str(available_ports))
-        store_data_arduino(port)
+        data_arduino(port)
+        return True
+
+def main():
+    # reset()
+    onLoop = True
+    i = 1
+    baudrate = 115200
+    while True:
+        while onLoop == True:
+            print("try "+str(i))
+            available_ports = arduino_ports()
+            try:
+                i += 1
+                port = serial.Serial(available_ports[0], baudrate, timeout=3)
+                onLoop = False
+            except:
+                onLoop = True
+                pass
+            time.sleep(1)
+            # if len(str(available_ports)) != 0:
+            #     onLoop = False
+            
+        if onLoop == False:    
+            print("port(s) detected :")
+            print(str(available_ports))
+            data_arduino(port)
     # print(format(float(data), ".2f"))
 if __name__ == '__main__':
     main()

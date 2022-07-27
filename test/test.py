@@ -1,132 +1,89 @@
 from cgi import test
+# from msilib.schema import Error
+import os
 import json
 import time
 
-def store_data_json(file, json_structure):
-    with open(file, 'w') as file_object:  
-        json.dump(json_structure, file_object, indent=4)
+from nbformat import read
+
+def store_data_json(id, json_data):
+    dir = ('database/%s.json' %id)
+    with open(dir, 'w') as file_object:
+        json.dump(json_data, file_object, indent=4)
+        file_object.flush()
+        os.fsync(file_object)
+        file_object.close()
+
+def read_database(id):
+    datadb = open('database/%s.json' %id)
+    datadb.flush()
+    data = json.load(datadb)
+    datadb.close()
+    # data_value = data[address]
+
+    return data
+
+def test(t,r,s,v0,v1,v2,c0,c1,c2,c3):
+
+    try:
+        data_tegangan = read_database("voltage")
+        data_tegangan["voltage"] = t
+        store_data_json("voltage", data_tegangan)
+    except Exception as e:
+        print("tegangan error :",e)
+
+    try:
+        data_kecepatan = read_database("speed")
+        data_kecepatan["speed"] = r
+        store_data_json("speed", data_kecepatan)
+    except Exception as e:
+        print("tegangan error :",e)
+                
+    try:
+        data_suhu = read_database("temperature")
+        data_suhu["temperature"] = s
+        store_data_json("temperature", data_suhu)
+    except Exception as e:
+        print("tegangan error :",e)
+                
+    data_vinfo = read_database("vehicle_info")
+    data_vinfo["mode"] = v0
+    data_vinfo["turn_signal"][0] = v1
+    data_vinfo["turn_signal"][1] = v2
+    store_data_json("vehicle_info", data_vinfo)
+
+    data_connection = read_database("connection")     
+    data_connection["wifi"]["id"] = c0
+    data_connection["wifi"]["pass"] = c1
+    data_connection["restart"] = c2
+    data_connection["screen"] = c3
+    store_data_json("connection", data_connection)
 
 def test_low(delay):
     time.sleep(delay)
-    data_json_voltage = {
-        "voltage": "0.00"
-    }
-
-    path_voltage = "database/voltage.json"
-    store_data_json(path_voltage, data_json_voltage)
+    test("0.00","0.00","0.0","n",False,False,"","",False,"Main")
                 
-    data_json_speed = {
-        "speed": "0.00"
-    }
-        
-    path_speed = "database/speed.json"
-    store_data_json(path_speed, data_json_speed)
-
-    data_json_temperature = {
-        "temperature": "0.0"
-    }
-
-    path_temperature = "database/temperature.json"
-    store_data_json(path_temperature, data_json_temperature)
-
-    data_json_vinfo = {
-        "mode":"n",
-        "turn_signal":[
-            False,False
-        ]
-    }
-        
-    path_turn = "database/vehicle_info.json"
-    store_data_json(path_turn, data_json_vinfo)
-
-                            
-    data_json_connection = {
-        "wifi":{
-            "id":"",
-            "pass":""
-        },
-        "restart":False,
-        "screen":"Main"
-    }
-    
-    path_connection = "database/connection.json"
-    store_data_json(path_connection, data_json_connection)
-
-    data_json_odometer = {
-        "total_km":"0.000"
-    }
-
-    path_odometer = "database/odometer.json"
-    store_data_json(path_odometer, data_json_odometer)
+    data_odometer = read_database("odometer")
+    data_odometer["total_km"] = "0.000"
+    store_data_json("odometer", data_odometer)
 
 def test_high(delay):
     time.sleep(delay)
-    data_json_voltage = {
-        "voltage": "80.00"
-    }
+    test("80.00","70.00","30.0","e",True,False,"","",False,"Main")
 
-    path_voltage = "database/voltage.json"
-    store_data_json(path_voltage, data_json_voltage)
-                
-    data_json_speed = {
-        "speed": "40.00"
-    }
-        
-    path_speed = "database/speed.json"
-    store_data_json(path_speed, data_json_speed)
-
-    data_json_temperature = {
-        "temperature": "30.0"
-    }
-
-    path_temperature = "database/temperature.json"
-    store_data_json(path_temperature, data_json_temperature)
-
-    data_json_vinfo = {
-        "mode":"n",
-        "turn_signal":[
-            True,False
-        ]
-    }
-        
-    path_turn = "database/vehicle_info.json"
-    store_data_json(path_turn, data_json_vinfo)
     time.sleep(2)
-    data_json_vinfo = {
-        "mode":"s",
-        "turn_signal":[
-            False,True
-        ]
-    }
-        
-    path_turn = "database/vehicle_info.json"
-    store_data_json(path_turn, data_json_vinfo)
+
+    test("74.00","40.00","50.0","s",False,True,"","",False,"Main")
 
 def test_channel(delay):
     time.sleep(delay)
-    data_json_connection = {
-        "wifi":{
-            "id":"",
-            "pass":""
-        },
-        "restart":False,
-        "screen":"Map"
-    }
-    
-    path_connection = "database/connection.json"
-    store_data_json(path_connection, data_json_connection)
+    data_connection = read_database("connection")     
+    data_connection["screen"] = "Map"
+    store_data_json("connection", data_connection)
     time.sleep(1)
-    data_json_connection = {
-        "wifi":{
-            "id":"",
-            "pass":""
-        },
-        "restart":False,
-        "screen":"About"
-    }
-    
-    path_connection = "database/connection.json"
-    store_data_json(path_connection, data_json_connection)
+    data_connection = read_database("connection")     
+    data_connection["screen"] = "About"
+    store_data_json("connection", data_connection)
 
 def status_high():
     opdata = open('database/speed.json')

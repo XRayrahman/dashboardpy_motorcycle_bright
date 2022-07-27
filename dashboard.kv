@@ -608,18 +608,14 @@
                                             size_hint:1,1
                                             BoxLayout:
                                                 orientation: "vertical"
-                                                pos_hint:{"top":.21,"x":.809}
+                                                pos_hint:{"top":.28,"x":.872}
                                                 size_hint: .25, .25
                                                 padding:"7dp"
-                                                LabelRajdhaniCenter:
-                                                    id:vehicle_id
-                                                    # bold: True
-                                                    text:"01"
-                                                    # font_name:"assets/fonts/Orbitron-Bold.ttf"
-                                                    font_size:"44sp"
-                                                    halign:"center"
-                                                    # color:217/255,217/255,217/255,1
-                                                    color: 6/255,17/255,21/255,1
+
+                                                MDIconButtonOff:
+                                                    user_font_size: "40sp"
+                                                    id: temp_high
+                                                    icon: "thermometer-alert"
 
                                         FloatLayout:
                                             size_hint:1,1
@@ -827,7 +823,7 @@
                                                                 LabelRajdhaniAlignLeft:
                                                                     font_name:"assets/fonts/Rajdhani-Regular.ttf"
                                                                     font_size: "14sp"
-                                                                    text:"VEHICLE ID      : M-01 \nEDITION           : 01\nMax. Voltage   : 84 V\nMax. Capacity  : 3 kWh\nTotal Torque    : 25 Nm\nMotor             : BLDC 5 kW\nWeight           : 105 kg"
+                                                                    text:"EDITION           : M-01\nMax. Voltage   : 84 V\nMax. Capacity  : 3 kWh\nTotal Torque    : 25 Nm\nMotor             : BLDC 5 kW\nWeight           : 105 kg"
                                                                     halign:"left"
                                                                     valign:"top"
 

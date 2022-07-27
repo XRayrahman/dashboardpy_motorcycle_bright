@@ -159,22 +159,67 @@ class Dashboard(MDApp):
                 color_bar = self.red
                 color_low = self.red
                 color_full = self.off
+                color_text = self.red
                 Clock.schedule_once(self.blink_battery, 1.5)
             elif(status == "yes"):
                 color_bar = self.green
                 color_low = self.off
                 color_full = self.green
+                color_text = self.dark_blue
             else:
                 color_bar = self.cyan
                 color_low = self.off
                 color_full = self.off
+                color_text = self.dark_blue
                 
             self.root.ids.battery_full.text_color = color_full
             self.root.ids.battery_low.text_color = color_low
             self.root.ids.SOC_bar.circle_color = color_bar
+            self.root.ids.tegangan_value_text.color = color_text
 
     def blink_battery(self, *args):
+        # icon_color  = self.root.ids.id.text_color
         self.root.ids.battery_low.text_color = self.off
+    
+    def blink_temp(self, *args):
+        self.root.ids.temp_high.text_color = self.off
+
+    def suhu_animate(self,int_suhu):
+        text = self.root.ids.suhu_value_text.text
+        space = " "
+        value_suhu = text.split(space,1)[0]
+        # int_suhu_sebelum = int(value_suhu)
+        # if int_suhu > int_suhu_sebelum:
+        #     int_suhu_sebelum += 1
+        text_suhu = str(int_suhu)+" °C"
+        self.root.ids.suhu_value_text.text = text_suhu
+        # elif int_suhu < int_suhu_sebelum:
+        #     int_suhu_sebelum -= 1
+        #     text_suhu = str(int_suhu_sebelum)+" °C"
+        #     self.root.ids.suhu_value_text.text = text_suhu
+        if int_suhu >= 80:
+            self.root.ids.suhu_value_text.color = self.red
+            self.root.ids.temp_high.text_color = self.red
+            Clock.schedule_once(self.blink_temp, 1.5)
+        else:
+            self.root.ids.suhu_value_text.color = self.dark_blue
+    
+    def read_database(self,id):
+        datadb = open('database/%s.json' %id)
+        datadb.flush()
+        data = json.load(datadb)
+        datadb.close()
+        # data_value = data[address]
+
+        return data
+    
+    def update_database(self,id,json_data):
+        dir = ('database/%s.json' %id)
+        with open(dir, 'w') as file_object:
+            json.dump(json_data, file_object, indent=4)
+            file_object.flush()
+            os.fsync(file_object)
+            file_object.close()
 
     #update data SOC dan tegangan
     def update_data_soc_tegangan(self,nap):
@@ -182,10 +227,8 @@ class Dashboard(MDApp):
         strtegangan = "0.0"
         if self.sw_started:
             self.sw_seconds += nap
-
         try:
-            dt = open('database/voltage.json')
-            data_tegangan = json.load(dt)
+            data_tegangan = self.read_database("voltage")
             strtegangan = data_tegangan['voltage']
         except:
             strtegangan = "0.00"
@@ -203,7 +246,6 @@ class Dashboard(MDApp):
         if valtegangan >= 84:
             SOC_value = 100
             self.battery_full("yes")
-            # self.root.ids.battery_low.text_color = 23/255,28/255,35/255,1
         elif valtegangan < 84 and valtegangan >= 76:
             SOC_value = round(100-((84-valtegangan)/0.8),1)
             self.battery_full("yes")
@@ -256,21 +298,18 @@ class Dashboard(MDApp):
             self.delay_notification += 1
         self.tegangan_sebelum = floattegangan
 
-    def suhu_animate(self,string_suhu):
-        float_suhu = float(string_suhu)
-        int_suhu = int(format(float_suhu, ".0f"))
-        text = self.root.ids.suhu_value_text.text
-        space = " "
-        value_suhu = text.split(space,1)[0]
-        int_suhu_sebelum = int(value_suhu)
-        if int_suhu > int_suhu_sebelum:
-            int_suhu_sebelum += 1
-            text_suhu = str(int_suhu_sebelum)+" °C"
-            self.root.ids.suhu_value_text.text = text_suhu
-        elif int_suhu < int_suhu_sebelum:
-            int_suhu_sebelum -= 1
-            text_suhu = str(int_suhu_sebelum)+" °C"
-            self.root.ids.suhu_value_text.text = text_suhu
+        # suhu
+        try:
+            data_suhu = self.read_database("temperature")
+            strsuhu = data_suhu['temperature']
+            float_suhu = float(strsuhu)
+            intsuhu = int(format(float_suhu, ".0f"))
+            if intsuhu >= 100:
+                intsuhu = 100
+        except:
+            intsuhu = 0
+        self.suhu_animate(intsuhu)
+
         
 
     #update data suhu dan kecepatan
@@ -282,8 +321,7 @@ class Dashboard(MDApp):
 
         #kecepatan
         try:    
-            dk = open('database/speed.json')
-            data_kecepatan = json.load(dk)
+            data_kecepatan = self.read_database("speed")
             self.kecepatan = data_kecepatan['speed']
         except:
             self.kecepatan = "0.00"
@@ -317,15 +355,6 @@ class Dashboard(MDApp):
             speed_value = "%s" %(speeds)
             self.root.ids.speed_ontop.text = speed_value
 
-        # suhu
-        try:
-            ds = open('database/temperature.json')
-            data_suhu = json.load(ds)
-            strsuhu = data_suhu['temperature']
-        except:
-            strsuhu = "0"
-        self.suhu_animate(strsuhu)
-
 
     def odometer(self,nap):
         # tegangan = 0.00
@@ -343,14 +372,12 @@ class Dashboard(MDApp):
         if self.sw_started:
             self.sw_seconds += nap
 
-        # try:
-        opdata = open('database/odometer.json')
-        data = json.load(opdata)
-        odo = data['total_km']
+        data_odo = self.read_database("odometer")
+        odo = data_odo["total_km"]
         # except Exception as e:
             # print('odo error :',str(e) )
         
-        if len(str(data)) != 0:
+        if len(str(data_odo)) != 0:
             self.jarak_tempuh_total = float(odo)
             #jarak_tempuh = format(float(jarak_tempuh), ".0f")
             self.jarak_tempuh_total = self.jarak_tempuh_total + self.jarak_tempuh_total_lima
@@ -358,22 +385,11 @@ class Dashboard(MDApp):
         
             self.total_odo = format(float(self.jarak_tempuh_total), ".3f")
             # self.root.ids.odometer.text = format(float(self.total_odo), ".3f")
-            # except:
-            odometer = {
-                "total_km": self.total_odo
-            }
-            # except:
-                # pass
-                
-            # try:
-            if len(str(data)) != 0:
-                file = "database/odometer.json"
-                with open(file, 'w') as file_object: 
-                    json.dump(odometer, file_object, indent=4)
-                # print(data_json)
-            else:
-                print("Time out! Exit.\n")
-                pass
+
+            data_odo["total_km"] = self.total_odo
+            self.update_database("odometer",data_odo)
+            data_odo = self.read_database("odometer")
+            odo = data_odo["total_km"]
 
             currentChannel = self.root.ids.channels.current
             if currentChannel == "mainChannel":
@@ -382,34 +398,7 @@ class Dashboard(MDApp):
                 self.root.ids.odometer_onMap.text = format(float(odo), ".3f")
             elif currentChannel == "aboutChannel":
                 self.root.ids.odometer_onAbout.text = format(float(odo), ".3f")
-            # except:
-            #     pass
-            # pass
-        # odo = "0.123"
-        
-        # try:
 
-    # def odometer_submit(self,nap):
-    #     # tegangan = 0.00
-    #     #odo = "0.0"
-    #     if self.sw_started:
-    #         self.sw_seconds += nap
-
-    #     try:
-    #         opdata = open('database/odometer.json')
-    #         data = json.load(opdata)
-    #         odo = data['total_km']
-
-    #         if odo != 0.00: 
-    #             self.jarak_tempuh_total = float(odo)
-    #             #jarak_tempuh = format(float(jarak_tempuh), ".0f")
-    #             self.jarak_tempuh_total = self.jarak_tempuh_total + self.jarak_tempuh_total_lima
-    #             # self.jarak_tempuh_total = self.jarak_tempuh_total + jarak_tempuh
-    #             self.total_odo = format(float(self.jarak_tempuh_total), ".3f")
-
-    #             odometer = {
-    #                 "total_km": self.total_odo
-    #             }
     #             delta_speed = float(self.kecepatan) - self.kecepatan_sebelum
 
     #             currentChannel = self.root.ids.channels.current
@@ -421,7 +410,7 @@ class Dashboard(MDApp):
     #                 self.root.ids.odometer_onAbout.text = format(float(odo), ".3f")
                     
     #             try:
-    #                 if len(str(data)) != 0 and float(self.kecepatan) > 10.0 and delta_speed < 20:
+    #                 if len(str(datadb)) != 0 and float(self.kecepatan) > 10.0 and delta_speed < 20:
     #                     file = "database/odometer.json"
     #                     with open(file, 'w') as file_object: 
     #                         json.dump(odometer, file_object, indent=4)
@@ -429,17 +418,6 @@ class Dashboard(MDApp):
     #             # else:
     #             #     print("Time out! Exit.\n")
     #             #     pass
-    #             except:
-    #                 pass
-    #         self.jarak_sebelumnya = 0.0
-
-    #     except Exception as e:
-    #         print('odo error :',str(e) )
-    #         pass
-    #     # odo = "0.123"
-    #     self.kecepatan_sebelum = float(self.kecepatan)
-        
-        # try:
         
     def turn_signal(self, nap):
         if self.sw_started:
@@ -472,10 +450,6 @@ class Dashboard(MDApp):
             self.root.ids.turn_right.text_color = self.dark_blue
             Clock.schedule_once(self.blink_signal, .5)
         else:
-            # self.root.ids.turn_left.text_color = 14/255,78/255,107/255,1
-            # self.root.ids.turn_right.text_color = 14/255,78/255,107/255,1
-            # self.root.ids.turn_left.text_color = 23/255,28/255,35/255,1
-            # self.root.ids.turn_right.text_color = 23/255,28/255,35/255,1
             self.root.ids.turn_left.text_color = self.off
             self.root.ids.turn_right.text_color = self.off
 
@@ -674,8 +648,6 @@ class MyLayout(Screen):
         self.ids.screendget_mini.switch_to(self.ids.s_mini2)
 
     def estimasi(self,originLat,originLng, destinationLat, destinationLng, SOC_value):
-        # lay = MyLayout()
-        #path_to_kv_file = "test.kv"
         #gmaps = googlemaps.Client(key=API_key)
         
         scaler = joblib.load('estimation/std_rev1.bin')
@@ -685,10 +657,6 @@ class MyLayout(Screen):
         self.DestinationLng = destinationLng
         self.OriginLat = originLat
         self.OriginLng = originLng
-        # -7.276897814939734
-        # 112.79654215586092
-        # self.DestinationLat = -7.277094626336178
-        # self.DestinationLng = 112.7974416864169
         body = {"locations":[[self.OriginLng,self.OriginLat],[self.DestinationLng,self.DestinationLat]],"metrics":["distance","duration"],"units":"km"}
         headers = {
             'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
@@ -1002,18 +970,18 @@ _displayed = {
     180: u'\u03a0', 210: u'7\u03a0/6', 240: u'4\u03a0/3'
     }
     
-# def reset():
-#     import kivy.core.window as window
-#     from kivy.base import EventLoop
-#     if not EventLoop.event_listeners:
-#         from kivy.cache import Cache
-#         window.Window = window.core_select_lib('window', window.window_impl, True)
-#         Cache.print_usage()
-#         for cat in Cache._categories:
-#             Cache._objects[cat] = {}   
+def reset():
+    import kivy.core.window as window
+    from kivy.base import EventLoop
+    if not EventLoop.event_listeners:
+        from kivy.cache import Cache
+        window.Window = window.core_select_lib('window', window.window_impl, True)
+        Cache.print_usage()
+        for cat in Cache._categories:
+            Cache._objects[cat] = {}   
 
 #MyLayout.estimasi.has_been_called = False
 # lay = MyLayout()
-# reset()
+reset()
 Dashboard().run()
 os.system("killall python3")
