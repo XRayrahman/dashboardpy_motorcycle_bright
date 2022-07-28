@@ -1,2 +1,3 @@
 cache/
 .key/api-key.txt
+test/__pycache__/
