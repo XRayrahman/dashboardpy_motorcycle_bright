@@ -86,7 +86,7 @@ class Dashboard(MDApp):
         self.sub3 = Clock.schedule_interval(
             self.odometer,                          1)
         self.sub4 = Clock.schedule_interval(
-            self.odometer_submit,                   3)
+            self.odometer_submit,                   1)
         self.sub5 = Clock.schedule_interval(
             self.turn_signal,                       1)
         self.sub6 = Clock.schedule_interval(
@@ -609,7 +609,7 @@ class MyLayout(Screen):
                                      md_bg_color=(25/255, 135/255, 84/255, 1),
                                      size_hint=(None, None), size=(400, 400))
             self.root.ids.wifi_status.icon = "wifi-on"
-            self.root.ids.wifi_status.text_color = 255/255, 255/255, 255/255, 1
+            self.root.ids.wifi_status.text_color = Dashboard.dark_blue
             self.popup.open()
         else:
             self.popup = MDDialogDef(title='tidak dapat terhubung dengan internet',
