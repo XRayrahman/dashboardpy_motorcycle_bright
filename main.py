@@ -86,7 +86,7 @@ class Dashboard(MDApp):
         self.sub3 = Clock.schedule_interval(
             self.odometer,                          1)
         self.sub4 = Clock.schedule_interval(
-            self.odometer_submit,                   1)
+            self.odometer_submit,                   3)
         self.sub5 = Clock.schedule_interval(
             self.turn_signal,                       1)
         self.sub6 = Clock.schedule_interval(
@@ -363,7 +363,7 @@ class Dashboard(MDApp):
             self.sw_seconds += nap
 
         jarak_tempuh = (float(self.kecepatan)/6) * \
-            188.4*0.00001  # odometer e-trail
+            (188.4+37.68)*0.00001  # odometer e-trail
         self.jarak_tempuh_total_lima = jarak_tempuh + self.jarak_sebelumnya
         self.jarak_sebelumnya = jarak_tempuh
 
