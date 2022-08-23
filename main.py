@@ -157,13 +157,13 @@ class Dashboard(MDApp):
     def battery_full(self, status):
         currentChannel = self.root.ids.channels.current
         if currentChannel == "mainChannel":
-            if(status == "no"):
+            if (status == "no"):
                 color_bar = self.red
                 color_low = self.red
                 color_full = self.off
                 color_text = self.red
                 Clock.schedule_once(self.blink_battery, 1.5)
-            elif(status == "yes"):
+            elif (status == "yes"):
                 color_bar = self.green
                 color_low = self.off
                 color_full = self.green

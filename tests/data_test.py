@@ -4,8 +4,6 @@ import os
 import json
 import time
 
-from nbformat import read
-
 
 def store_data_json(id, json_data):
     dir = ('database/%s.json' % id)
