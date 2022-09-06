@@ -2,7 +2,12 @@ from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFillRoundFlatButton, MDFlatButton
-from kivy.uix.screenmanager import RiseInTransition, FadeTransition, ScreenManager, Screen
+from kivy.uix.screenmanager import (
+    RiseInTransition,
+    FadeTransition,
+    ScreenManager,
+    Screen,
+)
 from time import strftime
 from math import *
 from subprocess import Popen, PIPE, STDOUT
@@ -10,6 +15,7 @@ from kivy.clock import Clock
 from kivy.graphics import Color, Line, SmoothLine
 from kivy.graphics.context_instructions import Translate, Scale
 from kivy_garden.speedmeter import SpeedMeter
+
 # from kivy_garden.qrcode import QRCodeWidget
 from kivy_garden.mapview.utils import clamp
 from kivy_garden.mapview import MapView, MapMarker, MapLayer
@@ -27,16 +33,18 @@ import joblib
 import requests
 import json
 
-#Clock.max_iteration = 50
-# from kivy.config import Config
-# Config.set('graphics', 'width', '800')
-# Config.set('graphics', 'height', '480')
-# Config.write()
+# Clock.max_iteration = 50
 
-Window.borderless = True
+from kivy.config import Config
+
+Config.set("graphics", "width", "800")
+Config.set("graphics", "height", "480")
+Config.write()
+
+# Window.borderless = True
 # Window.size=(800,480)
-#Window.fullscreen = True
-Window.maximize()
+# Window.fullscreen = True
+# Window.maximize()
 
 
 class Dashboard(MDApp):
@@ -44,20 +52,19 @@ class Dashboard(MDApp):
     sw_seconds = 0
     val = ""
     tuj = ""
-    icon = 'assets/logo.svg'
+    icon = "assets/logo.svg"
     delay_notification = 0
     tegangan_sebelum = 0.00
-    #global screen_manager
     screen_manager = ScreenManager()
     jarak_tempuh_total = 0
     kecepatan_sebelum = 0
 
     # theme-custom
-    red = 223/255, 91/255, 97/255, 1
-    green = 118/255, 209/255, 155/255, 1
-    cyan = 166/255, 217/255, 245/255, 1
-    dark_blue = 6/255, 17/255, 21/255, 1
-    off = 180/255, 180/255, 180/255, 1
+    red = 223 / 255, 91 / 255, 97 / 255, 1
+    green = 118 / 255, 209 / 255, 155 / 255, 1
+    cyan = 166 / 255, 217 / 255, 245 / 255, 1
+    dark_blue = 6 / 255, 17 / 255, 21 / 255, 1
+    off = 180 / 255, 180 / 255, 180 / 255, 1
 
     def build(self):
         self.theme_cls.theme_style = "Dark"
@@ -77,22 +84,14 @@ class Dashboard(MDApp):
         self.screen_tomap = False
 
         # schedule_interval(program, interval/waktu dijalankan)
-        self.sub1 = Clock.schedule_interval(
-            self.update_status,                     5)
-        self.sub2 = Clock.schedule_interval(
-            self.update_data_suhu_kecepatan,        0.005)
-        self.sub2 = Clock.schedule_interval(
-            self.update_data_soc_tegangan,          3)
-        self.sub3 = Clock.schedule_interval(
-            self.odometer,                          1)
-        self.sub4 = Clock.schedule_interval(
-            self.odometer_submit,                   3)
-        self.sub5 = Clock.schedule_interval(
-            self.turn_signal,                       1)
-        self.sub6 = Clock.schedule_interval(
-            self.change_screen_main,                1)
-        self.asyncRun = Clock.schedule_once(
-            self.asyncProgram,                      10)
+        self.sub1 = Clock.schedule_interval(self.update_status, 5)
+        self.sub2 = Clock.schedule_interval(self.update_data_suhu_kecepatan, 0.005)
+        self.sub2 = Clock.schedule_interval(self.update_data_soc_tegangan, 3)
+        self.sub3 = Clock.schedule_interval(self.odometer, 1)
+        self.sub4 = Clock.schedule_interval(self.odometer_submit, 3)
+        self.sub5 = Clock.schedule_interval(self.turn_signal, 1)
+        self.sub6 = Clock.schedule_interval(self.change_screen_main, 1)
+        self.asyncRun = Clock.schedule_once(self.asyncProgram, 10)
 
     def asyncProgram(self, dt):
         # testing script
@@ -110,44 +109,40 @@ class Dashboard(MDApp):
             self.sw_seconds += nap
 
         try:
-            dt = open('database/connection.json')
+            dt = open("database/connection.json")
             data_change_screen = json.load(dt)
-            change_screen = data_change_screen['screen']
+            change_screen = data_change_screen["screen"]
         except:
             change_screen = "Main"
 
-        if (change_screen == "Map"):
+        if change_screen == "Map":
             self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini2)
             self.root.ids.channels.switch_to(self.root.ids.mapChannel)
-            self.root.ids.menubar_left.switch_to(
-                self.root.ids.menubar_leftTop2)
+            self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop2)
             self.root.ids.mode_label.text = "SPEED"
             self.root.ids.power_label.text = "SOC"
             self.root.ids.card_label.text = "NORMAL"
             self.screen_tomap = False
 
-        elif (change_screen == "Main"):
-            if (self.screen_tomap == True):
+        elif change_screen == "Main":
+            if self.screen_tomap == True:
                 self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini2)
                 self.root.ids.channels.switch_to(self.root.ids.mapChannel)
-                self.root.ids.menubar_left.switch_to(
-                    self.root.ids.menubar_leftTop2)
+                self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop2)
                 self.root.ids.mode_label.text = "SPEED"
                 self.root.ids.power_label.text = "SOC"
                 self.root.ids.card_label.text = "NORMAL"
             else:
                 self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini1)
                 self.root.ids.channels.switch_to(self.root.ids.mainChannel)
-                self.root.ids.menubar_left.switch_to(
-                    self.root.ids.menubar_leftTop1)
+                self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop1)
                 self.root.ids.mode_label.text = "MODE"
                 self.root.ids.power_label.text = "POWER"
                 self.root.ids.card_label.text = "APLIKASI"
 
-        elif (change_screen == "About"):
+        elif change_screen == "About":
             self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini1)
-            self.root.ids.menubar_left.switch_to(
-                self.root.ids.menubar_leftTop2)
+            self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop2)
             self.root.ids.mode_label.text = "SPEED"
             self.root.ids.power_label.text = "SOC"
             self.root.ids.card_label.text = "APLIKASI"
@@ -157,13 +152,13 @@ class Dashboard(MDApp):
     def battery_full(self, status):
         currentChannel = self.root.ids.channels.current
         if currentChannel == "mainChannel":
-            if (status == "no"):
+            if status == "no":
                 color_bar = self.red
                 color_low = self.red
                 color_full = self.off
                 color_text = self.red
                 Clock.schedule_once(self.blink_battery, 1.5)
-            elif (status == "yes"):
+            elif status == "yes":
                 color_bar = self.green
                 color_low = self.off
                 color_full = self.green
@@ -193,7 +188,7 @@ class Dashboard(MDApp):
         # int_suhu_sebelum = int(value_suhu)
         # if int_suhu > int_suhu_sebelum:
         #     int_suhu_sebelum += 1
-        text_suhu = str(int_suhu)+" °C"
+        text_suhu = str(int_suhu) + " °C"
         self.root.ids.suhu_value_text.text = text_suhu
         # elif int_suhu < int_suhu_sebelum:
         #     int_suhu_sebelum -= 1
@@ -207,7 +202,7 @@ class Dashboard(MDApp):
             self.root.ids.suhu_value_text.color = self.dark_blue
 
     def read_database(self, id):
-        datadb = open('database/%s.json' % id)
+        datadb = open("database/%s.json" % id)
         datadb.flush()
         data = json.load(datadb)
         datadb.close()
@@ -216,8 +211,8 @@ class Dashboard(MDApp):
         return data
 
     def update_database(self, id, json_data):
-        dir = ('database/%s.json' % id)
-        with open(dir, 'w') as file_object:
+        dir = "database/%s.json" % id
+        with open(dir, "w") as file_object:
             json.dump(json_data, file_object, indent=4)
             file_object.flush()
             os.fsync(file_object)
@@ -231,7 +226,7 @@ class Dashboard(MDApp):
             self.sw_seconds += nap
         try:
             data_tegangan = self.read_database("voltage")
-            strtegangan = data_tegangan['voltage']
+            strtegangan = data_tegangan["voltage"]
         except:
             strtegangan = "0.00"
 
@@ -249,13 +244,13 @@ class Dashboard(MDApp):
             SOC_value = 100
             self.battery_full("yes")
         elif valtegangan < 84 and valtegangan >= 76:
-            SOC_value = round(100-((84-valtegangan)/0.8), 1)
+            SOC_value = round(100 - ((84 - valtegangan) / 0.8), 1)
             self.battery_full("yes")
         elif valtegangan < 76 and valtegangan >= 72:
-            SOC_value = round(90-((76-valtegangan)/0.067), 1)
+            SOC_value = round(90 - ((76 - valtegangan) / 0.067), 1)
             self.battery_full("neither")
         elif valtegangan < 72 and valtegangan >= 60:
-            SOC_value = round(30-((72-valtegangan)/0.4), 1)
+            SOC_value = round(30 - ((72 - valtegangan) / 0.4), 1)
             self.battery_full("no")
         else:
             SOC_value = round(0, 1)
@@ -263,7 +258,7 @@ class Dashboard(MDApp):
             self.battery_full("no")
 
         # SOC_value = round((float(strtegangan)/3)*100, 1)
-        self.SOC_value = str(SOC_value)+"%"
+        self.SOC_value = str(SOC_value) + "%"
 
         currentChannel = self.root.ids.channels.current
         if currentChannel == "mainChannel":
@@ -273,26 +268,30 @@ class Dashboard(MDApp):
 
         if valtegangan >= 84 and self.tegangan_sebelum < 84.00:
             self.popup = MDDialogDef(
-                title='NOTIFICATION ALERT',
-                text='Baterai terisi penuh \nKendaraan siap untuk digunakan',
+                title="NOTIFICATION ALERT",
+                text="Baterai terisi penuh \nKendaraan siap untuk digunakan",
                 radius=[7, 7, 7, 7],
-                md_bg_color=(25/255, 135/255, 84/255, 1),
-                size_hint=(.4, .1),
+                md_bg_color=(25 / 255, 135 / 255, 84 / 255, 1),
+                size_hint=(0.4, 0.1),
                 buttons=[
-                    MDFlatButton(text="CANCEL"), MDFillRoundFlatButton(text="HENTIKAN CHARGE"), ]
-                #size=(250, 70)
+                    MDFlatButton(text="CANCEL"),
+                    MDFillRoundFlatButton(text="HENTIKAN CHARGE"),
+                ]
+                # size=(250, 70)
             )
             self.popup.open()
             # self.delay_notification = 0
         elif valtegangan < 72 and self.delay_notification == 5:
             self.popup = MDDialogDef(
-                title='NOTIFICATION ALERT',
-                text='Sisa Kapasitas baterai dibawah 30% \nCharge kendaraan terlebih dahulu',
+                title="NOTIFICATION ALERT",
+                text="Sisa Kapasitas baterai dibawah 30% \nCharge kendaraan terlebih dahulu",
                 radius=[7, 7, 7, 7],
-                md_bg_color=(215/255, 71/255, 68/255, 1),
-                size_hint=(.4, .1),
+                md_bg_color=(215 / 255, 71 / 255, 68 / 255, 1),
+                size_hint=(0.4, 0.1),
                 buttons=[
-                    MDFlatButton(text="CANCEL"), MDFillRoundFlatButton(text="LOKASI CHARGE TERDEKAT"), ]
+                    MDFlatButton(text="CANCEL"),
+                    MDFillRoundFlatButton(text="LOKASI CHARGE TERDEKAT"),
+                ],
             )
             self.popup.open()
             self.delay_notification = 0
@@ -303,7 +302,7 @@ class Dashboard(MDApp):
         # suhu
         try:
             data_suhu = self.read_database("temperature")
-            strsuhu = data_suhu['temperature']
+            strsuhu = data_suhu["temperature"]
             float_suhu = float(strsuhu)
             intsuhu = int(format(float_suhu, ".0f"))
             if intsuhu >= 100:
@@ -323,12 +322,12 @@ class Dashboard(MDApp):
         # kecepatan
         try:
             data_kecepatan = self.read_database("speed")
-            self.kecepatan = data_kecepatan['speed']
+            self.kecepatan = data_kecepatan["speed"]
         except:
             self.kecepatan = "0.00"
 
-        kecepatan = (float(self.kecepatan)/6)*188.4*0.036  # kecepatan e-trail
-        kecepatan = (format(float(kecepatan), ".0f"))
+        kecepatan = (float(self.kecepatan) / 6) * 188.4 * 0.036  # kecepatan e-trail
+        kecepatan = format(float(kecepatan), ".0f")
 
         # maksimal kecepatan
         if int(kecepatan) >= 121:
@@ -358,12 +357,13 @@ class Dashboard(MDApp):
 
     def odometer(self, nap):
         # tegangan = 0.00
-        #odo = "0.0"
+        # odo = "0.0"
         if self.sw_started:
             self.sw_seconds += nap
 
-        jarak_tempuh = (float(self.kecepatan)/6) * \
-            (188.4+37.68)*0.00001  # odometer e-trail
+        jarak_tempuh = (
+            (float(self.kecepatan) / 6) * (188.4 + 37.68) * 0.00001
+        )  # odometer e-trail
         self.jarak_tempuh_total_lima = jarak_tempuh + self.jarak_sebelumnya
         self.jarak_sebelumnya = jarak_tempuh
 
@@ -380,8 +380,10 @@ class Dashboard(MDApp):
 
         if len(str(data_odo)) != 0:
             self.jarak_tempuh_total = float(odo)
-            #jarak_tempuh = format(float(jarak_tempuh), ".0f")
-            self.jarak_tempuh_total = self.jarak_tempuh_total + self.jarak_tempuh_total_lima
+            # jarak_tempuh = format(float(jarak_tempuh), ".0f")
+            self.jarak_tempuh_total = (
+                self.jarak_tempuh_total + self.jarak_tempuh_total_lima
+            )
             # self.jarak_tempuh_total = self.jarak_tempuh_total + jarak_tempuh
 
             self.total_odo = format(float(self.jarak_tempuh_total), ".3f")
@@ -439,10 +441,10 @@ class Dashboard(MDApp):
 
         if isTurnLeft == True:
             self.root.ids.turn_left.text_color = self.dark_blue
-            Clock.schedule_once(self.blink_signal, .5)
+            Clock.schedule_once(self.blink_signal, 0.5)
         elif isTurnRight == True:
             self.root.ids.turn_right.text_color = self.dark_blue
-            Clock.schedule_once(self.blink_signal, .5)
+            Clock.schedule_once(self.blink_signal, 0.5)
         else:
             self.root.ids.turn_left.text_color = self.off
             self.root.ids.turn_right.text_color = self.off
@@ -455,20 +457,20 @@ class Dashboard(MDApp):
         if self.sw_started:
             self.sw_seconds += nap
         # tambah detik = :%S
-        #self.root.ids.SOC_value.text = "blok"
-        self.root.ids.time_onMain.text = strftime('[b]%H:%M  |[/b]')
-        self.root.ids.time_onAbout.text = strftime('[b]%H:%M  |[/b]')
-        self.root.ids.time_onMap.text = strftime('%H:%M')
+        # self.root.ids.SOC_value.text = "blok"
+        self.root.ids.time_onMain.text = strftime("[b]%H:%M  |[/b]")
+        self.root.ids.time_onAbout.text = strftime("[b]%H:%M  |[/b]")
+        self.root.ids.time_onMap.text = strftime("%H:%M")
 
-        if (self.root.ids.power_switch.active == False):
+        if self.root.ids.power_switch.active == False:
             os.system("killall python3")
 
-        fd = open('database/connection.json')
+        fd = open("database/connection.json")
         connectionFile = json.load(fd)
-        wifiID = connectionFile['wifi']['id']
-        password = connectionFile['wifi']['pass']
-        restartConnect = connectionFile['restart']
-        #print (tujuan)
+        wifiID = connectionFile["wifi"]["id"]
+        password = connectionFile["wifi"]["pass"]
+        restartConnect = connectionFile["restart"]
+        # print (tujuan)
 
         if len(wifiID) == 0:
             pass
@@ -483,7 +485,7 @@ class Dashboard(MDApp):
                     try:
                         self.root.connect(wifiID, password)
                         self.val = wifiID
-                        #test = sub.out
+                        # test = sub.out
                     except:
                         print("gagal untuk menyambungkan")
                         pass
@@ -493,12 +495,12 @@ class Dashboard(MDApp):
                 else:
                     pass
 
-        fe = open('database/estimation.json')
+        fe = open("database/estimation.json")
         estimationFile = json.load(fe)
-        asalLat = estimationFile['address']['origin']['latitude']
-        asalLng = estimationFile['address']['origin']['longitude']
-        tujuanLat = estimationFile['address']['destination']['latitude']
-        tujuanLng = estimationFile['address']['destination']['longitude']
+        asalLat = estimationFile["address"]["origin"]["latitude"]
+        asalLng = estimationFile["address"]["origin"]["longitude"]
+        tujuanLat = estimationFile["address"]["destination"]["latitude"]
+        tujuanLng = estimationFile["address"]["destination"]["longitude"]
 
         if len(tujuanLat) == 0:
             pass
@@ -513,9 +515,10 @@ class Dashboard(MDApp):
 
                 try:
                     self.root.estimasi(
-                        asalLat, asalLng, tujuanLat, tujuanLng, self.SOC_value)
+                        asalLat, asalLng, tujuanLat, tujuanLng, self.SOC_value
+                    )
                 except Exception as e:
-                    print('estimation error :', str(e))
+                    print("estimation error :", str(e))
 
                 self.screen_tomap = True
                 self.root.center_maps()
@@ -528,12 +531,11 @@ class Dashboard(MDApp):
 
 
 class MyLayout(Screen):
-
     def __init__(self, *args, **kwargs):
         super(MyLayout, self).__init__(*args, **kwargs)
 
         this_path = str(os.getcwd())
-        path = this_path+"/.key/api-key.txt"
+        path = this_path + "/.key/api-key.txt"
         API_file = open(path, "r")
         # print(API_file)
         self.API_key = API_file.read()
@@ -554,9 +556,10 @@ class MyLayout(Screen):
     def center_maps(self):
         # try:
         mapview = self.ids.mapview
-        line = LineMapLayer(self.DestinationLat,
-                            self.DestinationLng, self.OriginLat, self.OriginLng)
-        mapview.add_layer(line, mode='scatter')
+        line = LineMapLayer(
+            self.DestinationLat, self.DestinationLng, self.OriginLat, self.OriginLng
+        )
+        mapview.add_layer(line, mode="scatter")
         print(self.OriginLat)
         print(self.OriginLng)
 
@@ -565,20 +568,24 @@ class MyLayout(Screen):
 
         # try:
         mapview.center_on(float(self.OriginLat), float(self.OriginLng))
-        #marker1 = MapMarkerPopup(lat=lat, lon=lng)
+        # marker1 = MapMarkerPopup(lat=lat, lon=lng)
 
         # except Exception as e:
         #     print("error center map:", str(e))
 
         try:
             self.marker_origin = MapMarker(
-                lat=self.OriginLat, lon=self.OriginLng, source="assets/marker-3-24.png")
+                lat=self.OriginLat, lon=self.OriginLng, source="assets/marker-3-24.png"
+            )
             self.marker_destination = MapMarker(
-                lat=self.DestinationLat, lon=self.DestinationLng, source="assets/marker-red.png")
+                lat=self.DestinationLat,
+                lon=self.DestinationLng,
+                source="assets/marker-red.png",
+            )
             mapview.add_widget(self.marker_origin)
             mapview.add_widget(self.marker_destination)
             Clock.schedule_once(self.zoom_maps, 15)
-            #mapview.add_marker(lat=lat, lon=lng)
+            # mapview.add_marker(lat=lat, lon=lng)
         except Exception as e:
             print("error marker map:", str(e))
 
@@ -594,9 +601,9 @@ class MyLayout(Screen):
 
     def connect(self, name, password):
         try:
-            self.commandl = "nmcli dev wifi connect "+name+" password "+password
-        # print ("success connection : ",sub.out)
-        # print (self.command1)
+            self.commandl = "nmcli dev wifi connect " + name + " password " + password
+            # print ("success connection : ",sub.out)
+            # print (self.command1)
             scan = os.popen("nmcli device wifi list --rescan yes").read()
             isConnect = os.popen(self.commandl).read()
             # isConnect = True
@@ -604,19 +611,25 @@ class MyLayout(Screen):
             isConnect = ""
 
         if isConnect != "":
-            self.popup = MDDialogDef(title='terhubung dengan internet \n wifi id : '+name,
-                                     radius=[7, 7, 7, 7],
-                                     md_bg_color=(25/255, 135/255, 84/255, 1),
-                                     size_hint=(None, None), size=(400, 400))
+            self.popup = MDDialogDef(
+                title="terhubung dengan internet \n wifi id : " + name,
+                radius=[7, 7, 7, 7],
+                md_bg_color=(25 / 255, 135 / 255, 84 / 255, 1),
+                size_hint=(None, None),
+                size=(400, 400),
+            )
             self.root.ids.wifi_status.icon = "wifi-on"
             self.root.ids.wifi_status.text_color = Dashboard.dark_blue
             self.popup.open()
         else:
-            self.popup = MDDialogDef(title='tidak dapat terhubung dengan internet',
-                                     text="kirim wifi id dan password kembali",
-                                     radius=[7, 7, 7, 7],
-                                     md_bg_color=(244/255, 67/255, 54/255, 1),
-                                     size_hint=(None, None), size=(400, 400))
+            self.popup = MDDialogDef(
+                title="tidak dapat terhubung dengan internet",
+                text="kirim wifi id dan password kembali",
+                radius=[7, 7, 7, 7],
+                md_bg_color=(244 / 255, 67 / 255, 54 / 255, 1),
+                size_hint=(None, None),
+                size=(400, 400),
+            )
             self.popup.open()
         # self.sub(self.commandl)
 
@@ -638,44 +651,69 @@ class MyLayout(Screen):
         self.ids.screendget_mini.switch_to(self.ids.s_mini2)
 
     def estimasi(self, originLat, originLng, destinationLat, destinationLng, SOC_value):
-        #gmaps = googlemaps.Client(key=API_key)
+        # gmaps = googlemaps.Client(key=API_key)
 
-        scaler = joblib.load('estimation/std_rev1.bin')
-        model = joblib.load('estimation/estimasi_rev1.pkl')
+        scaler = joblib.load("estimation/std_rev1.bin")
+        model = joblib.load("estimation/estimasi_rev1.pkl")
 
         self.DestinationLat = destinationLat
         self.DestinationLng = destinationLng
         self.OriginLat = originLat
         self.OriginLng = originLng
-        body = {"locations": [[self.OriginLng, self.OriginLat], [
-            self.DestinationLng, self.DestinationLat]], "metrics": ["distance", "duration"], "units": "km"}
+        body = {
+            "locations": [
+                [self.OriginLng, self.OriginLat],
+                [self.DestinationLng, self.DestinationLat],
+            ],
+            "metrics": ["distance", "duration"],
+            "units": "km",
+        }
         headers = {
-            'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-            'Authorization': self.API_key,
-            'Content-Type': 'application/json; charset=utf-8'
+            "Accept": "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
+            "Authorization": self.API_key,
+            "Content-Type": "application/json; charset=utf-8",
         }
         post_matrix = requests.post(
-            'https://api.openrouteservice.org/v2/matrix/driving-car', json=body, headers=headers)
+            "https://api.openrouteservice.org/v2/matrix/driving-car",
+            json=body,
+            headers=headers,
+        )
 
         try:
             data_matrix = json.loads(post_matrix.text)
-            duration = data_matrix['durations'][0][1]
-            TrueDistance = data_matrix['distances'][0][1]
+            duration = data_matrix["durations"][0][1]
+            TrueDistance = data_matrix["distances"][0][1]
             TrueDistance = format(float(TrueDistance), ".3f")
             self.ids.DistanceEst.text = str(TrueDistance) + " km"
-            duration_minute = float(duration)/60
+            duration_minute = float(duration) / 60
             duration_minute = format(float(duration_minute), ".2f")
             self.ids.TimeEst.text = str(duration_minute) + " menit"
         except Exception as e:
-            print('INVALID REQUEST DISTANCE :', str(e))
+            print("INVALID REQUEST DISTANCE :", str(e))
 
         headers = {
-            'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+            "Accept": "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
         }
-        get_geocode_origin = requests.get('https://api.openrouteservice.org/geocode/reverse?api_key='+self.API_key +
-                                          '&point.lon='+str(self.OriginLng)+'&point.lat='+str(self.OriginLat)+'&size=2', headers=headers)
-        get_geocode_destination = requests.get('https://api.openrouteservice.org/geocode/reverse?api_key='+self.API_key+'&point.lon='+str(
-            self.DestinationLng)+'&point.lat='+str(self.DestinationLat)+'&size=2', headers=headers)
+        get_geocode_origin = requests.get(
+            "https://api.openrouteservice.org/geocode/reverse?api_key="
+            + self.API_key
+            + "&point.lon="
+            + str(self.OriginLng)
+            + "&point.lat="
+            + str(self.OriginLat)
+            + "&size=2",
+            headers=headers,
+        )
+        get_geocode_destination = requests.get(
+            "https://api.openrouteservice.org/geocode/reverse?api_key="
+            + self.API_key
+            + "&point.lon="
+            + str(self.DestinationLng)
+            + "&point.lat="
+            + str(self.DestinationLat)
+            + "&size=2",
+            headers=headers,
+        )
 
         # try:
         geocode_origin = json.loads(get_geocode_origin.text)
@@ -684,15 +722,19 @@ class MyLayout(Screen):
         place_name_origin = geocode_origin["features"][0]["properties"]["label"]
         place_name_origin = place_name_origin.split(",")
         place_name_origin = place_name_origin[0:2]
-        place_name_origin = ','.join(place_name_origin)
+        place_name_origin = ",".join(place_name_origin)
 
-        place_name_destination = geocode_destination["features"][0]["properties"]["label"]
+        place_name_destination = geocode_destination["features"][0]["properties"][
+            "label"
+        ]
         place_name_destination = place_name_destination.split(",")
         place_name_destination = place_name_destination[0:2]
-        place_name_destination = ','.join(place_name_destination)
+        place_name_destination = ",".join(place_name_destination)
 
         self.ids.lokasi_label.text = "ASAL        :  %s\nTUJUAN   :  %s" % (
-            place_name_origin, place_name_destination)
+            place_name_origin,
+            place_name_destination,
+        )
         # print(call.status_code, call.reason)
         print(place_name_destination)
         # except Exception as e:
@@ -704,11 +746,11 @@ class MyLayout(Screen):
         SOC = SOC_value
         # SOC = SOC_value.replace("%","")
         print(float(SOC))
-        dm = open('database/speedmode.json')
+        dm = open("database/speedmode.json")
         data_speedmode = json.load(dm)
-        eco = data_speedmode['mode']['eco']
-        normal = data_speedmode['mode']['normal']
-        sport = data_speedmode['mode']['sport']
+        eco = data_speedmode["mode"]["eco"]
+        normal = data_speedmode["mode"]["normal"]
+        sport = data_speedmode["mode"]["sport"]
         speedmode = [eco, normal, sport]
         # except Exception as e:
         #     print('INVALID STORING DATA :',str(e) )
@@ -720,46 +762,61 @@ class MyLayout(Screen):
                 data = scaler.transform(coba)
                 test = model.predict(data)
                 print("estimasi pemakaian energi : ", float(x), float(test))
-                if (float(SOC) - (3/100)*5 <= float(test)):
+                if float(SOC) - (3 / 100) * 5 <= float(test):
                     if x == eco:
                         estimasi_eco = "TIDAK CUKUP"
-                        self.ids.eco_recomm.color = 223/255, 91/255, 97/255, 1
+                        self.ids.eco_recomm.color = 223 / 255, 91 / 255, 97 / 255, 1
                     elif x == normal:
                         estimasi_normal = "TIDAK CUKUP"
-                        self.ids.normal_recomm.color = 223/255, 91/255, 97/255, 1
+                        self.ids.normal_recomm.color = 223 / 255, 91 / 255, 97 / 255, 1
                     elif x == sport:
                         estimasi_sport = "TIDAK CUKUP"
-                        self.ids.sport_recomm.color = 223/255, 91/255, 97/255, 1
+                        self.ids.sport_recomm.color = 223 / 255, 91 / 255, 97 / 255, 1
 
-                elif (float(SOC) - (3/100)*5 > float(test)):
+                elif float(SOC) - (3 / 100) * 5 > float(test):
                     if x == eco:
                         estimasi_eco = "CUKUP"
-                        self.ids.eco_recomm.color = 120/255, 184/255, 146/255, 1
+                        self.ids.eco_recomm.color = 120 / 255, 184 / 255, 146 / 255, 1
                     elif x == normal:
                         estimasi_normal = "CUKUP"
-                        self.ids.normal_recomm.color = 120/255, 184/255, 146/255, 1
+                        self.ids.normal_recomm.color = (
+                            120 / 255,
+                            184 / 255,
+                            146 / 255,
+                            1,
+                        )
                     elif x == sport:
                         estimasi_sport = "CUKUP"
-                        self.ids.sport_recomm.color = 120/255, 184/255, 146/255, 1
+                        self.ids.sport_recomm.color = 120 / 255, 184 / 255, 146 / 255, 1
 
             # satu rekomendasi
             self.ids.eco_recomm.text = str(estimasi_eco)
             self.ids.normal_recomm.text = str(estimasi_normal)
             self.ids.sport_recomm.text = str(estimasi_sport)
-            self.popup = MDDialogMap(title='Estimasi telah dilakukan',
-                                     text='ECO : '+estimasi_eco+'\nNORMAL :' +
-                                     estimasi_normal+'\nSPORT :'+estimasi_sport,
-                                     radius=[7, 7, 7, 7],
-                                     md_bg_color=(25/255, 135/255, 84/255, 1),
-                                     size_hint=(None, None), size=(400, 200))
+            self.popup = MDDialogMap(
+                title="Estimasi telah dilakukan",
+                text="ECO : "
+                + estimasi_eco
+                + "\nNORMAL :"
+                + estimasi_normal
+                + "\nSPORT :"
+                + estimasi_sport,
+                radius=[7, 7, 7, 7],
+                md_bg_color=(25 / 255, 135 / 255, 84 / 255, 1),
+                size_hint=(None, None),
+                size=(400, 200),
+            )
             self.popup.open()
         except Exception as e:
-            print('estimation error ni :', str(e))
-            self.popup = MDDialogMap(title='Estimasi gagal',
-                                     text='pastikan kendaraan terkoneksi dengan internet',
-                                     radius=[7, 7, 7, 7],
-                                     md_bg_color=(244/255, 67/255, 54/255, 1),
-                                     size_hint=(None, None), size=(400, 200))
+            print("estimation error ni :", str(e))
+            self.popup = MDDialogMap(
+                title="Estimasi gagal",
+                text="pastikan kendaraan terkoneksi dengan internet",
+                radius=[7, 7, 7, 7],
+                md_bg_color=(244 / 255, 67 / 255, 54 / 255, 1),
+                size_hint=(None, None),
+                size=(400, 200),
+            )
             self.popup.open()
 
         # tiga rekomendasi
@@ -767,7 +824,6 @@ class MyLayout(Screen):
 
 
 class MDDialogDef(MDDialog):
-
     def __init__(self, **kwargs):
         super(MDDialog, self).__init__(**kwargs)
         # call dismiss_popup in 2 seconds
@@ -778,7 +834,6 @@ class MDDialogDef(MDDialog):
 
 
 class MDDialogMap(MDDialog):
-
     def __init__(self, **kwargs):
         super(MDDialog, self).__init__(**kwargs)
         # call dismiss_popup in 2 seconds
@@ -793,31 +848,33 @@ class LineMapLayer(MapLayer):
         super(LineMapLayer, self).__init__(**kwargs)
 
         this_path = str(os.getcwd())
-        path = this_path+"/.key/api-key.txt"
+        path = this_path + "/.key/api-key.txt"
         API_file = open(path, "r")
         print(API_file)
         self.API_key_map = API_file.read()
         API_file.close()
-        #self.zoom = 16
+        # self.zoom = 16
 
-        url = "https://api.openrouteservice.org/v2/directions/driving-car?&api_key="+self.API_key_map
+        url = (
+            "https://api.openrouteservice.org/v2/directions/driving-car?&api_key="
+            + self.API_key_map
+        )
 
         # testing Dummies
-        #-7.289612, 112.796190
+        # -7.289612, 112.796190
 
-        start = "&start="+str(OriginLng)+","+str(OriginLat)
-        end = "&end="+str(lng)+","+str(lat)
+        start = "&start=" + str(OriginLng) + "," + str(OriginLat)
+        end = "&end=" + str(lng) + "," + str(lat)
 
         final = url + start + end
         payload = {}
         headers = {
-            'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+            "Accept": "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
         }
 
-        response = requests.request(
-            "GET", final, headers=headers, data=payload)
+        response = requests.request("GET", final, headers=headers, data=payload)
         hasil = json.loads(response.text)
-        polyCoordinates = hasil['features'][0]['geometry']['coordinates']
+        polyCoordinates = hasil["features"][0]["geometry"]["coordinates"]
 
         self._coordinates = [[polyCoordinates[0][1], polyCoordinates[0][0]]]
         for i in range(1, len(polyCoordinates)):
@@ -867,11 +924,18 @@ class LineMapLayer(MapLayer):
     def calc_line_points(self):
         # Offset all points by the coordinates of the first point, to keep coordinates closer to zero.
         # (and therefore avoid some float precision issues when drawing lines)
-        self._line_points_offset = (self.get_x(
-            self.coordinates[0][1]), self.get_y(self.coordinates[0][0]))
+        self._line_points_offset = (
+            self.get_x(self.coordinates[0][1]),
+            self.get_y(self.coordinates[0][0]),
+        )
         # Since lat is not a linear transform we must compute manually
-        self._line_points = [(self.get_x(lon) - self._line_points_offset[0], self.get_y(
-            lat) - self._line_points_offset[1]) for lat, lon in self.coordinates]
+        self._line_points = [
+            (
+                self.get_x(lon) - self._line_points_offset[0],
+                self.get_y(lat) - self._line_points_offset[1],
+            )
+            for lat, lon in self.coordinates
+        ]
 
     def invalidate_line_points(self):
         self._line_points = None
@@ -881,7 +945,7 @@ class LineMapLayer(MapLayer):
         """Get the x position on the map using this map source's projection
         (0, 0) is located at the top left.
         """
-        return clamp(lon, MIN_LONGITUDE, MAX_LONGITUDE) * self.ms / 360.
+        return clamp(lon, MIN_LONGITUDE, MAX_LONGITUDE) * self.ms / 360.0
 
     def get_y(self, lat):
         """Get the y position on the map using this map source's projection
@@ -895,7 +959,7 @@ class LineMapLayer(MapLayer):
 
         # Must redraw when the zoom changes
         # as the scatter transform resets for the new tiles
-        if (self.zoom != mapview.zoom):
+        if self.zoom != mapview.zoom:
             map_source = mapview.map_source
             self.ms = pow(2.0, mapview.zoom) * map_source.dp_tile_size
             self.invalidate_line_points()
@@ -934,7 +998,7 @@ class LineMapLayer(MapLayer):
 
             # Undo the scatter animation transform
             Translate(*mapview.pos)
-            Scale(1/ss, 1/ss, 1)
+            Scale(1 / ss, 1 / ss, 1)
             Translate(-sx, -sy)
 
             # Apply the get window xy from transforms
@@ -951,37 +1015,44 @@ class LineMapLayer(MapLayer):
             # Color(31/255,146/255,161/255,1 )
             # Line(points=self.line_points, width=6/2, joint="round")#4/ms)#6., joint="round",joint_precision=100)
             # Color(146/255,218/255,241/255,1)
-            Color(63/255, 146/255, 172/255, 1)
-            Line(points=self.line_points, width=4/2,
-                 joint="round", joint_precision=100)
+            Color(63 / 255, 146 / 255, 172 / 255, 1)
+            Line(
+                points=self.line_points, width=4 / 2, joint="round", joint_precision=100
+            )
 
 
 class NoValueSpeedMeter(SpeedMeter):
-
-    def value_str(self, n): return ''
+    def value_str(self, n):
+        return ""
 
 
 _displayed = {
-    0: '0',
-    30: u'\u03a0 / 6', 60: u'\u03a0/3', 90: u'\u03a0/2', 120: u'2\u03a0/3',
-    150: u'5\u03a0/6',
-    180: u'\u03a0', 210: u'7\u03a0/6', 240: u'4\u03a0/3'
+    0: "0",
+    30: "\u03a0 / 6",
+    60: "\u03a0/3",
+    90: "\u03a0/2",
+    120: "2\u03a0/3",
+    150: "5\u03a0/6",
+    180: "\u03a0",
+    210: "7\u03a0/6",
+    240: "4\u03a0/3",
 }
 
 
 def reset():
     import kivy.core.window as window
     from kivy.base import EventLoop
+
     if not EventLoop.event_listeners:
         from kivy.cache import Cache
-        window.Window = window.core_select_lib(
-            'window', window.window_impl, True)
+
+        window.Window = window.core_select_lib("window", window.window_impl, True)
         Cache.print_usage()
         for cat in Cache._categories:
             Cache._objects[cat] = {}
 
 
-#MyLayout.estimasi.has_been_called = False
+# MyLayout.estimasi.has_been_called = False
 # lay = MyLayout()
 reset()
 Dashboard().run()
