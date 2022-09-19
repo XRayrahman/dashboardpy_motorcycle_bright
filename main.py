@@ -1,6 +1,8 @@
 from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivymd.uix.dialog import MDDialog
+from kivy_gradient import Gradient
+from kivy.utils import get_color_from_hex
 from kivymd.uix.button import MDFillRoundFlatButton, MDFlatButton
 from kivy.uix.screenmanager import (
     RiseInTransition,
@@ -63,8 +65,9 @@ class Dashboard(MDApp):
     red = 223 / 255, 91 / 255, 97 / 255, 1
     green = 118 / 255, 209 / 255, 155 / 255, 1
     cyan = 166 / 255, 217 / 255, 245 / 255, 1
-    dark_blue = 6 / 255, 17 / 255, 21 / 255, 1
+    dark_blue = 12/255,49/255,62/255,1
     off = 180 / 255, 180 / 255, 180 / 255, 1
+    off_white = 217/255,217/255,217/255,1 
 
     def build(self):
         self.theme_cls.theme_style = "Dark"
@@ -75,9 +78,8 @@ class Dashboard(MDApp):
         return MyLayout()
 
     def on_start(self):
-
         self.root.ids.screen_manager.switch_to(self.root.ids.splashScreen)
-        self.subScreen = Clock.schedule_once(self.changeScreen, 9)
+        self.subScreen = Clock.schedule_once(self.changeScreen, 12)
 
         self.root.ids.power_switch.active = True
         self.jarak_sebelumnya = 0
@@ -162,12 +164,12 @@ class Dashboard(MDApp):
                 color_bar = self.green
                 color_low = self.off
                 color_full = self.green
-                color_text = self.dark_blue
+                color_text = self.off_white
             else:
                 color_bar = self.cyan
                 color_low = self.off
                 color_full = self.off
-                color_text = self.dark_blue
+                color_text = self.off_white
 
             self.root.ids.battery_full.text_color = color_full
             self.root.ids.battery_low.text_color = color_low
@@ -199,7 +201,7 @@ class Dashboard(MDApp):
             self.root.ids.temp_high.text_color = self.red
             Clock.schedule_once(self.blink_temp, 1.5)
         else:
-            self.root.ids.suhu_value_text.color = self.dark_blue
+            self.root.ids.suhu_value_text.color = self.off_white
 
     def read_database(self, id):
         datadb = open("database/%s.json" % id)
@@ -440,18 +442,18 @@ class Dashboard(MDApp):
                 self.root.ids.mode_onMain.text = "SPORT"
 
         if isTurnLeft == True:
-            self.root.ids.turn_left.text_color = self.dark_blue
+            self.root.ids.turn_left.text_color = self.off
             Clock.schedule_once(self.blink_signal, 0.5)
         elif isTurnRight == True:
-            self.root.ids.turn_right.text_color = self.dark_blue
+            self.root.ids.turn_right.text_color = self.off
             Clock.schedule_once(self.blink_signal, 0.5)
         else:
-            self.root.ids.turn_left.text_color = self.off
-            self.root.ids.turn_right.text_color = self.off
+            self.root.ids.turn_left.text_color = self.dark_blue
+            self.root.ids.turn_right.text_color = self.dark_blue
 
     def blink_signal(self, *args):
-        self.root.ids.turn_left.text_color = self.off
-        self.root.ids.turn_right.text_color = self.off
+        self.root.ids.turn_left.text_color = self.dark_blue
+        self.root.ids.turn_right.text_color = self.dark_blue
 
     def update_status(self, nap):
         if self.sw_started:
@@ -619,7 +621,8 @@ class MyLayout(Screen):
                 size=(400, 400),
             )
             self.root.ids.wifi_status.icon = "wifi-on"
-            self.root.ids.wifi_status.text_color = Dashboard.dark_blue
+            # self.root.ids.wifi_status.text_color = Dashboard.dark_blue
+            self.root.ids.wifi_status.text_color = Dashboard.off_white
             self.popup.open()
         else:
             self.popup = MDDialogDef(

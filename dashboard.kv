@@ -1,67 +1,69 @@
-#!:kivy
 #:import MapView kivy_garden.mapview
 #:import MapSource kivy_garden.mapview
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:import Gradient kivy_gradient.Gradient
 
 <MDIconButtonOff@MDIconButton>
     user_font_size: "40sp"
     pos_hint:{"center_y": .5}
     theme_text_color: "Custom"
-    text_color: 180/255,180/255,180/255,1 # light color
-    # text_color: 23/255,28/255,35/255,1 # dark color
+    # text_color: 180/255,180/255,180/255,1 # light color
+    text_color: 12/255,49/255,62/255,1 # dark color
     # text_color: 14/255,78/255,107/255,1 # blue-accent color
-
 
 <PilLayout@BoxLayout>
     size_hint: .1, .05
     padding:"7dp"
     canvas:
-        Color:
-            # rgba:(6/255,17/255,21/255,1) # dark color
-            rgba:(217/255,217/255,217/255,1) # bright theme
+        # Color:
+        #     # rgba:(6/255,17/255,21/255,1) # dark color
+        #     rgba:(217/255,217/255,217/255,1) # bright theme
             # rgba:(6/255,17/255,21/255,1) # dark theme
         RoundedRectangle:
             size: self.size
             pos: self.pos
+            source: 'assets/grad.png'
 
 
 <CardLayout@BoxLayout>
     padding:"25dp"
-    canvas:
-        Color:
-            # rgba:(23/255,28/255,35/255,1) # grey version
-            # rgba:(6/255,17/255,21/255,1)
-            # rgba:(23/255,33/255,36/255,1) 
-            rgba:(217/255,217/255,217/255,1) # bright theme
-            # rgba:(26/255,91/255,120/255,1) # blue-dark version
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
+    # canvas:
+    #     Color:
+    #         # rgba:(23/255,28/255,35/255,1) # grey version
+    #         # rgba:(6/255,17/255,21/255,1)
+    #         # rgba:(23/255,33/255,36/255,1) 
+    #         rgba:(217/255,217/255,217/255,1) # bright theme
+    #         # rgba:(26/255,91/255,120/255,1) # blue-dark version
+    #     RoundedRectangle:
+    #         size: self.size
+    #         pos: self.pos
 
 <CardLayoutSecondary@BoxLayout>
     padding:"25dp"
-    canvas:
-        Color:
-            # rgba:(0/255,10/255,14/255,1) # dark version
-            # rgba:(23/255,33/255,36/255,1) 
-            rgba:(217/255,217/255,217/255,1) # bright theme
-            # rgba:(26/255,91/255,120/255,1) # blue-dark version
-            # rgba:(6/255,17/255,21/255,1)
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
+    # canvas:
+    #     Color:
+    #         # rgba:(0/255,10/255,14/255,1) # dark version
+    #         # rgba:(23/255,33/255,36/255,1) 
+    #         rgba:(217/255,217/255,217/255,1) # bright theme
+    #         # rgba:(26/255,91/255,120/255,1) # blue-dark version
+    #         # rgba:(6/255,17/255,21/255,1)
+    #     RoundedRectangle:
+    #         size: self.size
+    #         pos: self.pos
 
 <CardLayoutBottom@BoxLayout>
     padding:"25dp"
     canvas:
         Color:
-            # rgba:(0/255,10/255,14/255,1) # dark version
-            # rgba:(23/255,33/255,36/255,1) 
-            rgba:(217/255,217/255,217/255,1) # bright theme
-            # rgba:(26/255,91/255,120/255,1) # blue-dark version
-            # rgba:(6/255,17/255,21/255,1)
+        #     # rgba:(0/255,10/255,14/255,1) # dark version
+        #     # rgba:(23/255,33/255,36/255,1) 
+        #     # rgba:(217/255,217/255,217/255,1) # bright theme
+        #     # rgba:(26/255,91/255,120/255,1) # blue-dark version
+        #     rgba:(6/255,17/255,21/255,1)
         RoundedRectangle:
             size: self.size
             pos: self.pos
+            source: 'assets/grad-blue.png'
 
 <CardLayoutAccent@BoxLayout>
     padding:"25dp"
@@ -69,13 +71,14 @@
         Color:
             # rgba:(23/255,28/255,35/255,1) # grey version
             # rgba:(26/255,91/255,120/255,1)
-            rgba:(6/255,17/255,21/255,1) # bright theme
+            # rgba:(6/255,17/255,21/255,1) # bright theme
             # rgba:(23/255,33/255,36/255,1) 
             # rgba:(217/255,217/255,217/255,1) # bright version
             # rgba:(26/255,91/255,120/255,1) # blue-dark version
         RoundedRectangle:
             size: self.size
             pos: self.pos
+            source: 'assets/grad-blue.png'
 
 
 <LabelRajdhani@Label>
@@ -85,7 +88,8 @@
     # color: 15/255,18/255,23/255,1
     # color: 146/255,218/255,241/255,1 # cyan color
     # color: 217/255,217/255,217/255,1 # off-white color
-    color:6/255,17/255,21/255,1 # bright theme
+    # color:6/255,17/255,21/255,1 # bright theme 
+    color:8/255,29/255,37/255,1 # bright theme 
 
 <LabelRajdhaniAlignLeft@LabelRajdhani>
     text_size:self.size
@@ -103,8 +107,8 @@
     font_name:"assets/fonts/Rajdhani-SemiBold.ttf"
     font_size:"36sp"
     # color: 15/255,18/255,23/255,1 # dark color
-    # color: 217/255,217/255,217/255,1 # off-white color
-    color:6/255,17/255,21/255,1 # bright theme
+    color: 217/255,217/255,217/255,1 # off-white color
+    # color:6/255,17/255,21/255,1 # bright theme
     markup: True
 
 <LabelRajdhaniCenter@Label>
@@ -190,23 +194,29 @@
             BoxLayout:
                 orientation:'vertical'
                 size:root.height,root.width
-                MDBoxLayoutBG:
+                BoxLayout:
+                    # canvas:
+                    #     Rectangle:
+                    #         size: self.size
+                    #         pos: self.pos
+                    #         texture: Gradient.horizontal(get_color_from_hex("cccccc"), get_color_from_hex("d7d7d7"))
                     # md_bg_color: 6/255,17/255,21/255,1
 
-                    # canvas.before:
-                    #     Rectangle:
-                    #         source: 'assets/wallpaper.png'
-                    #         size: self.height, self.width
+                    canvas:
+                        Rectangle:
+                            source: 'assets/grad.png'
+                            size: self.size
+                            pos: self.pos
                     GridLayout:
                         cols:2
                         size_hint: 1, 1
                         spacing:"15dp"
                         padding:"15dp"
-                        canvas.before:
-                            Rectangle:
-                                source:"assets/wallpaper.png"
-                                size: self.size
-                                pos: self.pos
+                        # canvas.before:
+                        #     Rectangle:
+                        #         source:"assets/wallpaper.png"
+                        #         size: self.size
+                        #         pos: self.pos
                         GridLayout:
                             rows:3
                             size_hint:0.27,1
@@ -459,7 +469,7 @@
                                                 # padding: "5dp"
                                                 orientation: 'vertical'
                                                 BoxLayout:
-                                                    size_hint: 1, .3
+                                                    size_hint: 1, .35
 
                                                 
                                                 CardLayoutSecondary:
@@ -474,7 +484,8 @@
                                                             # circle_color: 101/255,199/255,255/255,1
                                                             circle_color: 166/255,217/255,245/255,1
                                                             percent_color: 15/255,18/255,23/255,1
-                                                            background_circle_color: 23/255,28/255,35/255,1
+                                                            # background_circle_color: 23/255,28/255,35/255,1
+                                                            background_circle_color: 8/255,29/255,37/255,1
                                                             line_width: dp(8)
                                                             background_line_width: dp(8)
                                                             percent_size: "32sp"
@@ -519,6 +530,7 @@
                                                             user_font_size: "40sp"
                                                             id: battery_charging
                                                             icon: "battery-charging-50"
+                                                            text_color: 180/255,180/255,180/255,1 # light color
 
                                                         MDIconButtonOff:
                                                             user_font_size: "40sp"
@@ -536,16 +548,21 @@
                                                     start_angle: -90
                                                     end_angle: 180
                                                     subtick: 5
-                                                    cadran_color: '#171c23'
-                                                    # cadran_color: "#d9d9d9"
-                                                    # shadow_color: '#061115'
-                                                    shadow_color:'#a1d4f0'
+                                                    # cadran_color: '#171c23'
+                                                    cadran_color: "#90ddfe"
+                                                    shadow_color:'#b8d4f0'
+                                                    # shadow_color:'#081d25'
+                                                    # shadow_color:'#d2d2d2'
+                                                    # thickness: 3
                                                     # shadow_width: 100
                                                     needle_color: '#a1d4f0'
-                                                    needle_image:"assets/needle.png"
-                                                    sectors: [0, '#171c23']
-                                                    # sectors: [0, '#171c23',80,'#df5b61']
+                                                    needle_image:"assets/needle_s.png"
+                                                    # sectors: [0, '#171c23']#061115
+                                                    sectors: [0, '#081d25']
+                                                    # sectors: [0, '#b4b4b4']
+                                                    # sectors: [0, '#b4b4b4',80,'#df5b61']
                                                     sector_width: 22
+                                                    shadow_width: 15
                                         
                                         FloatLayout:
                                             size_hint:1,1
@@ -571,12 +588,13 @@
                                                 # bg_color:
                                                 padding:"7dp"
                                                 canvas:
-                                                    Color:
-                                                        rgba:(23/255,28/255,35/255,1)
+                                                    # Color:
+                                                    #     rgba:(23/255,28/255,35/255,1)
                                                         # rgba:(180/255,180/255,180/255,1)
                                                     RoundedRectangle:
                                                         size: self.size
                                                         pos: self.pos
+                                                        source: 'assets/grad-blue.png'
                                                 LabelRajdhaniLight:
                                                     id:odometer_onMain
                                                     # bold: True
@@ -592,6 +610,7 @@
                                             BoxLayout:
                                                 orientation: "vertical"
                                                 pos_hint:{"top":.43,"x":.438}
+                                                # pos_hint:{"top":.6,"x":.578}
                                                 size_hint: .25, .25
                                                 padding:"7dp"
                                                 LabelRajdhaniCenter:
@@ -602,7 +621,8 @@
                                                     font_size:"68sp"
                                                     halign:"right"
                                                     # color:217/255,217/255,217/255,1
-                                                    color: 6/255,17/255,21/255,1
+                                                    # color: 6/255,17/255,21/255,1
+                                                    color: 8/255,29/255,37/255,1
 
                                         FloatLayout:
                                             size_hint:1,1
@@ -616,6 +636,7 @@
                                                     user_font_size: "40sp"
                                                     id: temp_high
                                                     icon: "thermometer-alert"
+                                                    text_color: 180/255,180/255,180/255,1 # light color
 
                                         FloatLayout:
                                             size_hint:1,1
@@ -632,7 +653,7 @@
                                                     # font_size:"24sp"
                                                     halign:"right"
                                                     # color: 217/255,217/255,217/255,1
-                                                    color: 6/255,17/255,21/255,1
+                                                    color: 8/255,29/255,37/255,1
 
                                         FloatLayout:
                                             size_hint:1,1
@@ -987,12 +1008,13 @@
                                     padding:'5dp'
                                     # canvas:
                                     #     Color:
-                                    #         rgba:(23/255,28/255,35/255,1)
+                                    #         # rgba:(8/255,29/255,37/255,1)
 
                                     #         # rgba: (11/255,14/255,13/255,1)
                                     #     RoundedRectangle:
                                     #         size: self.size
                                     #         pos: self.pos
+                                    #         source: 'assets/grad-blue.png'
 
                                     BoxLayout:
                                         size_hint: 1,1
@@ -1011,9 +1033,8 @@
                                             valign:"center"
 
                                         LabelRajdhaniBottom:
-                                            id: line_junction
                                             size_hint:0.1,1
-                                            text:"|"
+                                            text:"//"
                                             #font_style: "Body2"
                                             # font_name:"Roboto"
                                             font_size:"55sp"
@@ -1057,7 +1078,6 @@
                         size_hint:1,1
                         font_size:"12sp"
                         pos_hint: {"center_x":0.27}
-                        # color:(0,0,0,1)
 
             FloatLayout:
                 size_hint:1,1
@@ -1071,7 +1091,19 @@
                         size_hint:1,1
                         font_size:"12sp"
                         pos_hint: {"center_x":0.27}
-                        # color:(0,0,0,1)
+
+            FloatLayout:
+                size_hint:1,1
+                BoxLayout:
+                    orientation: "horizontal"
+                    pos_hint:{"top":.084,"x":.0072}
+                    size_hint: 0.137, 0.044
+                    LabelRajdhani:
+                        text:"© RAIZEN"
+                        size_hint:1,1
+                        font_size:"12sp"
+                        pos_hint: {"center_x":0.27}
+                        color:(120/255,120/255,120/255,210/255)
 
             # FloatLayout:
             #     orientation: "horizontal"
