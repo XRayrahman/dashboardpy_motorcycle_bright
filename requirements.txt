@@ -5,6 +5,7 @@ Kivy == 2.1.0
 
 # dashboardpy_motorcycle/rfcomm_server.py: 4
 #PyBluez == 0.22
+KivyGradient == 0.0.4
 
 # dashboardpy_motorcycle/main.py: 25
 joblib == 1.1.0

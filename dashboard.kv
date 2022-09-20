@@ -67,18 +67,18 @@
 
 <CardLayoutAccent@BoxLayout>
     padding:"25dp"
-    canvas:
-        Color:
-            # rgba:(23/255,28/255,35/255,1) # grey version
-            # rgba:(26/255,91/255,120/255,1)
-            # rgba:(6/255,17/255,21/255,1) # bright theme
-            # rgba:(23/255,33/255,36/255,1) 
-            # rgba:(217/255,217/255,217/255,1) # bright version
-            # rgba:(26/255,91/255,120/255,1) # blue-dark version
-        RoundedRectangle:
-            size: self.size
-            pos: self.pos
-            source: 'assets/grad-blue.png'
+    # canvas:
+    #     Color:
+    #         # rgba:(23/255,28/255,35/255,1) # grey version
+    #         # rgba:(26/255,91/255,120/255,1)
+    #         # rgba:(6/255,17/255,21/255,1) # bright theme
+    #         # rgba:(23/255,33/255,36/255,1) 
+    #         # rgba:(217/255,217/255,217/255,1) # bright version
+    #         # rgba:(26/255,91/255,120/255,1) # blue-dark version
+    #     RoundedRectangle:
+    #         size: self.size
+    #         pos: self.pos
+    #         # source: 'assets/grad-blue.png'
 
 
 <LabelRajdhani@Label>
@@ -138,11 +138,17 @@
 
                 canvas:
                     Rectangle:
-                        # source: 'bg.png'
-                        size: self.height, self.width
+                        source: 'assets/grad-splash.png'
+                        size: self.size
+                        pos: self.pos
+
+                # canvas:
+                #     Rectangle:
+                #         # source: 'bg.png'
+                #         size: self.height, self.width
 
                 
-                MDBoxLayoutBG:
+                BoxLayout:
                     # md_bg_color: 6/255,17/255,21/255,1
                     pos_hint: {"center_x": 0.5,"center_y": 0.5}
                     padding:"50dp"
@@ -160,30 +166,35 @@
                 #padding:"5dp"
                 # pos_hint: {"center_x": .5, "center_y": 0.3}   
                 
-                MDSpinner:
-                    size_hint: None, None
-                    size: dp(30), dp(30)
-                    pos_hint: {'center_x': .5, 'center_y': .25}
-                    active: True
-                    color: 6/255,17/255,21/255,1
+                # MDSpinner:
+                #     size_hint: None, None
+                #     size: dp(30), dp(30)
+                #     pos_hint: {'center_x': .5, 'center_y': .25}
+                #     active: True
+                #     color: 6/255,17/255,21/255,1
+
                 # AKSpinnerThreeDots:
                 #     id: foldingcube
                 #     spinner_size: dp(35)
                 #     pos_hint: {"center_x": .5, "top": .25}
                 #     angle: 45
                 #     active: True
-                    # BoxLayout:
-                    #     pos_hint: {"center_x": 0.5,"center_y": 1}
-                    #     padding:"10dp"
-                    #     size_hint: 0.3,0.1
+                # BoxLayout:
+                #     pos_hint: {"center_x": 0.5,"center_y": 1}
+                #     padding:"10dp"
+                #     size_hint: 0.3,0.1
 
-                    #     MDProgressBar:
-                    #         id: progress
-                    #         orientation:"horizontal"
-                    #         value:30
-                    #         type:"indeterminate"
-                    #         running_duration:5
-                    #         catching_duration:1
+                MDProgressBar:
+                    id: progress
+                    size_hint: None, None
+                    size: dp(200), dp(20)
+                    orientation:"horizontal"
+                    pos_hint: {'center_x': .5, 'center_y': .045}
+                    value:0
+                    color: 12/255,49/255,62/255,1 # dark color
+                    # type:"indeterminate"
+                    # running_duration:5
+                    # catching_duration:1
                         
 
 
@@ -204,7 +215,7 @@
 
                     canvas:
                         Rectangle:
-                            source: 'assets/grad.png'
+                            source: 'assets/grad-wf.png'
                             size: self.size
                             pos: self.pos
                     GridLayout:
@@ -341,7 +352,7 @@
                                             size_hint_y:0.66
                                             padding:"15dp"
                                             orientation:"vertical"
-                                            LabelRajdhaniLight:
+                                            LabelRajdhani:
                                                 # id: label_bottom_ori
                                                 text:"Install aplikasi\nuntuk estimasi"
                                                 size_hint:1,1
@@ -352,7 +363,7 @@
                                             BoxLayout:
                                                 padding:"3dp"
                                                 Image:
-                                                    source: 'assets/mobile-app.png'
+                                                    source: 'assets/mobile-app-dark.png'
                                                     size: self.texture_size
 
                                         BoxLayout:
@@ -1103,7 +1114,7 @@
                         size_hint:1,1
                         font_size:"12sp"
                         pos_hint: {"center_x":0.27}
-                        color:(120/255,120/255,120/255,210/255)
+                        color:(120/255,120/255,120/255,150/255)
 
             # FloatLayout:
             #     orientation: "horizontal"

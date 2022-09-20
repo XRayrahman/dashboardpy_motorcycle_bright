@@ -64,7 +64,7 @@ class Dashboard(MDApp):
     # theme-custom
     red = 223 / 255, 91 / 255, 97 / 255, 1
     green = 118 / 255, 209 / 255, 155 / 255, 1
-    cyan = 166 / 255, 217 / 255, 245 / 255, 1
+    cyan = 126 / 255, 212 / 255, 240 / 255, 1
     dark_blue = 12/255,49/255,62/255,1
     off = 180 / 255, 180 / 255, 180 / 255, 1
     off_white = 217/255,217/255,217/255,1 
@@ -200,6 +200,9 @@ class Dashboard(MDApp):
             self.root.ids.suhu_value_text.color = self.red
             self.root.ids.temp_high.text_color = self.red
             Clock.schedule_once(self.blink_temp, 1.5)
+        elif int_suhu <= 10:
+            self.root.ids.suhu_value_text.color = self.cyan
+            self.root.ids.temp_high.text_color = self.cyan
         else:
             self.root.ids.suhu_value_text.color = self.off_white
 
@@ -270,7 +273,7 @@ class Dashboard(MDApp):
 
         if valtegangan >= 84 and self.tegangan_sebelum < 84.00:
             self.popup = MDDialogDef(
-                title="NOTIFICATION ALERT",
+                title="// NOTIFICATION ALERT //",
                 text="Baterai terisi penuh \nKendaraan siap untuk digunakan",
                 radius=[7, 7, 7, 7],
                 md_bg_color=(25 / 255, 135 / 255, 84 / 255, 1),
@@ -285,7 +288,7 @@ class Dashboard(MDApp):
             # self.delay_notification = 0
         elif valtegangan < 72 and self.delay_notification == 5:
             self.popup = MDDialogDef(
-                title="NOTIFICATION ALERT",
+                title="// NOTIFICATION ALERT //",
                 text="Sisa Kapasitas baterai dibawah 30% \nCharge kendaraan terlebih dahulu",
                 radius=[7, 7, 7, 7],
                 md_bg_color=(215 / 255, 71 / 255, 68 / 255, 1),
@@ -316,6 +319,7 @@ class Dashboard(MDApp):
     # update data suhu dan kecepatan
 
     def update_data_suhu_kecepatan(self, nap):
+        self.root.ids.progress.value = self.root.ids.progress.value + .2
         # tegangan = 0.00
         strtegangan = "0.0"
         if self.sw_started:
