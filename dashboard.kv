@@ -244,19 +244,24 @@
                                         orientation: "vertical"
                                         spacing:'15dp'
                                         CardLayout:
-                                            orientation: "horizontal"
+                                            orientation: "vertical"
                                             size_hint_y: 0.4
-                                            # MDIconButton:
-                                            #     icon: "motorbike"
-                                            #     user_font_size: "50sp"
-                                            #     theme_text_color: "Custom"
-                                            #     text_color: app.theme_cls.primary_color
-                                            #     pos_hint:{"center_x": .1, "center_y": .5}
-                                            LabelRajdhani:
+                                            MDRectangleFlatButton:
                                                 id: mode_onMain
+                                                font_name:"assets/fonts/Rajdhani-SemiBold.ttf"
+                                                markup: True
                                                 text: "NORMAL"
                                                 font_size: "24sp"
+                                                text_color:8/255,29/255,37/255,1 
+                                                line_color: (0,0,0,0)
+                                                padding:[0,15,0,0]
                                                 pos_hint: {"center_x": .5, "center_y": .5}
+                                                on_release: app.modePressed()
+                                            # LabelRajdhani:
+                                            #     id: mode_onMain
+                                            #     text: "NORMAL"
+                                            #     font_size: "24sp"
+                                            #     pos_hint: {"center_x": .5, "center_y": .5}
 
                                         CardLayout:
                                             orientation: "horizontal"

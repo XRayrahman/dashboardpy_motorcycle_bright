@@ -81,6 +81,9 @@ class Dashboard(MDApp):
         self.root.ids.screen_manager.switch_to(self.root.ids.splashScreen)
         self.subScreen = Clock.schedule_once(self.changeScreen, 12)
 
+        vehicleStatus = self.read_database("vehicle_info")
+        vehicleStatus["power"] = "on"
+        self.update_database("vehicle_info", vehicleStatus)
         self.root.ids.power_switch.active = True
         self.jarak_sebelumnya = 0
         self.screen_tomap = False
@@ -205,6 +208,7 @@ class Dashboard(MDApp):
             self.root.ids.temp_high.text_color = self.cyan
         else:
             self.root.ids.suhu_value_text.color = self.off_white
+            self.root.ids.temp_high.text_color = self.off_white
 
     def read_database(self, id):
         datadb = open("database/%s.json" % id)
@@ -421,29 +425,43 @@ class Dashboard(MDApp):
     #             #     print("Time out! Exit.\n")
     #             #     pass
 
+    def modePressed(self):
+        vehicleStatus = self.read_database("vehicle_info")
+        mode_onMain = self.root.ids.mode_onMain
+        if mode_onMain.text == "ECO":
+            vehicleStatus["mode"] = "n"
+            mode_onMain.text = "NORMAL"
+        elif mode_onMain.text == "NORMAL":
+            vehicleStatus["mode"] = "s"
+            mode_onMain.text = "SPORT"
+        else:
+            vehicleStatus["mode"] = "e"
+            mode_onMain.text = "ECO"
+        self.update_database("vehicle_info", vehicleStatus)
+
     def turn_signal(self, nap):
         if self.sw_started:
             self.sw_seconds += nap
-
-        fv = open("database/vehicle_info.json")
-        vehicleStatus = json.load(fv)
+        vehicleStatus = self.read_database("vehicle_info")
         vehicleMode = vehicleStatus["mode"]
         isTurnLeft = vehicleStatus["turn_signal"][0]
         isTurnRight = vehicleStatus["turn_signal"][1]
 
         currentChannel = self.root.ids.channels.current
+        mode_onMain = self.root.ids.mode_onMain
+
         if vehicleMode == "e":
 
             if currentChannel == "mainChannel":
-                self.root.ids.mode_onMain.text = "ECO"
+                mode_onMain.text = "ECO"
         elif vehicleMode == "n":
 
             if currentChannel == "mainChannel":
-                self.root.ids.mode_onMain.text = "NORMAL"
+                mode_onMain.text = "NORMAL"
         elif vehicleMode == "s":
 
             if currentChannel == "mainChannel":
-                self.root.ids.mode_onMain.text = "SPORT"
+                mode_onMain.text = "SPORT"
 
         if isTurnLeft == True:
             self.root.ids.turn_left.text_color = self.off
@@ -469,7 +487,11 @@ class Dashboard(MDApp):
         self.root.ids.time_onMap.text = strftime("%H:%M")
 
         if self.root.ids.power_switch.active == False:
+            vehicleStatus = self.read_database("vehicle_info")
+            vehicleStatus["power"] = "off"
+            self.update_database("vehicle_info", vehicleStatus)
             os.system("killall python3")
+            os.system("killall python")
 
         fd = open("database/connection.json")
         connectionFile = json.load(fd)

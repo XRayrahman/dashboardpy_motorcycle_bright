@@ -1,4 +1,5 @@
 {
+    "power": "on",
     "mode": "n",
     "turn_signal": [
         false,

@@ -6,6 +6,7 @@
     "turn":[
         false,false
     ],
+    "power":"on",
     "total_km":"1.430",
     "wifi":{
         "id":"ITS-WIFI",
