@@ -22,7 +22,7 @@
 4. instalasi library speedmeter
     $ cd ~
     $ sudo chmod 777 /usr/local/lib/python3.9/dist-packages/
-    $ git clone https://github.com/kivy-garden/speedmeter.git
+    $ git clone https://github.com/XRayrahman/speedmeter.git
     $ cd path/to/speedmeter
     $ python3 setup.py install
     $ cd ..
