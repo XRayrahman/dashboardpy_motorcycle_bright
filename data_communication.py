@@ -172,7 +172,7 @@ def retry():
     onLoop = True
     baudrate = 115200
     while onLoop == True:
-        print("retrying "+str(i))
+        print("retrying "+str(i)+" time")
         available_ports = arduino_ports()
         try:
             i += 1
@@ -197,7 +197,7 @@ def main():
     baudrate = 115200
     while True:
         while onLoop == True:
-            print("try "+str(i))
+            print("trying "+str(i)+" time")
             available_ports = arduino_ports()
             try:
                 i += 1
