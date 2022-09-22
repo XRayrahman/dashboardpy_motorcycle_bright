@@ -1,6 +1,8 @@
 from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivymd.uix.dialog import MDDialog
+from kivymd.uix.snackbar import BaseSnackbar
+from kivy.properties import StringProperty, NumericProperty
 from kivy_gradient import Gradient
 from kivy.utils import get_color_from_hex
 from kivymd.uix.button import MDFillRoundFlatButton, MDFlatButton
@@ -79,7 +81,7 @@ class Dashboard(MDApp):
 
     def on_start(self):
         self.root.ids.screen_manager.switch_to(self.root.ids.splashScreen)
-        self.subScreen = Clock.schedule_once(self.changeScreen, 12)
+        self.subScreen = Clock.schedule_once(self.changeScreen, 1)
 
         vehicleStatus = self.read_database("vehicle_info")
         vehicleStatus["power"] = "on"
@@ -154,27 +156,37 @@ class Dashboard(MDApp):
             self.root.ids.channels.switch_to(self.root.ids.aboutChannel)
             # self.screen_tomap = False
 
-    def battery_full(self, status):
+    def battery_status(self, status):
         currentChannel = self.root.ids.channels.current
         if currentChannel == "mainChannel":
-            if status == "no":
+            if status == "low":
                 color_bar = self.red
+                color_charge = self.off
                 color_low = self.red
                 color_full = self.off
                 color_text = self.red
                 Clock.schedule_once(self.blink_battery, 1.5)
-            elif status == "yes":
+            elif status == "high":
                 color_bar = self.green
+                color_charge = self.off
                 color_low = self.off
                 color_full = self.green
                 color_text = self.off_white
-            else:
+            elif status == "charging":
                 color_bar = self.cyan
+                color_charge = self.cyan
+                color_low = self.off
+                color_full = self.off
+                color_text = self.off_white
+            else:
+                color_bar = self.green
+                color_charge = self.off
                 color_low = self.off
                 color_full = self.off
                 color_text = self.off_white
 
             self.root.ids.battery_full.text_color = color_full
+            self.root.ids.battery_charging.text_color = color_charge
             self.root.ids.battery_low.text_color = color_low
             self.root.ids.SOC_bar.circle_color = color_bar
             self.root.ids.tegangan_value_text.color = color_text
@@ -251,20 +263,29 @@ class Dashboard(MDApp):
         valtegangan = float(inttegangan)
         if valtegangan >= 84:
             SOC_value = 100
-            self.battery_full("yes")
+            self.battery_status("high")
         elif valtegangan < 84 and valtegangan >= 76:
             SOC_value = round(100 - ((84 - valtegangan) / 0.8), 1)
-            self.battery_full("yes")
+            if self.tegangan_sebelum < valtegangan:
+                self.battery_status("charging")
+            else:
+                self.battery_status("high")
         elif valtegangan < 76 and valtegangan >= 72:
             SOC_value = round(90 - ((76 - valtegangan) / 0.067), 1)
-            self.battery_full("neither")
+            if self.tegangan_sebelum < valtegangan:
+                self.battery_status("charging")
+            else:
+                self.battery_status("neither")
         elif valtegangan < 72 and valtegangan >= 60:
             SOC_value = round(30 - ((72 - valtegangan) / 0.4), 1)
-            self.battery_full("no")
+            if self.tegangan_sebelum < valtegangan:
+                self.battery_status("charging")
+            else:
+                self.battery_status("low")
         else:
             SOC_value = round(0, 1)
             # SOC_value = round(30-((60-valtegangan)/2),1)
-            self.battery_full("no")
+            self.battery_status("low")
 
         # SOC_value = round((float(strtegangan)/3)*100, 1)
         self.SOC_value = str(SOC_value) + "%"
@@ -276,36 +297,70 @@ class Dashboard(MDApp):
             self.root.ids.SOC_ontop.text = self.SOC_value
 
         if valtegangan >= 84 and self.tegangan_sebelum < 84.00:
-            self.popup = MDDialogDef(
-                title="// NOTIFICATION ALERT //",
-                text="Baterai terisi penuh \nKendaraan siap untuk digunakan",
-                radius=[7, 7, 7, 7],
-                md_bg_color=(25 / 255, 135 / 255, 84 / 255, 1),
-                size_hint=(0.4, 0.1),
-                buttons=[
-                    MDFlatButton(text="CANCEL"),
-                    MDFillRoundFlatButton(text="HENTIKAN CHARGE"),
-                ]
-                # size=(250, 70)
+            snackbar = CustomSnackbar(
+                text="Baterai terisi penuh",
+                icon="battery",
+                bg_color=self.green,
+                snackbar_x="15dp",
+                snackbar_y="15dp",
+                size_hint_x=(
+                    Window.width - (188.5 * 2)
+                ) / Window.width,
+                # size_hint_x=(
+                #     Window.width - (15 * 2)
+                # ) / Window.width,
+                size_hint_y=0.153
             )
-            self.popup.open()
-            # self.delay_notification = 0
+            snackbar.open()
+            self.delay_notification = 0
+
+        # elif valtegangan > 72 and valtegangan < 76 and self.tegangan_sebelum < valtegangan:
+        #     snackbar = CustomSnackbar(
+        #         text="Baterai Charging",
+        #         icon="battery",
+        #         bg_color=self.dark_blue,
+        #         snackbar_x="15dp",
+        #         snackbar_y="15dp",
+        #         size_hint_x=(
+        #             Window.width - (188.5 * 2)
+        #         ) / Window.width,
+        #         size_hint_y=0.153
+        #     )
+        #     snackbar.open()
+        #     self.delay_notification = 0
         elif valtegangan < 72 and self.delay_notification == 5:
-            self.popup = MDDialogDef(
-                title="// NOTIFICATION ALERT //",
-                text="Sisa Kapasitas baterai dibawah 30% \nCharge kendaraan terlebih dahulu",
-                radius=[7, 7, 7, 7],
-                md_bg_color=(215 / 255, 71 / 255, 68 / 255, 1),
-                size_hint=(0.4, 0.1),
-                buttons=[
-                    MDFlatButton(text="CANCEL"),
-                    MDFillRoundFlatButton(text="LOKASI CHARGE TERDEKAT"),
-                ],
+            # self.popup = MDDialogDef(
+            #     title="// NOTIFICATION ALERT //",
+            #     text="Sisa Kapasitas baterai dibawah 30% \nCharge kendaraan terlebih dahulu",
+            #     radius=[7, 7, 7, 7],
+            #     md_bg_color=(215 / 255, 71 / 255, 68 / 255, 1),
+            #     size_hint=(0.4,0.1),
+            #     # buttons=[
+            #     #     MDFlatButton(text="CANCEL"),
+            #     #     MDFillRoundFlatButton(text="LOKASI CHARGE TERDEKAT"),
+            #     # ],
+            # )
+            # self.popup.open()
+            snackbar = CustomSnackbar(
+                icon="battery",
+                text="Sisa kapasitas Baterai dibawah 30%",
+                bg_color=self.red,
+                snackbar_x="15dp",
+                snackbar_y="15dp",
+                size_hint_x=(
+                    Window.width - (188.5 * 2)
+                ) / Window.width,
+                # size_hint_x=(
+                #     Window.width - (15 * 2)
+                # ) / Window.width,
+                size_hint_y=0.153
             )
-            self.popup.open()
+            snackbar.open()
             self.delay_notification = 0
         else:
             self.delay_notification += 1
+            if self.delay_notification == 6:
+                self.delay_notification = 0
         self.tegangan_sebelum = floattegangan
 
         # suhu
@@ -855,17 +910,32 @@ class MyLayout(Screen):
 class MDDialogDef(MDDialog):
     def __init__(self, **kwargs):
         super(MDDialog, self).__init__(**kwargs)
-        # call dismiss_popup in 2 seconds
+        # call dismiss_popup in 5 seconds
         Clock.schedule_once(self.dismiss_popup, 5)
 
     def dismiss_popup(self, *args):
         self.dismiss()
 
+class CustomSnackbar(BaseSnackbar):
+    text = StringProperty(None)
+    icon = StringProperty(None)
+    duration=3
+    font_size = NumericProperty("18sp")
+    radius=[10,10,10,10]
+
+    # def __init__(self, **kwargs):
+    #     super(Snackbar, self).__init__(**kwargs)
+    #     # call dismiss_popup in 5 seconds
+    #     Clock.schedule_once(self.dismiss_popup, 5)
+
+    # def dismiss_popup(self, *args):
+    #     self.dismiss()
+
 
 class MDDialogMap(MDDialog):
     def __init__(self, **kwargs):
         super(MDDialog, self).__init__(**kwargs)
-        # call dismiss_popup in 2 seconds
+        # call dismiss_popup in 15 seconds
         Clock.schedule_once(self.dismiss_popup, 15)
 
     def dismiss_popup(self, *args):
