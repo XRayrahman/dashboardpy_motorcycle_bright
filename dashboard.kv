@@ -228,16 +228,11 @@
                 orientation:'vertical'
                 size:root.height,root.width
                 BoxLayout:
-                    # canvas:
-                    #     Rectangle:
-                    #         size: self.size
-                    #         pos: self.pos
-                    #         texture: Gradient.horizontal(get_color_from_hex("cccccc"), get_color_from_hex("d7d7d7"))
-                    # md_bg_color: 6/255,17/255,21/255,1
+                    # id:walls
 
                     canvas:
                         Rectangle:
-                            source: 'assets/grad-wf.png'
+                            source: root.wall_path
                             size: self.size
                             pos: self.pos
                     GridLayout:

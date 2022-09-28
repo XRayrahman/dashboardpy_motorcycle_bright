@@ -67,9 +67,9 @@ class Dashboard(MDApp):
     red = 223 / 255, 91 / 255, 97 / 255, 1
     green = 118 / 255, 209 / 255, 155 / 255, 1
     cyan = 126 / 255, 212 / 255, 240 / 255, 1
-    dark_blue = 12/255,49/255,62/255,1
+    dark_blue = 12 / 255, 49 / 255, 62 / 255, 1
     off = 180 / 255, 180 / 255, 180 / 255, 1
-    off_white = 217/255,217/255,217/255,1 
+    off_white = 217 / 255, 217 / 255, 217 / 255, 1
 
     def build(self):
         self.theme_cls.theme_style = "Dark"
@@ -126,6 +126,7 @@ class Dashboard(MDApp):
             self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini2)
             self.root.ids.channels.switch_to(self.root.ids.mapChannel)
             self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop2)
+            self.root.wall_path = "assets/grad.png"
             self.root.ids.mode_label.text = "SPEED"
             self.root.ids.power_label.text = "SOC"
             self.root.ids.card_label.text = "NORMAL"
@@ -136,6 +137,7 @@ class Dashboard(MDApp):
                 self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini2)
                 self.root.ids.channels.switch_to(self.root.ids.mapChannel)
                 self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop2)
+                # self.root.ids.walls.source = "assets/grad.png"
                 self.root.ids.mode_label.text = "SPEED"
                 self.root.ids.power_label.text = "SOC"
                 self.root.ids.card_label.text = "NORMAL"
@@ -149,11 +151,12 @@ class Dashboard(MDApp):
 
         elif change_screen == "About":
             self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini1)
+            self.root.ids.channels.switch_to(self.root.ids.aboutChannel)
             self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop2)
+            # self.root.ids.walls.source = "assets/grad.png"
             self.root.ids.mode_label.text = "SPEED"
             self.root.ids.power_label.text = "SOC"
             self.root.ids.card_label.text = "APLIKASI"
-            self.root.ids.channels.switch_to(self.root.ids.aboutChannel)
             # self.screen_tomap = False
 
     def battery_status(self, status):
@@ -303,13 +306,11 @@ class Dashboard(MDApp):
                 bg_color=self.green,
                 snackbar_x="15dp",
                 snackbar_y="15dp",
-                size_hint_x=(
-                    Window.width - (188.5 * 2)
-                ) / Window.width,
+                size_hint_x=(Window.width - (188.5 * 2)) / Window.width,
                 # size_hint_x=(
                 #     Window.width - (15 * 2)
                 # ) / Window.width,
-                size_hint_y=0.153
+                size_hint_y=0.153,
             )
             snackbar.open()
             self.delay_notification = 0
@@ -347,13 +348,11 @@ class Dashboard(MDApp):
                 bg_color=self.red,
                 snackbar_x="15dp",
                 snackbar_y="15dp",
-                size_hint_x=(
-                    Window.width - (188.5 * 2)
-                ) / Window.width,
+                size_hint_x=(Window.width - (188.5 * 2)) / Window.width,
                 # size_hint_x=(
                 #     Window.width - (15 * 2)
                 # ) / Window.width,
-                size_hint_y=0.153
+                size_hint_y=0.153,
             )
             snackbar.open()
             self.delay_notification = 0
@@ -373,12 +372,14 @@ class Dashboard(MDApp):
                 intsuhu = 100
         except:
             intsuhu = 0
-        self.suhu_animate(intsuhu)
+
+        if currentChannel == "mainChannel":
+            self.suhu_animate(intsuhu)
 
     # update data suhu dan kecepatan
 
     def update_data_suhu_kecepatan(self, nap):
-        self.root.ids.progress.value = self.root.ids.progress.value + .2
+        self.root.ids.progress.value = self.root.ids.progress.value + 0.2
         # tegangan = 0.00
         strtegangan = "0.0"
         if self.sw_started:
@@ -614,6 +615,8 @@ class Dashboard(MDApp):
 
 
 class MyLayout(Screen):
+    wall_path = "assets/grad-wf.png"
+
     def __init__(self, *args, **kwargs):
         super(MyLayout, self).__init__(*args, **kwargs)
 
@@ -623,18 +626,6 @@ class MyLayout(Screen):
         # print(API_file)
         self.API_key = API_file.read()
         API_file.close()
-
-    def move_menubar_left2(self):
-
-        self.ids.menubar_left.switch_to(self.ids.menubar_leftTop2)
-
-    def move_menubar_left1(self):
-        self.ids.menubar_left.switch_to(self.ids.menubar_leftTop1)
-
-    def move_maps(self):
-        # self.ids.channels.remove_widget(self.ids.test1)
-
-        self.ids.channels.switch_to(self.ids.mapChannel)
 
     def center_maps(self):
         # try:
@@ -916,12 +907,13 @@ class MDDialogDef(MDDialog):
     def dismiss_popup(self, *args):
         self.dismiss()
 
+
 class CustomSnackbar(BaseSnackbar):
     text = StringProperty(None)
     icon = StringProperty(None)
-    duration=3
+    duration = 3
     font_size = NumericProperty("18sp")
-    radius=[10,10,10,10]
+    radius = [10, 10, 10, 10]
 
     # def __init__(self, **kwargs):
     #     super(Snackbar, self).__init__(**kwargs)
