@@ -101,11 +101,18 @@ class Dashboard(MDApp):
         self.asyncRun = Clock.schedule_once(self.asyncProgram, 10)
 
     def asyncProgram(self, dt):
+        
         # testing script
-        # Popen("python3 tests/data_test.py", shell=True)
+        # try:
+        #     Popen("python3 tests/data_test.py", shell=True)
+        # except:
+        #     Popen("python tests/data_test.py", shell=True)
 
         # arduino communication script
-        Popen("python3 data_communication.py", shell=True)
+        try:
+            Popen("python3 data_communication.py", shell=True)
+        except:
+            Popen("python data_communication.py", shell=True)
 
     def changeScreen(self, dt):
         self.root.ids.screen_manager.transition = RiseInTransition()
@@ -1147,4 +1154,7 @@ def reset():
 # lay = MyLayout()
 reset()
 Dashboard().run()
-os.system("killall python3")
+try:
+    os.system("killall python3")
+except:
+    os.system("killall python")
