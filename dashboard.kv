@@ -511,44 +511,201 @@
                                                     spacing:"3dp"
                                                     # color: 23/255,28/255,35/255,1
 
-                                                    BoxLayout:
-                                                        size_hint_y:.8
-                                                        AKCircularProgress:
-                                                            id: SOC_bar
-                                                            # circle_color: 101/255,199/255,255/255,1
-                                                            circle_color: 166/255,217/255,245/255,1
-                                                            percent_color: 15/255,18/255,23/255,1
-                                                            # background_circle_color: 23/255,28/255,35/255,1
-                                                            background_circle_color: 8/255,29/255,37/255,1
-                                                            line_width: dp(8)
-                                                            background_line_width: dp(8)
-                                                            percent_size: "32sp"
-                                                            # current_percent: 25%
-                                                            pos_hint: {"center_x": .5, "center_y": .5}
-                                                            size_hint: 1, 1
-                                                            # size: dp(140), dp(140)
-                                                            percent_type: "percent"
-                                                            start_deg: 240
-                                                            end_deg: 480
-                                                            # percent_type: "relative"
-                                                            max_percent: 100
+                                                    # BoxLayout:
+                                                    #     size_hint_y:.8
+                                                    #     AKCircularProgress:
+                                                    #         id: SOC_bar
+                                                    #         # circle_color: 101/255,199/255,255/255,1
+                                                    #         circle_color: 166/255,217/255,245/255,1
+                                                    #         percent_color: 15/255,18/255,23/255,1
+                                                    #         # background_circle_color: 23/255,28/255,35/255,1
+                                                    #         background_circle_color: 8/255,29/255,37/255,1
+                                                    #         line_width: dp(8)
+                                                    #         background_line_width: dp(8)
+                                                    #         percent_size: "32sp"
+                                                    #         # current_percent: 25%
+                                                    #         pos_hint: {"center_x": .5, "center_y": .5}
+                                                    #         size_hint: 1, 1
+                                                    #         # size: dp(140), dp(140)
+                                                    #         percent_type: "percent"
+                                                    #         start_deg: 240
+                                                    #         end_deg: 480
+                                                    #         # percent_type: "relative"
+                                                    #         max_percent: 100
 
+                                                    # BoxLayout:
+                                                    #     orientation: "vertical"
+                                                    #     pos_hint:{"center_x":.5}
+                                                    #     size_hint: .25, .1
+                                                    #     # padding:"7dp"
+                                                    #     LabelRajdhani:
+                                                    #         id:SOC_bar_value
+                                                    #         bold: True
+                                                    #         text:"SOC"
+                                                    #         # color: 217/255,217/255,217/255,1
+                                                    #         # font_name:"Roboto"
+                                                    #         font_size:"32sp"
+                                                    #         halign:"center"
+                                                    GridLayout:
+                                                        cols: 2
+                                                        size_hint_y:.7
+                                                        spacing:"20dp"
+                                                        GridLayout:
+                                                            size_hint_x:.5
+                                                            rows:2
+                                                            GridLayout:
+                                                                size_hint_y:.1
+                                                                cols: 3
+                                                                BoxLayout:
+                                                                    size_hint_x:2.5
+                                                                BoxLayout:
+                                                                    size_hint_x:5
+                                                                    canvas:
+                                                                        Color:
+                                                                            # rgba:(8/255,29/255,37/255,1)
+                                                                            rgba:(118 / 255, 209 / 255, 155 / 255, 1)
+                                                                            # rgba:(180/255,180/255,180/255,1)
+                                                                        RoundedRectangle:
+                                                                            size: self.size
+                                                                            pos: self.pos
+                                                                            radius: [(10, 10), (10, 10), (0, 0), (0, 0)]
+                                                                BoxLayout:
+                                                                    size_hint_x:2.5
+                                                            BoxLayout:
+                                                                padding:"7dp"
+                                                                size_hint_y:.9
+                                                                canvas:
+                                                                    Color:
+                                                                        # rgba:(8/255,29/255,37/255,1)
+                                                                        rgba:(118 / 255, 209 / 255, 155 / 255, 1)
+                                                                        # rgba:(180/255,180/255,180/255,1)
+                                                                    RoundedRectangle:
+                                                                        size: self.size
+                                                                        pos: self.pos
+                                                                        radius: [(15, 15), (15, 15), (15, 15), (15, 15)]
+                                                            
+                                                                GridLayout:
+                                                                    id: batt_widget
+                                                                    rows: 5
+                                                                    spacing:"2dp"
+                                                                    padding:"5dp"
+                                                                    # padding:["5dp","0dp"]
+                                                                    canvas:
+                                                                        Color:
+                                                                            # rgba:(8/255,29/255,37/255,1)
+                                                                            rgba:(217 / 255, 217 / 255, 217 / 255, 1)
+                                                                            # rgba:(180/255,180/255,180/255,1)
+                                                                        RoundedRectangle:
+                                                                            size: self.size
+                                                                            pos: self.pos
+                                                                            radius: [(10, 10), (10, 10), (10, 10), (10, 10)]
+                                                                    BoxLayout:
+                                                                        canvas:
+                                                                            Color:
+                                                                                rgba:(118 / 255, 209 / 255, 155 / 255, 1)
+                                                                                # rgba:(217 / 255, 217 / 255, 217 / 255, 1)
+                                                                            RoundedRectangle:
+                                                                                size: self.size
+                                                                                pos: self.pos
+                                                                                radius: [(5, 5), (5, 5), (0, 0), (0, 0)]
+                                                                    BoxLayout:
+                                                                        canvas:
+                                                                            Color:
+                                                                                rgba:(118 / 255, 209 / 255, 155 / 255, 1)
+                                                                                # rgba:(180/255,180/255,180/255,1)
+                                                                            Rectangle:
+                                                                                size: self.size
+                                                                                pos: self.pos
+                                                                                # radius: [(5, 5), (5, 5), (5, 5), (5, 5)]
+                                                                                # source: 'assets/grad-blue.png'
+                                                                    BoxLayout:
+                                                                        canvas:
+                                                                            Color:
+                                                                                rgba:(118 / 255, 209 / 255, 155 / 255, 1)
+                                                                                # rgba:(180/255,180/255,180/255,1)
+                                                                            Rectangle:
+                                                                                size: self.size
+                                                                                pos: self.pos
+                                                                                # radius: [(5, 5), (5, 5), (5, 5), (5, 5)]
+                                                                                # source: 'assets/grad-blue.png'
+                                                                    BoxLayout:
+                                                                        canvas:
+                                                                            Color:
+                                                                                rgba:(118 / 255, 209 / 255, 155 / 255, 1)
+                                                                                # rgba:(180/255,180/255,180/255,1)
+                                                                            Rectangle:
+                                                                                size: self.size
+                                                                                pos: self.pos
+                                                                                # radius: [(5, 5), (5, 5), (5, 5), (5, 5)]
+                                                                                # source: 'assets/grad-blue.png'
+                                                                    BoxLayout:
+                                                                        canvas:
+                                                                            Color:
+                                                                                rgba:(118 / 255, 209 / 255, 155 / 255, 1)
+                                                                                # rgba:(180/255,180/255,180/255,1)
+                                                                            RoundedRectangle:
+                                                                                size: self.size
+                                                                                pos: self.pos
+                                                                                radius: [(0, 0), (0, 0), (5, 5), (5, 5)]
+                                                                                # source: 'assets/grad-blue.png'
+                                                        GridLayout:
+                                                            rows: 3
+                                                            size_hint_x:.55
+                                                            BoxLayout:
+                                                                size_hint_y:.4
+                                                                padding: ["0dp","5dp"]
+                                                                AKCircularProgress:
+                                                                    id: SOC_circular
+                                                                    # circle_color: 101/255,199/255,255/255,1
+                                                                    circle_color: 166/255,217/255,245/255,1
+                                                                    percent_color: 15/255,18/255,23/255,1
+                                                                    # background_circle_color: 23/255,28/255,35/255,1
+                                                                    background_circle_color: 8/255,29/255,37/255,1
+                                                                    line_width: dp(5)
+                                                                    background_line_width: dp(5)
+                                                                    percent_size: "0sp"
+                                                                    # current_percent: 25%
+                                                                    pos_hint: {"center_x": .5, "center_y": .5}
+                                                                    size_hint: 1, 1
+                                                                    # size: dp(140), dp(140)
+                                                                    percent_type: "percent"
+                                                                    start_deg: 180
+                                                                    end_deg: 540
+                                                                    cap_type: "none"
+                                                                    # percent_type: "relative
+                                                            BoxLayout:
+                                                                size_hint_y: .4
+                                                            #     orientation: "vertical"
+                                                            #     size_hint: .25, .1
+                                                            #     # padding:"7dp"
+                                                                LabelRajdhani:
+                                                                    id: SOC_label
+                                                                    text_size:self.size
+                                                                    bold: True
+                                                                    text:"0%"
+                                                                    # color: 217/255,217/255,217/255,1
+                                                                    # font_name:"Roboto"
+                                                                    font_size:self.width / 2.2
+                                                                    # font_size:"46sp"
+                                                                    pos_hint:{"left":1}
+                                                            BoxLayout:
+                                                                size_hint_y:.2
+                                                                pos_hint:{"left":1}
+                                                            #     orientation: "vertical"
+                                                            #     pos_hint:{"center_x":.5}
+                                                            #     size_hint: .25, .1
+                                                            #     # padding:"7dp"
+                                                                LabelRajdhani:
+                                                                    bold: True
+                                                                    text:"SOC"
+                                                                    text_size:self.size
+                                                                    # color: 217/255,217/255,217/255,1
+                                                                    # font_name:"Roboto"
+                                                                    font_size:self.width / 3.7
+                                                                    pos_hint:{"left":1}
+                                                                    # halign:"center"
                                                     BoxLayout:
-                                                        orientation: "vertical"
-                                                        pos_hint:{"center_x":.5}
-                                                        size_hint: .25, .1
-                                                        # padding:"7dp"
-                                                        LabelRajdhani:
-                                                            id:SOC_bar_value
-                                                            bold: True
-                                                            text:"SOC"
-                                                            # color: 217/255,217/255,217/255,1
-                                                            # font_name:"Roboto"
-                                                            font_size:"32sp"
-                                                            halign:"center"
-                                                    
-                                                    BoxLayout:
-                                                        size_hint_y:.2
+                                                        size_hint_y:.1
                                                     
                                                     BoxLayout:
                                                         orientation: "horizontal"

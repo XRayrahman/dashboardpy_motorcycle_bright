@@ -101,7 +101,7 @@ class Dashboard(MDApp):
         self.asyncRun = Clock.schedule_once(self.asyncProgram, 10)
 
     def asyncProgram(self, dt):
-        
+
         # testing script
         # try:
         #     Popen("python3 tests/data_test.py", shell=True)
@@ -198,7 +198,7 @@ class Dashboard(MDApp):
             self.root.ids.battery_full.text_color = color_full
             self.root.ids.battery_charging.text_color = color_charge
             self.root.ids.battery_low.text_color = color_low
-            self.root.ids.SOC_bar.circle_color = color_bar
+            self.root.ids.SOC_circular.circle_color = color_bar
             self.root.ids.tegangan_value_text.color = color_text
 
     def blink_battery(self, *args):
@@ -298,11 +298,12 @@ class Dashboard(MDApp):
             self.battery_status("low")
 
         # SOC_value = round((float(strtegangan)/3)*100, 1)
-        self.SOC_value = str(SOC_value) + "%"
+        self.SOC_value = str(round(SOC_value)) + "%"
 
         currentChannel = self.root.ids.channels.current
         if currentChannel == "mainChannel":
-            self.root.ids.SOC_bar.current_percent = SOC_value
+            self.root.ids.SOC_circular.current_percent = SOC_value
+            self.root.ids.SOC_label.text = self.SOC_value
         elif currentChannel == "mapChannel" or "aboutChannel":
             self.root.ids.SOC_ontop.text = self.SOC_value
 
@@ -511,19 +512,21 @@ class Dashboard(MDApp):
         isTurnRight = vehicleStatus["turn_signal"][1]
 
         currentChannel = self.root.ids.channels.current
-        mode_onMain = self.root.ids.mode_onMain
 
         if vehicleMode == "e":
 
             if currentChannel == "mainChannel":
+                mode_onMain = self.root.ids.mode_onMain
                 mode_onMain.text = "ECO"
         elif vehicleMode == "n":
 
             if currentChannel == "mainChannel":
+                mode_onMain = self.root.ids.mode_onMain
                 mode_onMain.text = "NORMAL"
         elif vehicleMode == "s":
 
             if currentChannel == "mainChannel":
+                mode_onMain = self.root.ids.mode_onMain
                 mode_onMain.text = "SPORT"
 
         if isTurnLeft == True:
@@ -823,7 +826,7 @@ class MyLayout(Screen):
         #     print('INVALID REQUEST DISTANCE :',str(e) )
 
         # try:
-        SOC_value = self.ids.SOC_bar.current_percent
+        SOC_value = self.ids.SOC_circular.current_percent
         print("SOC : ", SOC_value)
         SOC = SOC_value
         # SOC = SOC_value.replace("%","")
