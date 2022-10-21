@@ -286,7 +286,7 @@ class Dashboard(MDApp):
             self.root.ids.temp_high.text_color = self.cyan
         else:
             self.root.ids.suhu_value_text.color = self.off_white
-            self.root.ids.temp_high.text_color = self.off_white
+            self.root.ids.temp_high.text_color = self.dark_blue
 
     def read_database(self, id):
         datadb = open("database/%s.json" % id)
@@ -572,10 +572,10 @@ class Dashboard(MDApp):
                 mode_onMain.text = "SPORT"
 
         if isTurnLeft == True:
-            self.root.ids.turn_left.text_color = self.off
+            self.root.ids.turn_left.text_color = self.off_white
             Clock.schedule_once(self.blink_signal, 0.5)
         elif isTurnRight == True:
-            self.root.ids.turn_right.text_color = self.off
+            self.root.ids.turn_right.text_color = self.off_white
             Clock.schedule_once(self.blink_signal, 0.5)
         else:
             self.root.ids.turn_left.text_color = self.dark_blue
