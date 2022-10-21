@@ -1,4 +1,4 @@
-import imp
+import sys
 from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivymd.uix.dialog import MDDialog
@@ -73,6 +73,9 @@ class Dashboard(MDApp):
     off = 180 / 255, 180 / 255, 180 / 255, 1
     off_white = 217 / 255, 217 / 255, 217 / 255, 1
 
+    # args = len(sys.argv)
+    script = sys.argv[1]
+
     def build(self):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "BlueGray"
@@ -83,7 +86,12 @@ class Dashboard(MDApp):
 
     def on_start(self):
         self.root.ids.screen_manager.switch_to(self.root.ids.splashScreen)
-        self.subScreen = Clock.schedule_once(self.changeScreen, 12)
+        if self.script == "test":
+            self.subScreen = Clock.schedule_once(self.changeScreen, 1)
+        elif self.script == "check":
+            self.subScreen = Clock.schedule_once(self.changeScreen, 1)
+        else:
+            self.subScreen = Clock.schedule_once(self.changeScreen, 12)
 
         vehicleStatus = self.read_database("vehicle_info")
         vehicleStatus["power"] = "on"
@@ -105,10 +113,11 @@ class Dashboard(MDApp):
     def asyncProgram(self, dt):
 
         # testing script
-        # try:
-        #     Popen("python3 tests/data_test.py", shell=True)
-        # except:
-        #     Popen("python tests/data_test.py", shell=True)
+        if self.script == "test":
+            try:
+                Popen("python3 tests/data_test.py", shell=True)
+            except:
+                Popen("python tests/data_test.py", shell=True)
 
         # arduino communication script
         try:
@@ -417,6 +426,11 @@ class Dashboard(MDApp):
         if int(kecepatan) >= 121:
             kecepatan = 120
 
+        if int(kecepatan) == 0:
+            self.root.ids.speed_unit.text = "KM/H"
+        else:
+            self.root.ids.speed_unit.text = ""
+
         speeds = str(kecepatan)
 
         currentChannel = self.root.ids.channels.current
@@ -557,11 +571,14 @@ class Dashboard(MDApp):
     def update_status(self, nap):
         if self.sw_started:
             self.sw_seconds += nap
-        # tambah detik = :%S
-        # self.root.ids.SOC_value.text = "blok"
-        self.root.ids.time_onMain.text = strftime("[b]%H:%M  |[/b]")
-        self.root.ids.time_onAbout.text = strftime("[b]%H:%M  |[/b]")
-        self.root.ids.time_onMap.text = strftime("%H:%M")
+
+        currentChannel = self.root.ids.channels.current
+        if currentChannel == "mainChannel":
+            self.root.ids.time_onMain.text = strftime("[b]%H:%M  [/b]")
+        elif currentChannel == "mapChannel":
+            self.root.ids.time_onMap.text = strftime("%H:%M")
+        elif currentChannel == "aboutChannel":
+            self.root.ids.time_onAbout.text = strftime("[b]%H:%M  [/b]")
 
         if self.root.ids.power_switch.active == False:
             vehicleStatus = self.read_database("vehicle_info")

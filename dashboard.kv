@@ -389,6 +389,7 @@
                                                     size: self.texture_size
 
                                         BoxLayout:
+                                        # CardLayoutBottom:
                                             orientation: "vertical"
                                             size_hint_y:0.32
                                             padding:"20dp"
@@ -738,7 +739,7 @@
 
                                             BoxLayout:
                                                 size: 0.5,1
-                                                padding: "30dp"
+                                                padding: ["30dp","30dp","15dp","30dp"]
                                                 NoValueSpeedMeter:
                                                     size_hint:1,1
                                                     id: speed_bar
@@ -768,7 +769,7 @@
                                             BoxLayout:
                                                 orientation: "vertical"
                                                 # pos_hint:{"top":1,"x":.83}
-                                                pos_hint: {"top": .95,"x": 0.03}
+                                                pos_hint: {"top": .938,"x": 0.00}
                                                 size_hint: .18, .12
                                                 padding:"7dp"                            
                                                 LabelRajdhani:
@@ -781,7 +782,8 @@
                                             size_hint:1,1
                                             CardLayout:
                                                 orientation: "vertical"
-                                                pos_hint:{"top":.95,"x":.20}
+                                                # pos_hint:{"top":.95,"x":.20}
+                                                pos_hint:{"top":.2,"x":.49}
                                                 # pos_hint:{"top":.15,"x":.47}
                                                 size_hint: .18, .12
                                                 # bg_color:
@@ -808,7 +810,8 @@
                                             size_hint:1,1
                                             BoxLayout:
                                                 orientation: "vertical"
-                                                pos_hint:{"top":.43,"x":.438}
+                                                # pos_hint:{"top":.49,"x":.438}
+                                                pos_hint:{"top":.45,"x":.44}
                                                 # pos_hint:{"top":.6,"x":.578}
                                                 size_hint: .25, .25
                                                 padding:"7dp"
@@ -826,30 +829,43 @@
                                         FloatLayout:
                                             size_hint:1,1
                                             BoxLayout:
-                                                orientation: "vertical"
-                                                pos_hint:{"top":.28,"x":.872}
-                                                size_hint: .25, .25
-                                                padding:"7dp"
-
+                                                orientation: "horizontal"
+                                                # pos_hint:{"top":.28,"x":.872}
+                                                pos_hint:{"top":.95,"x":.252}
+                                                # size_hint: .25, .25
+                                                size_hint: .18, .12
+                                                # padding:"7dp"
+                                        
                                                 MDIconButtonOff:
-                                                    user_font_size: "40sp"
-                                                    id: temp_high
-                                                    icon: "thermometer-alert"
-                                                    text_color: 180/255,180/255,180/255,1 # light color
+                                                    id: wifi_status
+                                                    icon: "wifi-off"
+                                                    user_font_size: "22sp"
+                                                MDIconButtonOff:
+                                                    id: bluetooth_status
+                                                    icon: "bluetooth-off"
+                                                    user_font_size: "22sp"
+                                                    # text_color: 180/255,180/255,180/255,1 # light color
+
+                                        #         MDIconButtonOff:
+                                        #             user_font_size: "40sp"
+                                        #             id: temp_high
+                                        #             icon: "thermometer-alert"
+                                        #             text_color: 180/255,180/255,180/255,1 # light color
 
                                         FloatLayout:
                                             size_hint:1,1
                                             BoxLayout:
                                                 orientation: "vertical"
-                                                pos_hint:{"top":.26,"x":.47}
-                                                size_hint: .25, .25
+                                                pos_hint:{"top":.66,"x":.5}
+                                                # pos_hint:{"top":.26,"x":.47}
+                                                size_hint: .23, .23
                                                 padding:"7dp"
                                                 LabelRajdhaniCenter:
-                                                    # id:speed_bar_value
+                                                    id:speed_unit
                                                     bold: True
                                                     text:"KM/H"
                                                     # font_name:"Roboto"
-                                                    # font_size:"24sp"
+                                                    font_size:"20sp"
                                                     halign:"right"
                                                     # color: 217/255,217/255,217/255,1
                                                     color: 8/255,29/255,37/255,1
@@ -1167,11 +1183,18 @@
                                         orientation:"horizontal"
                                         spacing:"7.5dp"
                                         pos_hint:{'center_x':.5}
+                                        padding:["0dp","0dp","0dp","2dp"]
                                         # padding:["10dp","0dp"]
                                         
+                                        # MDIconButtonOff:
+                                        #     id: wifi_status
+                                        #     icon: "wifi-off"
+
                                         MDIconButtonOff:
-                                            id: wifi_status
-                                            icon: "wifi-off"
+                                            # user_font_size: "40sp"
+                                            id: temp_high
+                                            icon: "thermometer-alert"
+                                            text_color: 180/255,180/255,180/255,1 # li
                                             # user_font_size: "40sp"
                                             # pos_hint:{"center_y": .5}
                                             # theme_text_color: "Custom"
