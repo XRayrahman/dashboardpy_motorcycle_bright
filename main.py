@@ -83,7 +83,7 @@ class Dashboard(MDApp):
 
     def on_start(self):
         self.root.ids.screen_manager.switch_to(self.root.ids.splashScreen)
-        self.subScreen = Clock.schedule_once(self.changeScreen, 1)
+        self.subScreen = Clock.schedule_once(self.changeScreen, 12)
 
         vehicleStatus = self.read_database("vehicle_info")
         vehicleStatus["power"] = "on"
