@@ -26,15 +26,26 @@ class batteryWidget(object):
         # self.batt_case = batt_case
         # self.batt_head = batt_head
         if status == 0:
-            self.batt_low()
+            self.batt_zero()
         elif status == 1:
-            self.batt_below_average()
+            self.batt_low()
         elif status == 2:
-            self.batt_average()
+            self.batt_below_average()
         elif status == 3:
-            self.batt_above_average()
+            self.batt_average()
         elif status == 4:
+            self.batt_above_average()
+        elif status == 5:
             self.batt_full()
+
+    def batt_zero(self):
+        # self.batts_case("low")
+        # self.batts_head("low")
+        self.batts_0("off")
+        self.batts_1("off")
+        self.batts_2("off")
+        self.batts_3("off")
+        self.batts_4("off")
 
     def batt_low(self):
         # self.batts_case("low")

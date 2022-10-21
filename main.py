@@ -192,7 +192,7 @@ class Dashboard(MDApp):
     def battery_status(self, status):
         currentChannel = self.root.ids.channels.current
         if currentChannel == "mainChannel":
-            if status == "low":
+            if status == "zero":
                 color_bar = self.red
                 color_charge = self.off
                 color_low = self.red
@@ -200,20 +200,36 @@ class Dashboard(MDApp):
                 color_text = self.red
                 self.battery_widget(0)
                 Clock.schedule_once(self.blink_battery, 1.5)
+            elif status == "lower":
+                color_bar = self.red
+                color_charge = self.off
+                color_low = self.red
+                color_full = self.off
+                color_text = self.red
+                self.battery_widget(1)
+                Clock.schedule_once(self.blink_battery, 1.5)
+            elif status == "low":
+                color_bar = self.red
+                color_charge = self.off
+                color_low = self.red
+                color_full = self.off
+                color_text = self.red
+                self.battery_widget(2)
+                Clock.schedule_once(self.blink_battery, 1.5)
             elif status == "high":
                 color_bar = self.green
                 color_charge = self.off
                 color_low = self.off
                 color_full = self.green
                 color_text = self.off_white
-                self.battery_widget(3)
+                self.battery_widget(4)
             elif status == "full":
                 color_bar = self.green
                 color_charge = self.off
                 color_low = self.off
                 color_full = self.green
                 color_text = self.off_white
-                self.battery_widget(4)
+                self.battery_widget(5)
             elif status == "charging":
                 color_bar = self.cyan
                 color_charge = self.cyan
@@ -226,13 +242,14 @@ class Dashboard(MDApp):
                 color_low = self.off
                 color_full = self.off
                 color_text = self.off_white
-                self.battery_widget(2)
+                self.battery_widget(3)
             else:
                 color_bar = self.green
                 color_charge = self.off
                 color_low = self.off
                 color_full = self.off
                 color_text = self.off_white
+                self.battery_widget(5)
 
             self.root.ids.battery_full.text_color = color_full
             self.root.ids.battery_charging.text_color = color_charge
@@ -325,22 +342,22 @@ class Dashboard(MDApp):
                 self.battery_status("charging")
             else:
                 self.battery_status("average")
-        # elif valtegangan < 70 and valtegangan >= 70:
-        #     SOC_value = round(90 - ((76 - valtegangan) / 0.067), 1)
-        #     if self.tegangan_sebelum < valtegangan:
-        #         self.battery_status("charging")
-        #     else:
-        #         self.battery_status("average")
-        elif valtegangan < 72 and valtegangan >= 60:
+        elif valtegangan < 72 and valtegangan >= 70:
             SOC_value = round(30 - ((72 - valtegangan) / 0.4), 1)
             if self.tegangan_sebelum < valtegangan:
                 self.battery_status("charging")
             else:
                 self.battery_status("low")
+        elif valtegangan < 72 and valtegangan >= 60:
+            SOC_value = round(30 - ((72 - valtegangan) / 0.4), 1)
+            if self.tegangan_sebelum < valtegangan:
+                self.battery_status("charging")
+            else:
+                self.battery_status("lower")
         else:
             SOC_value = round(0, 1)
             # SOC_value = round(30-((60-valtegangan)/2),1)
-            self.battery_status("low")
+            self.battery_status("zero")
 
         # SOC_value = round((float(strtegangan)/3)*100, 1)
         self.SOC_value = str(round(SOC_value)) + "%"
