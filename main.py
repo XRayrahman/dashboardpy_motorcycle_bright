@@ -1,3 +1,4 @@
+import imp
 from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivymd.uix.dialog import MDDialog
@@ -16,7 +17,7 @@ from time import strftime
 from math import *
 from subprocess import Popen, PIPE, STDOUT
 from kivy.clock import Clock
-from kivy.graphics import Color, Line, SmoothLine
+from kivy.graphics import Color, Line, SmoothLine, RoundedRectangle
 from kivy.graphics.context_instructions import Translate, Scale
 from kivy_garden.speedmeter import SpeedMeter
 
@@ -36,6 +37,7 @@ import requests
 import joblib
 import requests
 import json
+from battery import batteryWidget
 
 # Clock.max_iteration = 50
 
@@ -81,7 +83,7 @@ class Dashboard(MDApp):
 
     def on_start(self):
         self.root.ids.screen_manager.switch_to(self.root.ids.splashScreen)
-        self.subScreen = Clock.schedule_once(self.changeScreen, 12)
+        self.subScreen = Clock.schedule_once(self.changeScreen, 1)
 
         vehicleStatus = self.read_database("vehicle_info")
         vehicleStatus["power"] = "on"
@@ -93,7 +95,7 @@ class Dashboard(MDApp):
         # schedule_interval(program, interval/waktu dijalankan)
         self.sub1 = Clock.schedule_interval(self.update_status, 5)
         self.sub2 = Clock.schedule_interval(self.update_data_suhu_kecepatan, 0.005)
-        self.sub2 = Clock.schedule_interval(self.update_data_soc_tegangan, 3)
+        self.sub2 = Clock.schedule_interval(self.update_data_soc_tegangan, 2)
         self.sub3 = Clock.schedule_interval(self.odometer, 1)
         self.sub4 = Clock.schedule_interval(self.odometer_submit, 3)
         self.sub5 = Clock.schedule_interval(self.turn_signal, 1)
@@ -166,6 +168,18 @@ class Dashboard(MDApp):
             self.root.ids.card_label.text = "APLIKASI"
             # self.screen_tomap = False
 
+    def battery_widget(self, status):
+        batteryWidget(
+            status,
+            self.root.ids.batt_0,
+            self.root.ids.batt_1,
+            self.root.ids.batt_2,
+            self.root.ids.batt_3,
+            self.root.ids.batt_4,
+            # self.root.ids.batt_case,
+            # self.root.ids.batt_head,
+        )
+
     def battery_status(self, status):
         currentChannel = self.root.ids.channels.current
         if currentChannel == "mainChannel":
@@ -175,6 +189,7 @@ class Dashboard(MDApp):
                 color_low = self.red
                 color_full = self.off
                 color_text = self.red
+                self.battery_widget(0)
                 Clock.schedule_once(self.blink_battery, 1.5)
             elif status == "high":
                 color_bar = self.green
@@ -182,12 +197,27 @@ class Dashboard(MDApp):
                 color_low = self.off
                 color_full = self.green
                 color_text = self.off_white
+                self.battery_widget(3)
+            elif status == "full":
+                color_bar = self.green
+                color_charge = self.off
+                color_low = self.off
+                color_full = self.green
+                color_text = self.off_white
+                self.battery_widget(4)
             elif status == "charging":
                 color_bar = self.cyan
                 color_charge = self.cyan
                 color_low = self.off
                 color_full = self.off
                 color_text = self.off_white
+            elif status == "average":
+                color_bar = self.green
+                color_charge = self.off
+                color_low = self.off
+                color_full = self.off
+                color_text = self.off_white
+                self.battery_widget(2)
             else:
                 color_bar = self.green
                 color_charge = self.off
@@ -269,11 +299,11 @@ class Dashboard(MDApp):
         tegangan_text = str(inttegangan) + " V"
         # SOC_text = "TEGANGAN : "+ strtegangan +" V"
         self.root.ids.tegangan_value_text.text = tegangan_text
-
+        # self.root.ids.batt_4.canvas.add(Color(self.red))
         valtegangan = float(inttegangan)
         if valtegangan >= 84:
             SOC_value = 100
-            self.battery_status("high")
+            self.battery_status("full")
         elif valtegangan < 84 and valtegangan >= 76:
             SOC_value = round(100 - ((84 - valtegangan) / 0.8), 1)
             if self.tegangan_sebelum < valtegangan:
@@ -285,7 +315,13 @@ class Dashboard(MDApp):
             if self.tegangan_sebelum < valtegangan:
                 self.battery_status("charging")
             else:
-                self.battery_status("neither")
+                self.battery_status("average")
+        # elif valtegangan < 70 and valtegangan >= 70:
+        #     SOC_value = round(90 - ((76 - valtegangan) / 0.067), 1)
+        #     if self.tegangan_sebelum < valtegangan:
+        #         self.battery_status("charging")
+        #     else:
+        #         self.battery_status("average")
         elif valtegangan < 72 and valtegangan >= 60:
             SOC_value = round(30 - ((72 - valtegangan) / 0.4), 1)
             if self.tegangan_sebelum < valtegangan:
@@ -323,33 +359,7 @@ class Dashboard(MDApp):
             snackbar.open()
             self.delay_notification = 0
 
-        # elif valtegangan > 72 and valtegangan < 76 and self.tegangan_sebelum < valtegangan:
-        #     snackbar = CustomSnackbar(
-        #         text="Baterai Charging",
-        #         icon="battery",
-        #         bg_color=self.dark_blue,
-        #         snackbar_x="15dp",
-        #         snackbar_y="15dp",
-        #         size_hint_x=(
-        #             Window.width - (188.5 * 2)
-        #         ) / Window.width,
-        #         size_hint_y=0.153
-        #     )
-        #     snackbar.open()
-        #     self.delay_notification = 0
         elif valtegangan < 72 and self.delay_notification == 5:
-            # self.popup = MDDialogDef(
-            #     title="// NOTIFICATION ALERT //",
-            #     text="Sisa Kapasitas baterai dibawah 30% \nCharge kendaraan terlebih dahulu",
-            #     radius=[7, 7, 7, 7],
-            #     md_bg_color=(215 / 255, 71 / 255, 68 / 255, 1),
-            #     size_hint=(0.4,0.1),
-            #     # buttons=[
-            #     #     MDFlatButton(text="CANCEL"),
-            #     #     MDFillRoundFlatButton(text="LOKASI CHARGE TERDEKAT"),
-            #     # ],
-            # )
-            # self.popup.open()
             snackbar = CustomSnackbar(
                 icon="battery",
                 text="Sisa kapasitas Baterai dibawah 30%",
@@ -488,6 +498,7 @@ class Dashboard(MDApp):
     #             # else:
     #             #     print("Time out! Exit.\n")
     #             #     pass
+    # def battWidget(self):
 
     def modePressed(self):
         vehicleStatus = self.read_database("vehicle_info")

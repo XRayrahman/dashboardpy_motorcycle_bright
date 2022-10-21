@@ -553,31 +553,34 @@
                                                         GridLayout:
                                                             size_hint_x:.5
                                                             rows:2
+                                                            padding:"5dp"
                                                             GridLayout:
-                                                                size_hint_y:.1
+                                                                size_hint_y:.08
                                                                 cols: 3
                                                                 BoxLayout:
-                                                                    size_hint_x:2.5
+                                                                    size_hint_x:3
                                                                 BoxLayout:
-                                                                    size_hint_x:5
+                                                                    size_hint_x:4
+                                                                    # id:batt_head
                                                                     canvas:
                                                                         Color:
                                                                             # rgba:(8/255,29/255,37/255,1)
-                                                                            rgba:(118 / 255, 209 / 255, 155 / 255, 1)
+                                                                            rgba:(12 / 255, 49 / 255, 62 / 255, 1)
                                                                             # rgba:(180/255,180/255,180/255,1)
                                                                         RoundedRectangle:
                                                                             size: self.size
                                                                             pos: self.pos
-                                                                            radius: [(10, 10), (10, 10), (0, 0), (0, 0)]
+                                                                            radius: [(5, 5), (5, 5), (0, 0), (0, 0)]
                                                                 BoxLayout:
-                                                                    size_hint_x:2.5
+                                                                    size_hint_x:3
                                                             BoxLayout:
                                                                 padding:"7dp"
-                                                                size_hint_y:.9
+                                                                size_hint_y:.92
+                                                                # id:batt_case
                                                                 canvas:
                                                                     Color:
                                                                         # rgba:(8/255,29/255,37/255,1)
-                                                                        rgba:(118 / 255, 209 / 255, 155 / 255, 1)
+                                                                        rgba:(12 / 255, 49 / 255, 62 / 255, 1)
                                                                         # rgba:(180/255,180/255,180/255,1)
                                                                     RoundedRectangle:
                                                                         size: self.size
@@ -589,7 +592,7 @@
                                                                     rows: 5
                                                                     spacing:"2dp"
                                                                     padding:"5dp"
-                                                                    # padding:["5dp","0dp"]
+                                                                    # id:batt_inside
                                                                     canvas:
                                                                         Color:
                                                                             # rgba:(8/255,29/255,37/255,1)
@@ -600,6 +603,7 @@
                                                                             pos: self.pos
                                                                             radius: [(10, 10), (10, 10), (10, 10), (10, 10)]
                                                                     BoxLayout:
+                                                                        id: batt_4
                                                                         canvas:
                                                                             Color:
                                                                                 rgba:(118 / 255, 209 / 255, 155 / 255, 1)
@@ -609,6 +613,7 @@
                                                                                 pos: self.pos
                                                                                 radius: [(5, 5), (5, 5), (0, 0), (0, 0)]
                                                                     BoxLayout:
+                                                                        id: batt_3
                                                                         canvas:
                                                                             Color:
                                                                                 rgba:(118 / 255, 209 / 255, 155 / 255, 1)
@@ -619,6 +624,7 @@
                                                                                 # radius: [(5, 5), (5, 5), (5, 5), (5, 5)]
                                                                                 # source: 'assets/grad-blue.png'
                                                                     BoxLayout:
+                                                                        id: batt_2
                                                                         canvas:
                                                                             Color:
                                                                                 rgba:(118 / 255, 209 / 255, 155 / 255, 1)
@@ -629,6 +635,7 @@
                                                                                 # radius: [(5, 5), (5, 5), (5, 5), (5, 5)]
                                                                                 # source: 'assets/grad-blue.png'
                                                                     BoxLayout:
+                                                                        id: batt_1
                                                                         canvas:
                                                                             Color:
                                                                                 rgba:(118 / 255, 209 / 255, 155 / 255, 1)
@@ -639,6 +646,7 @@
                                                                                 # radius: [(5, 5), (5, 5), (5, 5), (5, 5)]
                                                                                 # source: 'assets/grad-blue.png'
                                                                     BoxLayout:
+                                                                        id: batt_0
                                                                         canvas:
                                                                             Color:
                                                                                 rgba:(118 / 255, 209 / 255, 155 / 255, 1)
