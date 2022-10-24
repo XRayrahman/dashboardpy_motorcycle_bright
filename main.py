@@ -374,13 +374,13 @@ class Dashboard(MDApp):
                 text="Baterai terisi penuh",
                 icon="battery",
                 bg_color=self.green,
-                snackbar_x="15dp",
-                snackbar_y="15dp",
-                size_hint_x=(Window.width - (188.5 * 2)) / Window.width,
+                snackbar_x="21dp",
+                snackbar_y=Window.height - 90,
+                size_hint_x=(Window.width - (192.5 * 2)) / Window.width,
                 # size_hint_x=(
                 #     Window.width - (15 * 2)
                 # ) / Window.width,
-                size_hint_y=0.153,
+                size_hint_y=0.15,
             )
             snackbar.open()
             self.delay_notification = 0
@@ -390,13 +390,13 @@ class Dashboard(MDApp):
                 icon="battery",
                 text="Sisa kapasitas Baterai dibawah 30%",
                 bg_color=self.red,
-                snackbar_x="15dp",
-                snackbar_y="15dp",
-                size_hint_x=(Window.width - (188.5 * 2)) / Window.width,
+                snackbar_x="21dp",
+                snackbar_y=Window.height - 90,
+                size_hint_x=(Window.width - (192.5 * 2)) / Window.width,
                 # size_hint_x=(
                 #     Window.width - (15 * 2)
                 # ) / Window.width,
-                size_hint_y=0.153,
+                size_hint_y=0.15,
             )
             snackbar.open()
             self.delay_notification = 0
@@ -670,7 +670,8 @@ class Dashboard(MDApp):
 
 
 class MyLayout(Screen):
-    wall_path = "assets/grad-wf.png"
+    # wall_path = "assets/grad-wf.png"
+    wall_path = "assets/bg-main.png"
 
     def __init__(self, *args, **kwargs):
         super(MyLayout, self).__init__(*args, **kwargs)
@@ -969,6 +970,7 @@ class CustomSnackbar(BaseSnackbar):
     duration = 3
     font_size = NumericProperty("18sp")
     radius = [10, 10, 10, 10]
+    snackbar_animation_dir = "Top"
 
     # def __init__(self, **kwargs):
     #     super(Snackbar, self).__init__(**kwargs)
