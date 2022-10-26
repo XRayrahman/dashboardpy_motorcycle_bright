@@ -12,5 +12,5 @@ cd /home/orangepi/dashboardpy_motorcycle_bright/ # change depends on directory
 # cat /dev/ttyUSB1 &
 # cat /dev/ttyUSB2 &
 # cat /dev/ttyUSB3 &
-python3 main.py # python <= /usr/bin/python3
+python3 main.py run # python <= /usr/bin/python3
 #python3 main.py # python3 

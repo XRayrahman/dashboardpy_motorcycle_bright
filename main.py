@@ -47,9 +47,8 @@ Config.set("graphics", "width", "800")
 Config.set("graphics", "height", "480")
 Config.write()
 
-# Window.borderless = True
+Window.borderless = True
 # Window.size=(800,480)
-# Window.fullscreen = True
 # Window.maximize()
 
 
