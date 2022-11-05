@@ -67,6 +67,7 @@
     -------------------------------------------------
     /boot/orangepiEnv.txt -> verbosity=1
     /boot/orangepiEnv.txt -> console=serial
+    /boot/orangepiEnv.txt -> overlays=uart5
     -------------------------------------------------
 
 10.b. Jangan lupa immute file orangepiEnv.txt untuk tidak berubah dan hapus file orangepi_first_run
