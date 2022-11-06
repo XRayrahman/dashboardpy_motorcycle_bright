@@ -1,29 +1,26 @@
+import json
+import os
 import sys
-from kivymd.app import MDApp
-from kivy.core.window import Window
-from kivymd.uix.dialog import MDDialog
-from kivymd.uix.snackbar import BaseSnackbar
-from kivy.properties import StringProperty, NumericProperty
-from kivy_gradient import Gradient
-from kivy.utils import get_color_from_hex
-from kivymd.uix.button import MDFillRoundFlatButton, MDFlatButton
-from kivy.uix.screenmanager import (
-    RiseInTransition,
-    FadeTransition,
-    ScreenManager,
-    Screen,
-)
-from time import strftime
 from math import *
-from subprocess import Popen, PIPE, STDOUT
-from kivy.clock import Clock
-from kivy.graphics import Color, Line, SmoothLine, RoundedRectangle
-from kivy.graphics.context_instructions import Translate, Scale
-from kivy_garden.speedmeter import SpeedMeter
+from subprocess import PIPE, STDOUT, Popen
+from time import strftime
 
-# from kivy_garden.qrcode import QRCodeWidget
-from kivy_garden.mapview.utils import clamp
-from kivy_garden.mapview import MapView, MapMarker, MapLayer
+import joblib
+import requests
+from kivy.clock import Clock
+from kivy.config import Config
+from kivy.core.window import Window
+from kivy.graphics import Color, Line, RoundedRectangle
+from kivy.graphics.context_instructions import Scale, Translate
+from kivy.properties import NumericProperty, StringProperty
+from kivy.uix.screenmanager import (
+    FadeTransition,
+    RiseInTransition,
+    Screen,
+    ScreenManager,
+)
+from kivy.utils import get_color_from_hex
+from kivy_garden.mapview import MapLayer, MapMarker, MapView
 from kivy_garden.mapview.constants import (
     CACHE_DIR,
     MAX_LATITUDE,
@@ -31,17 +28,21 @@ from kivy_garden.mapview.constants import (
     MIN_LATITUDE,
     MIN_LONGITUDE,
 )
+
+# from kivy_garden.qrcode import QRCodeWidget
+from kivy_garden.mapview.utils import clamp
+from kivy_garden.speedmeter import SpeedMeter
+from kivy_gradient import Gradient
+from kivymd.app import MDApp
+from kivymd.uix.button import MDFillRoundFlatButton, MDFlatButton
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.snackbar import BaseSnackbar
 from kivymd_extensions.akivymd import *
-import os
-import requests
-import joblib
-import requests
-import json
+
 from battery import batteryWidget
 
 # Clock.max_iteration = 50
 
-from kivy.config import Config
 
 Config.set("graphics", "width", "800")
 Config.set("graphics", "height", "480")

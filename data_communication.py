@@ -5,17 +5,21 @@ import sys
 import serial
 import time
 import json
+
 # import json_stream
 import fnmatch
 
 # from main import reset
 
 
-def arduino_ports(preferred_list=['*']):
-    '''try to auto-detect serial ports on posix based OS'''
+def arduino_ports(preferred_list=["*"]):
+    """try to auto-detect serial ports on posix based OS"""
     import glob
 
-    glist = glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*')
+    glist = (
+        glob.glob("/dev/ttyS5") + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*")
+    )
+    # print(glist)
     ret = []
 
     # try preferred ones first
@@ -32,11 +36,12 @@ def arduino_ports(preferred_list=['*']):
         ret.append(d)
     return ret
 
+
 # listen for the input, exit if nothing received in timeout period
 
 
 def read_database(id):
-    datadb = open('database/%s.json' % id)
+    datadb = open("database/%s.json" % id)
     datadb.flush()
     data = json.load(datadb)
     datadb.close()
@@ -46,8 +51,8 @@ def read_database(id):
 
 
 def update_database(id, json_data):
-    dir = ('database/%s.json' % id)
-    with open(dir, 'w') as file_object:
+    dir = "database/%s.json" % id
+    with open(dir, "w") as file_object:
         json.dump(json_data, file_object, indent=4)
         file_object.flush()
         os.fsync(file_object)
@@ -60,7 +65,7 @@ def store_data_arduino(id, value):
         data[id] = value
         update_database(id, data)
     except Exception as e:
-        print('%s error :' % id, str(e))
+        print("%s error :" % id, str(e))
 
 
 def data_arduino(ser):
@@ -69,48 +74,48 @@ def data_arduino(ser):
         try:
             # try:
             line = ser.readline()
-            data_dec = line.decode('utf-8')
+            data_dec = line.decode("utf-8")
             data = json.loads(data_dec)
             # except:
             #     print("data can't be read, flash the arduino again")
 
             if len(str(data)) != 0:
-                voltage = data['t']
+                voltage = data["t"]
                 store_data_arduino("voltage", voltage)
 
-                speed = data['r']
+                speed = data["r"]
                 store_data_arduino("speed", speed)
 
-                temperature = data['s']
+                temperature = data["s"]
                 store_data_arduino("temperature", temperature)
 
                 try:
                     vehicle_info = read_database("vehicle_info")
-                    vehicle_info["mode"] = data['mode']
-                    vehicle_info["turn_signal"][0] = data['turn'][0]
-                    vehicle_info["turn_signal"][1] = data['turn'][1]
+                    vehicle_info["mode"] = data["mode"]
+                    vehicle_info["turn_signal"][0] = data["turn"][0]
+                    vehicle_info["turn_signal"][1] = data["turn"][1]
                     update_database("vehicle_info", vehicle_info)
                 except Exception as e:
-                    print('vehicle_info error :', str(e))
+                    print("vehicle_info error :", str(e))
                     # for now
                     pass
 
                 try:
-                    statusEstimation = data['isRun']
+                    statusEstimation = data["isRun"]
                     if statusEstimation == True:
                         # ganti layar
                         try:
-                            screen_change = data['screen']
+                            screen_change = data["screen"]
                         except:
                             screen_change = "Main"
 
                         # koneksi
                         try:
-                            bluetooth_wifi_id = data['wifi_id']
-                            bluetooth_wifi_pass = data['wifi_pass']
-                            restart_wifi = data['restart']
+                            bluetooth_wifi_id = data["wifi_id"]
+                            bluetooth_wifi_pass = data["wifi_pass"]
+                            restart_wifi = data["restart"]
                         except:
-                            print('wifi not valid')
+                            print("wifi not valid")
                             bluetooth_wifi_id = ""
                             bluetooth_wifi_pass = ""
                             restart_wifi = False
@@ -118,26 +123,26 @@ def data_arduino(ser):
                         connection = {
                             "wifi": {
                                 "id": bluetooth_wifi_id,
-                                "pass": bluetooth_wifi_pass
+                                "pass": bluetooth_wifi_pass,
                             },
                             "restart": restart_wifi,
-                            "screen": screen_change
+                            "screen": screen_change,
                         }
 
                         update_database("connection", connection)
 
                         # estimasi
                         try:
-                            ori_latitude = data['o_lat']
-                            ori_longitude = data['o_lng']
+                            ori_latitude = data["o_lat"]
+                            ori_longitude = data["o_lng"]
                             # isConnected = True
                         except:
                             ori_latitude = ""
                             ori_longitude = ""
 
                         try:
-                            dest_latitude = data['d_lat']
-                            dest_longitude = data['d_lng']
+                            dest_latitude = data["d_lat"]
+                            dest_longitude = data["d_lng"]
                         except:
                             dest_latitude = ""
                             dest_longitude = ""
@@ -146,12 +151,12 @@ def data_arduino(ser):
                             "address": {
                                 "origin": {
                                     "latitude": ori_latitude,
-                                    "longitude": ori_longitude
+                                    "longitude": ori_longitude,
                                 },
                                 "destination": {
                                     "latitude": dest_latitude,
-                                    "longitude": dest_longitude
-                                }
+                                    "longitude": dest_longitude,
+                                },
                             }
                         }
 
@@ -172,7 +177,7 @@ def retry():
     onLoop = True
     baudrate = 115200
     while onLoop == True:
-        print("retrying "+str(i)+" time")
+        print("retrying " + str(i) + " time")
         available_ports = arduino_ports()
         try:
             i += 1
@@ -197,7 +202,7 @@ def main():
     baudrate = 115200
     while True:
         while onLoop == True:
-            print("trying "+str(i)+" time")
+            print("trying " + str(i) + " time")
             available_ports = arduino_ports()
             try:
                 i += 1
@@ -215,7 +220,8 @@ def main():
             print(str(available_ports))
             data_arduino(port)
 
-
     # print(format(float(data), ".2f"))
-if __name__ == '__main__':
+
+
+if __name__ == "__main__":
     main()
