@@ -1,6 +1,7 @@
 {
     "power": "on",
     "mode": "n",
+    "dm": false,
     "turn_signal": [
         false,
         false

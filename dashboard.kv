@@ -116,6 +116,7 @@
 
 <LabelRajdhaniAlignLeft@LabelRajdhani>
     text_size:self.size
+    font_size: "20sp"
     # size_hint:.6,.6
 
 <LabelRajdhaniLight@Label>
@@ -269,6 +270,7 @@
                                         CardLayout:
                                             orientation: "vertical"
                                             size_hint_y: 0.4
+                                            padding:["0dp","0dp","0dp","10dp"]
                                             MDRectangleFlatButton:
                                                 id: mode_onMain
                                                 font_name:"assets/fonts/Satoshi-Medium.otf"
@@ -288,7 +290,7 @@
 
                                         CardLayout:
                                             orientation: "horizontal"
-                                            size_hint_y: 0.4
+                                            size_hint_y: 0.3
 
                                             spacing:5
                                             # MDIconButton:
@@ -333,6 +335,51 @@
                                                 # LabelRajdhani:
                                                 #     text: 'ON' if switch.active else 'OFF'
 
+                                        CardLayout:
+                                            orientation: "horizontal"
+                                            size_hint_y: 0.3
+
+                                            spacing:5
+                                            # MDIconButton:
+                                            #     icon: "thermometer-lines"
+                                            #     user_font_size: "50sp"
+                                            #     theme_text_color: "Custom"
+                                            #     text_color: app.theme_cls.primary_color
+                                            #     pos_hint:{"left": .1, "center_y": .5}
+                                            # LabelRajdhani:
+                                            #     id: suhu
+                                            #     text: "37 °C"
+                                            #     font_size: "32sp"
+                                            #     pos_hint: {"center_x": .5, "center_y": .5}
+
+                                            BoxLayout:  
+                                                Switch:
+                                                    id: darkMode_switch
+                                                    # bg_color: rgba(120/255,184/255,146/255,1)
+                                                    canvas:
+                                                        Color:
+                                                            rgb: 118/255,209/255,155/255,1
+                                                        Rectangle:
+                                                            size: sp(41.5), sp(20)
+                                                            pos: self.center_x - sp(40.0), self.center_y - sp(10)
+                                                        Color:
+                                                            rgb: 223/255,91/255,97/255,1
+                                                        Rectangle:
+                                                            size: sp(41.0), sp(20)
+                                                            pos: self.center_x, self.center_y - sp(10)
+                                                    LabelRajdhani:
+                                                        color: 23/255,28/255,35/255,1
+                                                        text: 'ON'
+                                                        bold: True
+                                                        font_size: 13
+                                                        pos: self.parent.center_x - sp(70), self.parent.center_y - sp(50)                
+                                                    LabelRajdhani:
+                                                        color: 23/255,28/255,35/255,1
+                                                        text: 'OFF'
+                                                        bold: True
+                                                        font_size: 13
+                                                        pos: self.parent.center_x - sp(30), self.parent.center_y - sp(50)
+
                                 Screen:
                                     id: menubar_leftTop2
                                     name: "menubar_leftTop2"
@@ -342,6 +389,7 @@
                                         CardLayout:
                                             orientation: "horizontal"
                                             size_hint_y: 0.4
+                                            padding:["0dp","15dp","0dp","0dp"]
                                             # MDIconButton:
                                             #     icon: "road-variant"
                                             #     user_font_size: "35sp"
@@ -351,7 +399,7 @@
                                             LabelRajdhani:
                                                 id: speed_ontop
                                                 text: ""
-                                                font_size: "36sp"
+                                                # font_size: "30sp"
                                                 pos_hint: {"center_x": .5, "center_y": .5}
 
                                         CardLayout:
@@ -360,38 +408,83 @@
                                             LabelRajdhani:
                                                 id: SOC_ontop
                                                 text: ""
-                                                font_size: "36sp"
+                                                # font_size: "30sp"
                                                 pos_hint: {"center_x": .5, "center_y": .5}
-                            BoxLayout:
-                                size_hint_y: 0.03
+
+                                        CardLayout:
+                                            orientation: "horizontal"
+                                            size_hint_y: 0.3
+
+                                            spacing:5
+                                            # MDIconButton:
+                                            #     icon: "thermometer-lines"
+                                            #     user_font_size: "50sp"
+                                            #     theme_text_color: "Custom"
+                                            #     text_color: app.theme_cls.primary_color
+                                            #     pos_hint:{"left": .1, "center_y": .5}
+                                            # LabelRajdhani:
+                                            #     id: suhu
+                                            #     text: "37 °C"
+                                            #     font_size: "32sp"
+                                            #     pos_hint: {"center_x": .5, "center_y": .5}
+
+                                            BoxLayout:  
+                                                Switch:
+                                                    id: darkMode_switch_onMap
+                                                    # bg_color: rgba(120/255,184/255,146/255,1)
+                                                    canvas:
+                                                        Color:
+                                                            rgb: 118/255,209/255,155/255,1
+                                                        Rectangle:
+                                                            size: sp(41.5), sp(20)
+                                                            pos: self.center_x - sp(40.0), self.center_y - sp(10)
+                                                        Color:
+                                                            rgb: 223/255,91/255,97/255,1
+                                                        Rectangle:
+                                                            size: sp(41.0), sp(20)
+                                                            pos: self.center_x, self.center_y - sp(10)
+                                                    LabelRajdhani:
+                                                        color: 23/255,28/255,35/255,1
+                                                        text: 'ON'
+                                                        bold: True
+                                                        font_size: 13
+                                                        pos: self.parent.center_x - sp(70), self.parent.center_y - sp(50)                
+                                                    LabelRajdhani:
+                                                        color: 23/255,28/255,35/255,1
+                                                        text: 'OFF'
+                                                        bold: True
+                                                        font_size: 13
+                                                        pos: self.parent.center_x - sp(30), self.parent.center_y - sp(50)
+                            # BoxLayout:
+                            #     size_hint_y: 0.03
                                 # LabelRajdhani:
                                 #     text:"- - - - -"
 
                             ScreenManager:
                                 id:screendget_mini
-                                size_hint_y: 0.57
+                                size_hint_y: 0.5
                                 Screen:
                                     id:s_mini1
                                     name:'s_mini1'
                                     BoxLayout:
                                         orientation: "vertical"
                                         spacing:"15dp"
-                                        padding:["0dp","0dp","10dp","0dp"]
+                                        padding:["0dp","15dp","10dp","0dp"]
                                         CardLayoutAccent:
-                                            size_hint_y:0.66
+                                            size_hint_y:0.8
                                             #padding:"15dp"
                                             orientation:"vertical"
-                                            LabelRajdhani:
-                                                # id: label_bottom_ori
-                                                text:"Install mobile app\nfor estimation"
-                                                size_hint:1,1
-                                                font_size:"13sp"
-                                                font_name:"Roboto"
-                                                halign:"left"
-                                                # color:(1,1,1,1)
+                                            # LabelRajdhani:
+                                            #     # id: label_bottom_ori
+                                            #     text:"Install mobile app\nfor estimation"
+                                            #     size_hint:1,1
+                                            #     font_size:"13sp"
+                                            #     font_name:"Roboto"
+                                            #     halign:"left"
+                                            #     # color:(1,1,1,1)
                                             BoxLayout:
                                                 # # padding:"2dp"
-                                                padding:["0dp","5dp","0dp","0dp"]
+                                                padding:["0dp","0dp","0dp","0dp"]
                                                 Image:
                                                     source: 'assets/mobile-app-dark.png'
                                                     size: self.texture_size
@@ -400,7 +493,7 @@
                                         # CardLayoutBottom:
                                             orientation: "vertical"
                                             size_hint_y:0.32
-                                            padding:["20dp","20dp","25dp","20dp"]
+                                            padding:["10dp","20dp","15dp","5dp"]
                                             
 
 
@@ -765,9 +858,9 @@
                                                     # thickness: 3
                                                     # shadow_width: 100
                                                     needle_color: '#a1d4f0'
-                                                    needle_image:"needle_s.png"
+                                                    needle_image:"assets/needle-l.png"
                                                     # sectors: [0, '#171c23']#061115
-                                                    sectors: [0, '#081d25']
+                                                    sectors: [0, '#071a21']
                                                     # sectors: [0, '#b4b4b4']
                                                     # sectors: [0, '#b4b4b4',80,'#df5b61']
                                                     sector_width: 22
@@ -888,7 +981,7 @@
                                                 size_hint: .14, .14
                                                 # bg_color:
                                                 Image:
-                                                    source: 'assets/Lambang-ITS.png'
+                                                    source: root.logoITS_path 
                                                     size: self.texture_size
                                                 
 
@@ -900,15 +993,20 @@
                                         BoxLayout:
                                             size_hint:1,0.75
                                             pos_hint:{"top":1}
+                                            canvas:
+                                                Color:
+                                                    rgba:(180/255,180/255,180/255,1)
+                                                RoundedRectangle:
+                                                    size: self.size
+                                                    pos: self.pos
                                             MapView:
                                                 id:mapview
                                                 zoom:12
-                                                lat:-7.2575
-                                                lon:112.7521
                                                 # center_on:(lat,lon)
                                                 
                                                 #map_source: 'osm-hot'
-                                                map_source: MapSource.MapSource(url='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=f872d70d2fa74f1c96049845e81a8a99', attribution='')
+                                                # map_source: MapSource.MapSource(url='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=f872d70d2fa74f1c96049845e81a8a99', attribution='')
+                                                map_source: MapSource.MapSource(url='https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png?apikey=' + root.API_key_OSM, attribution='')
 
                                                 # map_source: MapSource.MapSource(cache_key='cartodb-darkmatter', url='https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png?apikey=f872d70d2fa74f1c96049845e81a8a99', attribution="@OpenStreet Map - DarkMatter")
                                                 
@@ -1020,7 +1118,7 @@
                                                                 font_size:"20sp"
                                                                 halign:"left"
 
-                                                    LabelRajdhaniLight:
+                                                    LabelRajdhani:
                                                         id: lokasi_label 
                                                         text:"-- origin and destination --"
                                                         size_hint:.75,.45
@@ -1035,73 +1133,89 @@
                                         BoxLayout:
                                             orientation:'vertical'
                                             size:root.height,root.width
-                                            MDBoxLayoutBG:
+                                            canvas:
+                                                Color:
+                                                    rgba:(23/255,28/255,35/255,1)
+                                                    # rgba:(180/255,180/255,180/255,1)
+                                                RoundedRectangle:
+                                                    size: self.size
+                                                    pos: self.pos
+                                            # MDBoxLayoutBG:
+                                            GridLayout:
+                                                cols:2
+                                                size_hint: 1, 1
+                                                spacing:"25dp"
+                                                padding:"20dp"
+                                                canvas:
+                                                    Color:
+                                                        rgba:(217/255,217/255,217/255,1 )
+                                                        # rgba:(180/255,180/255,180/255,1)
+                                                    RoundedRectangle:
+                                                        size: self.size
+                                                        pos: self.pos
+
                                                 GridLayout:
-                                                    cols:2
-                                                    size_hint: 1, 1
-                                                    spacing:"25dp"
-                                                    padding:"20dp"
+                                                    rows:3
+                                                    size_hint_x:.4
+                                                    padding:"10dp"
+                                                    spacing:"10dp"
+
+                                                    BoxLayout:
+                                                        size_hint_y:.2
 
                                                     GridLayout:
-                                                        rows:3
-                                                        size_hint_x:.4
-                                                        padding:"10dp"
-                                                        spacing:"10dp"
-
-                                                        BoxLayout:
-                                                            size_hint_y:.2
-
-                                                        GridLayout:
-                                                            size_hint_y:.45
-                                                            rows:2
-                                                            # padding:"5dp"
-                                                            spacing:"10dp"
-                                                            BoxLayout:
-                                                                size_hint:self.width,.2
-                                                                LabelRajdhaniAlignLeft:
-                                                                    text:"VEHICLE INFO."
-                                                                    size_hint:1,1
-                                                                    halign:"left"
-                                                                    valign:"center"
-                                                            BoxLayout:
-                                                                size_hint_y:.8
-                                                                LabelRajdhaniAlignLeft:
-                                                                    font_name:"assets/fonts/Rajdhani-Regular.ttf"
-                                                                    font_size: "14sp"
-                                                                    text:"EDITION           : M-01\nMax. Voltage   : 84 V\nMax. Capacity  : 3 kWh\nTotal Torque    : 25 Nm\nMotor             : BLDC 5 kW\nWeight           : 105 kg"
-                                                                    halign:"left"
-                                                                    valign:"top"
-
-                                                        GridLayout:
-                                                            size_hint_y:.35
-                                                            rows:2
-                                                            # padding:"5dp"
-                                                            spacing:"10dp"
-                                                            BoxLayout:
-                                                                size_hint:self.width,.2
-                                                                LabelRajdhaniAlignLeft:
-                                                                    text:"SYSTEM INFO."
-                                                                    halign:"left"
-                                                                    valign:"center"
-                                                            BoxLayout:
-                                                                size_hint_y:.8
-                                                                LabelRajdhaniAlignLeft:
-                                                                    font_name:"assets/fonts/Rajdhani-Regular.ttf"
-                                                                    font_size: "14sp"
-                                                                    text:"UI Version   : EVOLION-UI v2.1 \nOS Version  : Debian OS 5.16.17\nCompany    : STP PUI-SKO ITS\nMade By     : Ray Rahman"
-                                                                    halign:"left"
-                                                                    valign:"top"
-                                                    GridLayout:
+                                                        size_hint_y:.45
                                                         rows:2
-                                                        size_hint_x:.6
+                                                        # padding:"5dp"
+                                                        spacing:"10dp"
                                                         BoxLayout:
-                                                            size_hint_y:.2
+                                                            size_hint:self.width,.2
+                                                            LabelRajdhaniAlignLeft:
+                                                                font_name:"assets/fonts/Rajdhani-Regular.ttf"
+                                                                text:"VEHICLE INFO."
+                                                                size_hint:1,1
+                                                                halign:"left"
+                                                                valign:"center"
                                                         BoxLayout:
                                                             size_hint_y:.8
-                                                            padding:"5dp"
-                                                            Image:
-                                                                source: 'assets/3d-etrail.png'
-                                                                size: self.texture_size
+                                                            LabelRajdhaniAlignLeft:
+                                                                font_name:"assets/fonts/Rajdhani-Regular.ttf"
+                                                                font_size: "14sp"
+                                                                text:"EDITION           : M-01\nMax. Voltage   : 84 V\nMax. Capacity  : 3 kWh\nTotal Torque    : 25 Nm\nMotor             : BLDC 5 kW\nWeight           : 105 kg"
+                                                                halign:"left"
+                                                                valign:"top"
+
+                                                    GridLayout:
+                                                        size_hint_y:.35
+                                                        rows:2
+                                                        # padding:"5dp"
+                                                        spacing:"10dp"
+                                                        BoxLayout:
+                                                            size_hint:self.width,.2
+                                                            LabelRajdhaniAlignLeft:
+                                                                font_name:"assets/fonts/Rajdhani-Regular.ttf"
+                                                                text:"SYSTEM INFO."
+                                                                halign:"left"
+                                                                valign:"center"
+                                                        BoxLayout:
+                                                            size_hint_y:.8
+                                                            LabelRajdhaniAlignLeft:
+                                                                font_name:"assets/fonts/Rajdhani-Regular.ttf"
+                                                                font_size: "14sp"
+                                                                text:"UI Version   : EVOLION-UI v3.17 \nOS Version  : Debian OS 5.16.17\nCompany    : STP PUI-SKO ITS\nMade By     : Ray Aditya Rahman"
+                                                                halign:"left"
+                                                                valign:"top"
+                                                GridLayout:
+                                                    rows:2
+                                                    size_hint_x:.6
+                                                    BoxLayout:
+                                                        size_hint_y:.2
+                                                    BoxLayout:
+                                                        size_hint_y:.8
+                                                        padding:"5dp"
+                                                        Image:
+                                                            source: 'assets/3d-etrail.png'
+                                                            size: self.texture_size
                                         
                                         FloatLayout:
                                             size_hint:1,1
@@ -1289,7 +1403,7 @@
                 PilLayout:
                     orientation: "horizontal"
                     # pos_hint:{"top":.838,"x":.069}
-                    pos_hint:{"top":.955,"x":.019}
+                    pos_hint:{"top":.953,"x":.0185}
                     LabelRajdhaniOnPill:
                         id: mode_label
                         
@@ -1304,7 +1418,7 @@
                 PilLayout:
                     orientation: "horizontal"
                     # pos_hint:{"top":.648,"x":.069}
-                    pos_hint:{"top":.765,"x":.022}
+                    pos_hint:{"top":.832,"x":.022}
                     LabelRajdhaniOnPill:
                         id: power_label
                         text:"POWER"
@@ -1316,12 +1430,25 @@
                 size_hint:1,1
                 PilLayout:
                     orientation: "horizontal"
+                    # pos_hint:{"top":.648,"x":.069}
+                    pos_hint:{"top":.715,"x":.04}
+                    LabelRajdhaniOnPill:
+                        id: darkMode_label
+                        text:"DARK MODE"
+                        size_hint:1,1
+                        font_size:"12sp"
+                        pos_hint: {"center_x":0.27}
+
+            FloatLayout:
+                size_hint:1,1
+                PilLayout:
+                    orientation: "horizontal"
                     # pos_hint:{"top":.24,"x":.0472}
-                    pos_hint:{"top":.55,"x":.01}
+                    pos_hint:{"top":.3,"x":.052}
                     size_hint: 0.137, 0.044
                     LabelRajdhaniOnPill:
                         id: card_label
-                        text:"APLIKASI"
+                        text:"MOBILE APP"
                         size_hint:1,1
                         font_size:"12sp"
                         pos_hint: {"center_x":0.27}
@@ -1330,7 +1457,7 @@
                 size_hint:1,1
                 BoxLayout:
                     orientation: "horizontal"
-                    pos_hint:{"top":.054,"x":.001}
+                    pos_hint:{"top":.05,"x":.885}
                     size_hint: 0.137, 0.044
                     LabelRajdhani:
                         text:"© RAIZEN"

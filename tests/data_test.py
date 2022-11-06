@@ -25,7 +25,7 @@ def read_database(id):
     return data
 
 
-def test(t, r, s, v0, v1, v2, c0, c1, c2, c3):
+def test(t, r, s, v0, v1, v2, c0, c1, c2, c3, d0):
 
     try:
         data_tegangan = read_database("voltage")
@@ -52,6 +52,7 @@ def test(t, r, s, v0, v1, v2, c0, c1, c2, c3):
     data_vinfo["mode"] = v0
     data_vinfo["turn_signal"][0] = v1
     data_vinfo["turn_signal"][1] = v2
+    data_vinfo["dm"] = d0
     store_data_json("vehicle_info", data_vinfo)
 
     data_connection = read_database("connection")
@@ -64,8 +65,8 @@ def test(t, r, s, v0, v1, v2, c0, c1, c2, c3):
 
 def test_low(delay):
     time.sleep(delay)
-    test("0.00", "0.00", "0.0", "n", False, False, "", "", False, "Main")
-    time.sleep(2)
+    test("0.00", "0.00", "0.0", "n", False, False, "", "", False, "Main", False)
+    time.sleep(delay)
 
     data_odometer = read_database("odometer")
     data_odometer["total_km"] = "0.000"
@@ -74,11 +75,11 @@ def test_low(delay):
 
 def test_high(delay):
     time.sleep(delay)
-    test("80.00", "70.00", "30.0", "e", True, False, "", "", False, "Main")
+    test("80.00", "70.00", "30.0", "e", True, False, "", "", False, "Main", True)
 
-    time.sleep(2)
+    time.sleep(delay)
 
-    test("74.00", "40.00", "50.0", "s", False, True, "", "", False, "Main")
+    test("74.00", "40.00", "50.0", "s", False, True, "", "", False, "Main", True)
     # if speed == "40.00":
     #     print(f"speed component ... {bcolors.OKGREEN}SUCCESS{bcolors.OKGREEN}")
     # else:
@@ -94,6 +95,16 @@ def test_channel(delay):
     data_connection = read_database("connection")
     data_connection["screen"] = "About"
     store_data_json("connection", data_connection)
+
+
+def test_darkMode(delay):
+    time.sleep(delay)
+    data_darkMode = read_database("vehicle_info")
+    data_darkMode["dm"] = True
+    store_data_json("vehicle_info", data_darkMode)
+    time.sleep(delay)
+    data_darkMode["dm"] = False
+    store_data_json("vehicle_info", data_darkMode)
 
 
 def status_high(file, name, value):
@@ -118,12 +129,23 @@ def success():
 
 def main():
     # time.sleep(2)
-    test_low(0)
+    test_low(1)
     test_high(2)
     status_high("speed", "speed", "40.00")
     status_high("temperature", "temperature", "50.0")
     test_channel(5)
-    status_high("odometer", "total_km", "0.131")
+    # (2 * 2) + (5 * 2)
+    # status_high("odometer", "total_km", "0.131")
+    odo = format(float(((40 * 5 * 2) / 6) * (188.4 + 37.68) * 0.00001), ".3f")
+    print(odo)
+    status_high(
+        "odometer",
+        "total_km",
+        str(odo),
+    )
+    test_low(3)
+    # test_darkMode(3)
+    test_high(2)
     test_low(3)
 
 

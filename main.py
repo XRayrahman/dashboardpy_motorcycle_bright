@@ -47,7 +47,6 @@ from battery import batteryWidget
 Config.set("graphics", "width", "800")
 Config.set("graphics", "height", "480")
 Config.write()
-
 Window.borderless = True
 # Window.size=(800,480)
 # Window.maximize()
@@ -72,6 +71,8 @@ class Dashboard(MDApp):
     dark_blue = 12 / 255, 49 / 255, 62 / 255, 1
     off = 180 / 255, 180 / 255, 180 / 255, 1
     off_white = 217 / 255, 217 / 255, 217 / 255, 1
+    onDark = 29 / 255, 124 / 255, 131 / 255, 1
+    onLight = 8 / 255, 29 / 255, 37 / 255, 1
 
     # args = len(sys.argv)
     script = sys.argv[1]
@@ -97,8 +98,14 @@ class Dashboard(MDApp):
         vehicleStatus["power"] = "on"
         self.update_database("vehicle_info", vehicleStatus)
         self.root.ids.power_switch.active = True
+        # self.root.ids.darkMode_switch.active = False
         self.jarak_sebelumnya = 0
         self.screen_tomap = False
+
+        fe = open("database/estimation.json")
+        estimationFile = json.load(fe)
+        self.asalLat = estimationFile["address"]["origin"]["latitude"]
+        self.asalLng = estimationFile["address"]["origin"]["longitude"]
 
         # schedule_interval(program, interval/waktu dijalankan)
         self.sub1 = Clock.schedule_interval(self.update_status, 5)
@@ -106,6 +113,7 @@ class Dashboard(MDApp):
         self.sub2 = Clock.schedule_interval(self.update_data_soc_tegangan, 2)
         self.sub3 = Clock.schedule_interval(self.odometer, 1)
         self.sub4 = Clock.schedule_interval(self.odometer_submit, 3)
+        self.sub5 = Clock.schedule_interval(self.darkMode, 1)
         self.sub5 = Clock.schedule_interval(self.turn_signal, 1)
         self.sub6 = Clock.schedule_interval(self.change_screen_main, 1)
         self.asyncRun = Clock.schedule_once(self.asyncProgram, 10)
@@ -144,11 +152,12 @@ class Dashboard(MDApp):
             self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini2)
             self.root.ids.channels.switch_to(self.root.ids.mapChannel)
             self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop2)
-            self.root.wall_path = "assets/grad.png"
+            self.root.wall_path = "assets/bg-map.png"
             self.root.ids.mode_label.text = "SPEED"
             self.root.ids.power_label.text = "SOC"
             self.root.ids.card_label.text = "NORMAL"
             self.screen_tomap = False
+            self.root.center_maps()
 
         elif change_screen == "Main":
             if self.screen_tomap == True:
@@ -165,12 +174,13 @@ class Dashboard(MDApp):
                 self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop1)
                 self.root.ids.mode_label.text = "MODE"
                 self.root.ids.power_label.text = "POWER"
-                self.root.ids.card_label.text = "APLIKASI"
+                self.root.ids.card_label.text = "MOBILE APP"
 
         elif change_screen == "About":
             self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini1)
             self.root.ids.channels.switch_to(self.root.ids.aboutChannel)
             self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop2)
+            self.root.wall_path = "assets/bg-about.png"
             # self.root.ids.walls.source = "assets/grad.png"
             self.root.ids.mode_label.text = "SPEED"
             self.root.ids.power_label.text = "SOC"
@@ -417,8 +427,8 @@ class Dashboard(MDApp):
         except:
             intsuhu = 0
 
-        if currentChannel == "mainChannel":
-            self.suhu_animate(intsuhu)
+        # if currentChannel == "mainChannel":
+        self.suhu_animate(intsuhu)
 
     # update data suhu dan kecepatan
 
@@ -443,17 +453,16 @@ class Dashboard(MDApp):
         if int(kecepatan) >= 121:
             kecepatan = 120
 
-        if int(kecepatan) == 0:
-            self.root.ids.speed_unit.text = "KM/H"
-        else:
-            self.root.ids.speed_unit.text = ""
-
         speeds = str(kecepatan)
 
         currentChannel = self.root.ids.channels.current
         if currentChannel == "mainChannel":
             intkec = int(kecepatan)
             kecepatan_sebelum = self.root.ids.speed_bar.value
+            if int(kecepatan) == 0:
+                self.root.ids.speed_unit.text = "KM/H"
+            else:
+                self.root.ids.speed_unit.text = ""
             if intkec > kecepatan_sebelum:
                 kecepatan_sebelum += 1
                 self.root.ids.speed_bar.value = kecepatan_sebelum
@@ -545,6 +554,38 @@ class Dashboard(MDApp):
             mode_onMain.text = "ECO"
         self.update_database("vehicle_info", vehicleStatus)
 
+    def darkMode(self, nap):
+        if self.sw_started:
+            self.sw_seconds += nap
+        dm = self.read_database("vehicle_info")
+        darkMode = dm["dm"]
+
+        currentChannel = self.root.ids.channels.current
+        if darkMode == True:
+            self.root.ids.darkMode_switch.active = True
+            self.off = 27 / 255, 113 / 255, 119 / 255, 1
+            self.root.ids.mode_label.color = self.onDark
+            self.root.ids.power_label.color = self.onDark
+            self.root.ids.darkMode_label.color = self.onDark
+            if currentChannel == "mainChannel":
+                self.root.wall_path = "assets/bg-main-dark.png"
+                self.root.logoITS_path = "assets/Lambang-ITS-dark.png"
+                self.root.ids.time_onMain.color = self.onDark
+                self.root.ids.mode_onMain.text_color = self.onDark
+                self.root.ids.speed_bar_value.color = self.onDark
+        else:
+            self.root.ids.darkMode_switch.active = False
+            self.off = 180 / 255, 180 / 255, 180 / 255, 1
+            self.root.ids.mode_label.color = self.onLight
+            self.root.ids.power_label.color = self.onLight
+            self.root.ids.darkMode_label.color = self.onLight
+            if currentChannel == "mainChannel":
+                self.root.wall_path = "assets/bg-main.png"
+                self.root.logoITS_path = "assets/Lambang-ITS.png"
+                self.root.ids.time_onMain.color = self.onLight
+                self.root.ids.mode_onMain.text_color = self.onLight
+                self.root.ids.speed_bar_value.color = self.onLight
+
     def turn_signal(self, nap):
         if self.sw_started:
             self.sw_seconds += nap
@@ -604,6 +645,15 @@ class Dashboard(MDApp):
             os.system("killall python3")
             os.system("killall python")
 
+        # if self.root.ids.darkMode_switch == True:
+        #     dm = self.read_database("vehicle_info")
+        #     dm["dm"] = True
+        #     self.update_database("vehicle_info", dm)
+        # else:
+        #     dm = self.read_database("vehicle_info")
+        #     dm["dm"] = False
+        #     self.update_database("vehicle_info", dm)
+
         fd = open("database/connection.json")
         connectionFile = json.load(fd)
         wifiID = connectionFile["wifi"]["id"]
@@ -636,15 +686,15 @@ class Dashboard(MDApp):
 
         fe = open("database/estimation.json")
         estimationFile = json.load(fe)
-        asalLat = estimationFile["address"]["origin"]["latitude"]
-        asalLng = estimationFile["address"]["origin"]["longitude"]
-        tujuanLat = estimationFile["address"]["destination"]["latitude"]
-        tujuanLng = estimationFile["address"]["destination"]["longitude"]
+        self.asalLat = estimationFile["address"]["origin"]["latitude"]
+        self.asalLng = estimationFile["address"]["origin"]["longitude"]
+        self.tujuanLat = estimationFile["address"]["destination"]["latitude"]
+        self.tujuanLng = estimationFile["address"]["destination"]["longitude"]
 
-        if len(tujuanLat) == 0:
+        if len(self.tujuanLat) == 0:
             pass
         else:
-            if self.tuj != tujuanLat:
+            if self.tuj != self.tujuanLat:
                 # try:
                 # fungsi tujuan
                 try:
@@ -654,14 +704,18 @@ class Dashboard(MDApp):
 
                 try:
                     self.root.estimasi(
-                        asalLat, asalLng, tujuanLat, tujuanLng, self.SOC_value
+                        self.asalLat,
+                        self.asalLng,
+                        self.tujuanLat,
+                        self.tujuanLng,
+                        self.SOC_value,
                     )
                 except Exception as e:
                     print("estimation error :", str(e))
 
                 self.screen_tomap = True
                 self.root.center_maps()
-                self.tuj = tujuanLat
+                self.tuj = self.tujuanLat
                 print("selesai")
                 # except Exception as e:
                 #     print('function error :',str(e) )
@@ -671,7 +725,13 @@ class Dashboard(MDApp):
 
 class MyLayout(Screen):
     # wall_path = "assets/grad-wf.png"
-    wall_path = "assets/bg-main.png"
+    wall_path = StringProperty("assets/bg-main.png")
+    logoITS_path = StringProperty("assets/Lambang-ITS.png")
+
+    this_path = str(os.getcwd())
+    path = this_path + "/.key/api-key_osm.txt"
+    API_file = open(path, "r")
+    API_key_OSM = API_file.read()
 
     def __init__(self, *args, **kwargs):
         super(MyLayout, self).__init__(*args, **kwargs)
@@ -681,23 +741,50 @@ class MyLayout(Screen):
         API_file = open(path, "r")
         # print(API_file)
         self.API_key = API_file.read()
+        # print(self.API_key)
         API_file.close()
 
     def center_maps(self):
         # try:
         mapview = self.ids.mapview
-        line = LineMapLayer(
-            self.DestinationLat, self.DestinationLng, self.OriginLat, self.OriginLng
-        )
-        mapview.add_layer(line, mode="scatter")
-        print(self.OriginLat)
-        print(self.OriginLng)
+
+        fe = open("database/estimation.json")
+        estimationFile = json.load(fe)
+        asalLat = estimationFile["address"]["origin"]["latitude"]
+        asalLng = estimationFile["address"]["origin"]["longitude"]
+        tujuanLat = estimationFile["address"]["destination"]["latitude"]
+        tujuanLng = estimationFile["address"]["destination"]["longitude"]
+
+        if tujuanLat != "":
+            try:
+                line = LineMapLayer(
+                    self.DestinationLat,
+                    self.DestinationLng,
+                    self.OriginLat,
+                    self.OriginLng,
+                )
+                mapview.add_layer(line, mode="scatter")
+            except Exception as e:
+                print("layer map error: ", str(e))
+
+            try:
+                self.marker_destination = MapMarker(
+                    lat=self.DestinationLat,
+                    lon=self.DestinationLng,
+                    source="assets/marker-red.png",
+                )
+                mapview.add_widget(self.marker_destination)
+                # mapview.add_marker(lat=lat, lon=lng)
+            except Exception as e:
+                print("error at destination marker: ", str(e))
+        # print(asalLat)
+        # print(asalLng)
 
         # except Exception as e:
         #     print("error load map:", str(e))
 
         # try:
-        mapview.center_on(float(self.OriginLat), float(self.OriginLng))
+        mapview.center_on(float(asalLat), float(asalLng))
         # marker1 = MapMarkerPopup(lat=lat, lon=lng)
 
         # except Exception as e:
@@ -705,19 +792,12 @@ class MyLayout(Screen):
 
         try:
             self.marker_origin = MapMarker(
-                lat=self.OriginLat, lon=self.OriginLng, source="assets/marker-3-24.png"
-            )
-            self.marker_destination = MapMarker(
-                lat=self.DestinationLat,
-                lon=self.DestinationLng,
-                source="assets/marker-red.png",
+                lat=asalLat, lon=asalLng, source="assets/marker-3-24.png"
             )
             mapview.add_widget(self.marker_origin)
-            mapview.add_widget(self.marker_destination)
-            Clock.schedule_once(self.zoom_maps, 15)
-            # mapview.add_marker(lat=lat, lon=lng)
         except Exception as e:
-            print("error marker map:", str(e))
+            print("error at origin marker: ", str(e))
+        Clock.schedule_once(self.zoom_maps, 15)
 
     def zoom_maps(self, *args):
         mapview = self.ids.mapview
@@ -867,7 +947,7 @@ class MyLayout(Screen):
             place_name_destination,
         )
         # print(call.status_code, call.reason)
-        print(place_name_destination)
+        print("destinasi yang ingin dituju: ", place_name_destination)
         # except Exception as e:
         #     print('INVALID REQUEST DISTANCE :',str(e) )
 
@@ -876,7 +956,6 @@ class MyLayout(Screen):
         print("SOC : ", SOC_value)
         SOC = SOC_value
         # SOC = SOC_value.replace("%","")
-        print(float(SOC))
         dm = open("database/speedmode.json")
         data_speedmode = json.load(dm)
         eco = data_speedmode["mode"]["eco"]
@@ -998,7 +1077,6 @@ class LineMapLayer(MapLayer):
         this_path = str(os.getcwd())
         path = this_path + "/.key/api-key.txt"
         API_file = open(path, "r")
-        print(API_file)
         self.API_key_map = API_file.read()
         API_file.close()
         # self.zoom = 16

@@ -92,6 +92,7 @@ def data_arduino(ser):
                 try:
                     vehicle_info = read_database("vehicle_info")
                     vehicle_info["mode"] = data["mode"]
+                    vehicle_info["dm"] = data["dm"]
                     vehicle_info["turn_signal"][0] = data["turn"][0]
                     vehicle_info["turn_signal"][1] = data["turn"][1]
                     update_database("vehicle_info", vehicle_info)
