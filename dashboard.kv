@@ -271,17 +271,17 @@
                                             orientation: "vertical"
                                             size_hint_y: 0.4
                                             padding:["0dp","0dp","0dp","10dp"]
-                                            MDRectangleFlatButton:
-                                                id: mode_onMain
-                                                font_name:"assets/fonts/Satoshi-Medium.otf"
-                                                markup: True
-                                                text: "NORMAL"
-                                                font_size: "20sp"
-                                                text_color:8/255,29/255,37/255,1 
-                                                line_color: (0,0,0,0)
-                                                padding:[0,15,0,0]
-                                                pos_hint: {"center_x": .5, "center_y": .5}
-                                                on_release: app.modePressed()
+                                            # MDRectangleFlatButton:
+                                            #     id: mode_onMain
+                                            #     font_name:"assets/fonts/Satoshi-Medium.otf"
+                                            #     markup: True
+                                            #     text: "NORMAL"
+                                            #     font_size: "20sp"
+                                            #     text_color:8/255,29/255,37/255,1 
+                                            #     line_color: (0,0,0,0)
+                                            #     padding:[0,15,0,0]
+                                            #     pos_hint: {"center_x": .5, "center_y": .5}
+                                            #     on_release: app.modePressed()
                                             # LabelRajdhani:
                                             #     id: mode_onMain
                                             #     text: "NORMAL"
@@ -484,9 +484,9 @@
                                             #     # color:(1,1,1,1)
                                             BoxLayout:
                                                 # # padding:"2dp"
-                                                padding:["0dp","0dp","0dp","0dp"]
+                                                padding:["0dp","0dp","0dp","5dp"]
                                                 Image:
-                                                    source: 'assets/mobile-app-dark.png'
+                                                    source: 'assets/3d-etrail.png'
                                                     size: self.texture_size
 
                                         BoxLayout:
@@ -874,10 +874,10 @@
                                                 pos_hint: {"top": .938,"x": 0.00}
                                                 size_hint: .18, .12
                                                 padding:"7dp"                            
-                                                LabelRajdhani:
-                                                    id: time_onMain
-                                                    font_size:"20sp"
-                                                    text: '[b]00[/b]:00'
+                                                # LabelRajdhani:
+                                                #     id: time_onMain
+                                                #     font_size:"20sp"
+                                                #     text: '[b]00[/b]:00'
                                                     # color: 217/255,217/255,217/255,1
                                                     
                                         FloatLayout:
@@ -938,15 +938,16 @@
                                                 size_hint: .18, .12
                                                 # padding:"7dp"
                                         
-                                                MDIconButtonOff:
-                                                    id: wifi_status
-                                                    icon: "wifi-off"
-                                                    user_font_size: "22sp"
-                                                MDIconButtonOff:
-                                                    id: bluetooth_status
-                                                    icon: "bluetooth-off"
-                                                    user_font_size: "22sp"
+                                                # MDIconButtonOff:
+                                                #     id: wifi_status
+                                                #     icon: "wifi-off"
+                                                #     user_font_size: "22sp"
+                                                # MDIconButtonOff:
+                                                #     id: bluetooth_status
+                                                #     icon: "bluetooth-off"
+                                                #     user_font_size: "22sp"
                                                     # text_color: 180/255,180/255,180/255,1 # light color
+
 
                                         #         MDIconButtonOff:
                                         #             user_font_size: "40sp"
@@ -1321,27 +1322,36 @@
                                         #     theme_text_color: "Custom"
                                         #     text_color: 15/255,18/255,23/255,1
                                         
-                                        MDIconButtonOff:
-                                            id:turn_left
-                                            icon: "arrow-left-thick"
-                                            # user_font_size: "40sp"
-                                            # pos_hint:{"center_y": .5}
-                                            # theme_text_color: "Custom"
-                                            # text_color: 15/255,18/255,23/255,1
+                                        # MDIconButtonOff:
+                                        #     id:turn_left
+                                        #     icon: "arrow-left-thick"
+                                        #     # user_font_size: "40sp"
+                                        #     # pos_hint:{"center_y": .5}
+                                        #     # theme_text_color: "Custom"
+                                        #     # text_color: 15/255,18/255,23/255,1
                                         
-                                        MDIconButtonOff:
-                                            id:turn_right
-                                            icon: "arrow-right-thick"
+                                        # MDIconButtonOff:
+                                        #     id:turn_right
+                                        #     icon: "arrow-right-thick"
                                             # user_font_size: "40sp"
                                             # pos_hint:{"center_y": .5}
                                             # theme_text_color: "Custom"
                                             # text_color: 15/255,18/255,23/255,1
 
-                                        MDIconButtonOff:
-                                            # user_font_size: "40sp"
-                                            id: temp_high
-                                            icon: "thermometer-alert"
-                                            text_color: 180/255,180/255,180/255,1 # li
+                                        # MDIconButtonOff:
+                                        #     # user_font_size: "40sp"
+                                        #     id: temp_high
+                                        #     icon: "thermometer-alert"
+                                        #     text_color: 180/255,180/255,180/255,1 # li
+                                        LabelRajdhaniBottom:
+                                            # id: tegangan_value_text
+                                            size_hint:0.45,1
+                                            text:"STP OTOMOTIF ITS"
+                                            #font_style: "Body2"
+                                            # font_name:"Roboto"
+                                            font_size:"26sp"
+                                            halign:"right"
+                                            valign:"center"
                                             # user_font_size: "40sp"
                                             # pos_hint:{"center_y": .5}
                                             # theme_text_color: "Custom"
@@ -1388,13 +1398,18 @@
 
                                         LabelRajdhaniBottom:
                                             id:suhu_value_text
-                                            size_hint:0.45,1
+                                            size_hint:0.4,1
                                             text:"37 °C"
                                             #font_style: "Body2"
                                             # font_name:"Roboto"
                                             # font_size:"32sp"
                                             halign:"right"
                                             valign:"center"
+                                        MDIconButtonOff:
+                                            # user_font_size: "40sp"
+                                            id: temp_high
+                                            icon: "thermometer-alert"
+                                            text_color: 180/255,180/255,180/255,1 # li
 
             ## FLOAT LAYOUT SECTION ##
 
@@ -1407,7 +1422,7 @@
                     LabelRajdhaniOnPill:
                         id: mode_label
                         
-                        text:"MODE"
+                        text:""
                         size_hint:1,1
                         font_size:"12sp"
                         pos_hint: {"center_x":0.27}
@@ -1448,7 +1463,7 @@
                     size_hint: 0.137, 0.044
                     LabelRajdhaniOnPill:
                         id: card_label
-                        text:"MOBILE APP"
+                        text: "BANGKIT\nCENDERAWASIH"
                         size_hint:1,1
                         font_size:"12sp"
                         pos_hint: {"center_x":0.27}
@@ -1465,6 +1480,27 @@
                         font_size:"12sp"
                         pos_hint: {"center_x":0.27}
                         color:(120/255,120/255,120/255,120/255)
+                                                    # color: 1,1,1,1
+
+            FloatLayout:
+                size_hint:1,1
+                BoxLayout:
+                    orientation: "vertical"
+                    # pos_hint:{"top":.49,"x":.438}
+                    pos_hint:{"top":.915,"x":.247}
+                    # pos_hint:{"top":.6,"x":.578}
+                    size_hint: .1, .1
+                    padding:"7dp"
+                    LabelRajdhaniCenter:
+                        id:speed_bar_value
+                        # bold: True
+                        text:"E-TRAIL DASHBOARD"
+                        font_name:"assets/fonts/Orbitron-Bold.ttf"
+                        font_size:"28sp"
+                        halign:"right"
+                        # color:217/255,217/255,217/255,1
+                        # color: 6/255,17/255,21/255,1
+                        color: 8/255,29/255,37/255,1
 
             # FloatLayout:
             #     orientation: "horizontal"

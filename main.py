@@ -92,7 +92,7 @@ class Dashboard(MDApp):
         elif self.script == "check":
             self.subScreen = Clock.schedule_once(self.changeScreen, 1)
         else:
-            self.subScreen = Clock.schedule_once(self.changeScreen, 12)
+            self.subScreen = Clock.schedule_once(self.changeScreen, 8)
 
         vehicleStatus = self.read_database("vehicle_info")
         vehicleStatus["power"] = "on"
@@ -114,12 +114,11 @@ class Dashboard(MDApp):
         self.sub3 = Clock.schedule_interval(self.odometer, 1)
         self.sub4 = Clock.schedule_interval(self.odometer_submit, 3)
         self.sub5 = Clock.schedule_interval(self.darkMode, 1)
-        self.sub5 = Clock.schedule_interval(self.turn_signal, 1)
+        # self.sub5 = Clock.schedule_interval(self.turn_signal, 1)
         self.sub6 = Clock.schedule_interval(self.change_screen_main, 1)
         self.asyncRun = Clock.schedule_once(self.asyncProgram, 10)
 
     def asyncProgram(self, dt):
-
         # testing script
         if self.script == "test":
             try:
@@ -172,9 +171,9 @@ class Dashboard(MDApp):
                 self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini1)
                 self.root.ids.channels.switch_to(self.root.ids.mainChannel)
                 self.root.ids.menubar_left.switch_to(self.root.ids.menubar_leftTop1)
-                self.root.ids.mode_label.text = "MODE"
+                # self.root.ids.mode_label.text = "MODE"
                 self.root.ids.power_label.text = "POWER"
-                self.root.ids.card_label.text = "MOBILE APP"
+                # self.root.ids.card_label.text = "MOBILE APP"
 
         elif change_screen == "About":
             self.root.ids.screendget_mini.switch_to(self.root.ids.s_mini1)
@@ -433,7 +432,7 @@ class Dashboard(MDApp):
     # update data suhu dan kecepatan
 
     def update_data_suhu_kecepatan(self, nap):
-        self.root.ids.progress.value = self.root.ids.progress.value + 0.2
+        self.root.ids.progress.value = self.root.ids.progress.value + 0.3
         # tegangan = 0.00
         strtegangan = "0.0"
         if self.sw_started:
@@ -540,19 +539,19 @@ class Dashboard(MDApp):
     #             #     pass
     # def battWidget(self):
 
-    def modePressed(self):
-        vehicleStatus = self.read_database("vehicle_info")
-        mode_onMain = self.root.ids.mode_onMain
-        if mode_onMain.text == "ECO":
-            vehicleStatus["mode"] = "n"
-            mode_onMain.text = "NORMAL"
-        elif mode_onMain.text == "NORMAL":
-            vehicleStatus["mode"] = "s"
-            mode_onMain.text = "SPORT"
-        else:
-            vehicleStatus["mode"] = "e"
-            mode_onMain.text = "ECO"
-        self.update_database("vehicle_info", vehicleStatus)
+    # def modePressed(self):
+    #     vehicleStatus = self.read_database("vehicle_info")
+    #     mode_onMain = self.root.ids.mode_onMain
+    #     if mode_onMain.text == "ECO":
+    #         vehicleStatus["mode"] = "n"
+    #         mode_onMain.text = "NORMAL"
+    #     elif mode_onMain.text == "NORMAL":
+    #         vehicleStatus["mode"] = "s"
+    #         mode_onMain.text = "SPORT"
+    #     else:
+    #         vehicleStatus["mode"] = "e"
+    #         mode_onMain.text = "ECO"
+    #     self.update_database("vehicle_info", vehicleStatus)
 
     def darkMode(self, nap):
         if self.sw_started:
@@ -570,8 +569,8 @@ class Dashboard(MDApp):
             if currentChannel == "mainChannel":
                 self.root.wall_path = "assets/bg-main-dark.png"
                 self.root.logoITS_path = "assets/Lambang-ITS-dark.png"
-                self.root.ids.time_onMain.color = self.onDark
-                self.root.ids.mode_onMain.text_color = self.onDark
+                # self.root.ids.time_onMain.color = self.onDark
+                # self.root.ids.mode_onMain.text_color = self.onDark
                 self.root.ids.speed_bar_value.color = self.onDark
         else:
             self.root.ids.darkMode_switch.active = False
@@ -582,8 +581,8 @@ class Dashboard(MDApp):
             if currentChannel == "mainChannel":
                 self.root.wall_path = "assets/bg-main.png"
                 self.root.logoITS_path = "assets/Lambang-ITS.png"
-                self.root.ids.time_onMain.color = self.onLight
-                self.root.ids.mode_onMain.text_color = self.onLight
+                # self.root.ids.time_onMain.color = self.onLight
+                # self.root.ids.mode_onMain.text_color = self.onLight
                 self.root.ids.speed_bar_value.color = self.onLight
 
     def turn_signal(self, nap):
@@ -596,21 +595,18 @@ class Dashboard(MDApp):
 
         currentChannel = self.root.ids.channels.current
 
-        if vehicleMode == "e":
-
-            if currentChannel == "mainChannel":
-                mode_onMain = self.root.ids.mode_onMain
-                mode_onMain.text = "ECO"
-        elif vehicleMode == "n":
-
-            if currentChannel == "mainChannel":
-                mode_onMain = self.root.ids.mode_onMain
-                mode_onMain.text = "NORMAL"
-        elif vehicleMode == "s":
-
-            if currentChannel == "mainChannel":
-                mode_onMain = self.root.ids.mode_onMain
-                mode_onMain.text = "SPORT"
+        # if vehicleMode == "e":
+        #     if currentChannel == "mainChannel":
+        #         mode_onMain = self.root.ids.mode_onMain
+        #         mode_onMain.text = "ECO"
+        # elif vehicleMode == "n":
+        #     if currentChannel == "mainChannel":
+        #         mode_onMain = self.root.ids.mode_onMain
+        #         mode_onMain.text = "NORMAL"
+        # elif vehicleMode == "s":
+        #     if currentChannel == "mainChannel":
+        #         mode_onMain = self.root.ids.mode_onMain
+        #         mode_onMain.text = "SPORT"
 
         if isTurnLeft == True:
             self.root.ids.turn_left.text_color = self.off_white
@@ -631,9 +627,9 @@ class Dashboard(MDApp):
             self.sw_seconds += nap
 
         currentChannel = self.root.ids.channels.current
-        if currentChannel == "mainChannel":
-            self.root.ids.time_onMain.text = strftime("[b]%H:%M  [/b]")
-        elif currentChannel == "mapChannel":
+        # if currentChannel == "mainChannel":
+        #     self.root.ids.time_onMain.text = strftime("[b]%H:%M  [/b]")
+        if currentChannel == "mapChannel":
             self.root.ids.time_onMap.text = strftime("%H:%M")
         elif currentChannel == "aboutChannel":
             self.root.ids.time_onAbout.text = strftime("[b]%H:%M  [/b]")
