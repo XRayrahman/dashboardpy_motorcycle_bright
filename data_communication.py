@@ -17,7 +17,7 @@ def arduino_ports(preferred_list=["*"]):
     import glob
 
     glist = (
-        glob.glob("/dev/ttyS5") + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*")
+        glob.glob("/dev/ttyACM*") + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyS5")
     )
     # print(glist)
     ret = []
